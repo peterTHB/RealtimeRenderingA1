@@ -18,7 +18,6 @@ public:
     virtual void SetCameraPos(glm::vec3 cameraPos);
     virtual void SetCameraFront(glm::vec3 cameraFront);
     virtual void SetCameraUp(glm::vec3 cameraUp);
-    virtual void SetLeftMouse(bool leftMouse);
     virtual void SetPitch(float pitch);
     virtual void SetYaw(float yaw);
     virtual void SetLastX(float lastX);
@@ -30,7 +29,6 @@ public:
     virtual glm::vec3* GetCameraUp();
     virtual const float* GetCameraSpeed();
     virtual float* GetDeltaTime();
-    virtual bool* GetLeftMouse();
     virtual float* GetPitch();
     virtual float* GetYaw();
     virtual float* GetLastX();
@@ -41,14 +39,15 @@ protected:
     glm::vec3 cameraPos;
     glm::vec3 cameraFront;
     glm::vec3 cameraUp;
+    glm::vec3 cameraWUp;
     float cameraSpeed;
     float deltaTime;
     float lastFrame;
 
-    float width;
-    float height;
+    int width;
+    int height;
 
-    bool leftMouse;
+    bool checkMouse;
     float pitch;
     float yaw;
     float lastX;

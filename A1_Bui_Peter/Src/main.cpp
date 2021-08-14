@@ -69,6 +69,7 @@ void AssignmentApp::CheckInput()
 {
     SDL_Event event;
     SDL_WaitEvent(&event);
+    /*SDL_PollEvent(&event);*/
 
     glm::vec3 cameraPos = *camera->GetCameraPos();
     glm::vec3 cameraFront = *camera->GetCameraFront();
@@ -77,14 +78,9 @@ void AssignmentApp::CheckInput()
     const float cameraSpeed = *camera->GetCameraSpeed() * cameraDeltaTime;
 
     switch (event.type) {
-    case SDL_MOUSEBUTTONDOWN:
-        switch (event.button.button) {
-        case SDL_BUTTON_LEFT:
-            deltaX += event.motion.x;
-            deltaY += event.motion.y;
-            camera->Mouse_Callback(m_SDLWindow, deltaX, deltaY);
-            break;
-        }
+    case SDL_MOUSEMOTION:
+        camera->Mouse_Callback(m_SDLWindow, event.motion.x, event.motion.y);
+        break;
 
     case SDL_KEYDOWN:
         switch (event.key.keysym.sym) {
@@ -92,7 +88,7 @@ void AssignmentApp::CheckInput()
             m_QuitApp = true;
             break;
 
-        // Changing scenes 1...6
+            // Changing scenes 1...6
         case SDLK_1:
             m_CurrSceneNum = 1;
             break;
@@ -112,7 +108,7 @@ void AssignmentApp::CheckInput()
             m_CurrSceneNum = 6;
             break;
 
-        // Camera Controls
+            // Camera Controls
         case SDLK_w:
             cameraPos -= cameraSpeed * cameraFront;
             camera->SetCameraPos(cameraPos);
@@ -133,7 +129,7 @@ void AssignmentApp::CheckInput()
             camera->SetCameraPos(cameraPos);
             break;
 
-        // Increment/Decrement Subdivision
+            // Increment/Decrement Subdivision
         case SDLK_EQUALS:
             ListOfScenes[m_CurrSceneNum - 1]->IncrementSubdivision();
             break;
@@ -158,17 +154,17 @@ void AssignmentApp::CheckInput()
                 break;
             }
 
-        // Showing OSD
+            // Showing OSD
         case SDLK_h:
             m_ShowOSD = !m_ShowOSD;
             break;
 
-        // Toggle Lighting
+            // Toggle Lighting
         case SDLK_l:
             ListOfScenes[m_CurrSceneNum - 1]->ToggleLighting();
             break;
 
-        // Increment/Decrement # of Lights
+            // Increment/Decrement # of Lights
         case SDLK_PERIOD:
             m_NumOfLights += 1;
             break;
@@ -182,12 +178,12 @@ void AssignmentApp::CheckInput()
                 break;
             }
 
-        // Toggle Depth Buffering
+            // Toggle Depth Buffering
         case SDLK_z:
             ListOfScenes[m_CurrSceneNum - 1]->ToggleDepthBuffer();
             break;
 
-        // Toggle Backface Culling
+            // Toggle Backface Culling
         case SDLK_c:
             ListOfScenes[m_CurrSceneNum - 1]->ToggleBackface();
             break;
@@ -198,7 +194,6 @@ void AssignmentApp::CheckInput()
 void AssignmentApp::UpdateState(unsigned int td_milli)
 {
     // This is where we will do all our model updating, physics, etc...
-    
 }
 
 // Render On-Screen Display
@@ -217,15 +212,15 @@ void AssignmentApp::RenderOSD()
     GLTtext* backface_on = gltCreateText();
 
     std::string sceneNumText = "Scene: " + std::to_string(m_CurrSceneNum);
-    std::string displayText = "Resolution: " + std::to_string(m_ResolutionRate) + 
-                              " Refresh: " + std::to_string(m_RefreshRate);
+    std::string displayText = "Resolution: " + std::to_string(m_ResolutionRate) +
+        " Refresh: " + std::to_string(m_RefreshRate);
     std::string fpsText = "FPS: " + std::to_string(m_FPS);
     std::string subdivisionText = "# of Subdivisions: " + std::to_string(
-                                    *ListOfScenes[m_CurrSceneNum - 1]->GetSubdivisions());
+        *ListOfScenes[m_CurrSceneNum - 1]->GetSubdivisions());
     std::string verticesText = "# of Vertices: " + std::to_string(
-                                    *ListOfScenes[m_CurrSceneNum - 1]->GetVertices());
+        *ListOfScenes[m_CurrSceneNum - 1]->GetVertices());
     std::string facesText = "# of Faces: " + std::to_string(
-                                *ListOfScenes[m_CurrSceneNum - 1]->GetFaces());
+        *ListOfScenes[m_CurrSceneNum - 1]->GetFaces());
     std::string vertexDataText = "Vertex Data: " + std::to_string(m_VertexData);
     std::string lightsOnText = "";
     std::string depthOnText = "";
@@ -264,21 +259,27 @@ void AssignmentApp::RenderOSD()
     gltSetText(backface_on, backfaceOnText.c_str());
 
     gltBeginDraw();
-     gltColor(0.0f, 1.0f, 0.0f, 1.0f);
-     gltDrawText2D(scene_num, 10, 10, 2.0);
-     gltDrawText2D(display_rates, 10, 60, 2.0);
-     gltDrawText2D(fps_rates, 10, 110, 2.0);
-     gltDrawText2D(subdivision_num, 10, 160, 2.0);
-     gltDrawText2D(vertices_num, 10, 210, 2.0);
-     gltDrawText2D(faces_num, 10, 260, 2.0);
-     gltDrawText2D(data_num, 10, 310, 2.0);
-     gltDrawText2D(lights_on, 10, 360, 2.0);
-     gltDrawText2D(depth_on, 10, 410, 2.0);
-     gltDrawText2D(backface_on, 10, 460, 2.0);
+    gltColor(0.0f, 1.0f, 0.0f, 1.0f);
+    gltDrawText2D(scene_num, 10, 10, 2.0);
+    gltDrawText2D(display_rates, 10, 60, 2.0);
+    gltDrawText2D(fps_rates, 10, 110, 2.0);
+    gltDrawText2D(subdivision_num, 10, 160, 2.0);
+    gltDrawText2D(vertices_num, 10, 210, 2.0);
+    gltDrawText2D(faces_num, 10, 260, 2.0);
+    gltDrawText2D(data_num, 10, 310, 2.0);
+    gltDrawText2D(lights_on, 10, 360, 2.0);
+    gltDrawText2D(depth_on, 10, 410, 2.0);
+    gltDrawText2D(backface_on, 10, 460, 2.0);
     gltEndDraw();
     glUseProgram(0);
 
     gltDeleteText(scene_num);
+    gltDeleteText(display_rates);
+    gltDeleteText(fps_rates);
+    gltDeleteText(subdivision_num);
+    gltDeleteText(vertices_num);
+    gltDeleteText(faces_num);
+    gltDeleteText(data_num);
     gltDeleteText(lights_on);
     gltDeleteText(depth_on);
     gltDeleteText(backface_on);
@@ -322,6 +323,10 @@ int AssignmentApp::Init()
     if (int err = RTRApp::Init() != 0) {
         return err;
     }
+
+    /*SDL_ShowCursor(SDL_DISABLE);*/
+
+    /*SDL_SetRelativeMouseMode(SDL_TRUE);*/
 
     gltInit();
 

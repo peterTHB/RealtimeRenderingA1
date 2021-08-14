@@ -4,26 +4,22 @@ Camera::Camera() {
     cameraPos = glm::vec3(0.0f, 0.0f, -3.0f);
     cameraFront = glm::vec3(0.0f, 0.0f, -3.0f);
     cameraUp = glm::vec3(0.0f, 1.0f, -3.0f);
-    cameraSpeed = 0.05f;
+    cameraWUp = cameraUp;
+    cameraSpeed = 1.0f;
     deltaTime = 0.0f;
     lastFrame = 0.0f;
 
-    SDL_DisplayMode DM;
-    SDL_GetCurrentDisplayMode(0, &DM);
-    width = DM.w;
-    height = DM.h;
-
-    leftMouse = true;
+    checkMouse = true;
     pitch = 0.0f;
     yaw = -90.0f;
-    lastX = 0.0f;
-    lastY = 0.0f;
+    lastX = width / 2.0f;
+    lastY = height / 2.0f;
     fov = 45.0f;
 }
 
 void Camera::ImmediateCamera() {
     glm::mat4 proj = glm::mat4(1.0f);
-    proj = glm::perspective(glm::radians(45.0f), width / height, 1.0f, 100.0f);
+    proj = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 1.0f, 100.0f);
 
     glm::mat4 view = glm::mat4(1.0f);
     view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
@@ -41,13 +37,8 @@ void Camera::ImmediateCamera() {
 }
 
 void Camera::ModernCamera() {
-    SDL_DisplayMode DM;
-    SDL_GetCurrentDisplayMode(0, &DM);
-    float width = DM.w;
-    float height = DM.h;
-
     glm::mat4 proj = glm::mat4(1.0f);
-    proj = glm::perspective(glm::radians(45.0f), width / height, 1.0f, 100.0f);
+    proj = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 1.0f, 100.0f);
 
     glm::mat4 view = glm::mat4(1.0f);
     view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
@@ -59,10 +50,17 @@ void Camera::ModernCamera() {
 }
 
 void Camera::Mouse_Callback(SDL_Window* window, double xpos, double ypos) {
-    if (leftMouse) {
+    SDL_GetWindowSize(window, &width, &height);
+
+    std::cout << "Width: " << width << std::endl;
+    std::cout << "Height: " << height << std::endl;
+
+    /*SDL_WarpMouseInWindow(window, (float)width / 2.0f, (float)height / 2.0f);*/
+
+    if (checkMouse) {
         lastX = xpos;
         lastY = ypos;
-        leftMouse = false;
+        checkMouse = false;
     }
 
     float xoffset = xpos - lastX;
@@ -92,6 +90,9 @@ void Camera::Mouse_Callback(SDL_Window* window, double xpos, double ypos) {
     direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
 
     cameraFront = glm::normalize(direction);
+
+    glm::vec3 cameraRight = glm::normalize(glm::cross(cameraFront, cameraWUp));
+    cameraUp = glm::normalize(glm::cross(cameraRight, cameraFront));
 }
 
 void Camera::SetCameraPos(glm::vec3 cameraPos)
@@ -107,11 +108,6 @@ void Camera::SetCameraFront(glm::vec3 cameraFront)
 void Camera::SetCameraUp(glm::vec3 cameraUp)
 {
     this->cameraUp = cameraUp;
-}
-
-void Camera::SetLeftMouse(bool leftMouse)
-{
-    this->leftMouse = leftMouse;
 }
 
 void Camera::SetPitch(float pitch)
@@ -168,14 +164,10 @@ float* Camera::GetDeltaTime()
     deltaTime = currentFrame - lastFrame;
     lastFrame = currentFrame;
 
+    deltaTime /= 1000;
+
     float* deltaPtr = &deltaTime;
     return deltaPtr;
-}
-
-bool* Camera::GetLeftMouse()
-{
-    bool* state = &leftMouse;
-    return state;
 }
 
 float* Camera::GetPitch()
