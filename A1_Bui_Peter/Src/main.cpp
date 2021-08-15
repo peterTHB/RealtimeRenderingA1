@@ -50,6 +50,9 @@ private:
     float deltaX = 0.0f;
     float deltaY = 0.0f;
 
+    int width = 0;
+    int height = 0;
+
     void CheckInput();
     void UpdateState(unsigned int td_milli);
     void RenderFrame();
@@ -68,8 +71,6 @@ bool AssignmentApp::Tick(unsigned int td_milli)
 void AssignmentApp::CheckInput()
 {
     SDL_Event event;
-    SDL_WaitEvent(&event);
-    /*SDL_PollEvent(&event);*/
 
     glm::vec3 cameraPos = *camera->GetCameraPos();
     glm::vec3 cameraFront = *camera->GetCameraFront();
@@ -77,116 +78,125 @@ void AssignmentApp::CheckInput()
     float cameraDeltaTime = *camera->GetDeltaTime();
     const float cameraSpeed = *camera->GetCameraSpeed() * cameraDeltaTime;
 
-    switch (event.type) {
-    case SDL_MOUSEMOTION:
-        camera->Mouse_Callback(m_SDLWindow, event.motion.x, event.motion.y);
-        break;
+    while (SDL_PollEvent(&event) != 0) {
+        switch (event.type) {
 
-    case SDL_KEYDOWN:
-        switch (event.key.keysym.sym) {
-        case SDLK_ESCAPE:
-            m_QuitApp = true;
+        case SDL_MOUSEBUTTONDOWN:
+            /*SDL_WarpMouseInWindow(m_SDLWindow, width, height);*/
+            camera->ToggleMoveMouse();
             break;
 
-            // Changing scenes 1...6
-        case SDLK_1:
-            m_CurrSceneNum = 1;
-            break;
-        case SDLK_2:
-            m_CurrSceneNum = 2;
-            break;
-        case SDLK_3:
-            m_CurrSceneNum = 3;
-            break;
-        case SDLK_4:
-            m_CurrSceneNum = 4;
-            break;
-        case SDLK_5:
-            m_CurrSceneNum = 5;
-            break;
-        case SDLK_6:
-            m_CurrSceneNum = 6;
+        case SDL_MOUSEBUTTONUP:
+            camera->ToggleMoveMouse();
+            /*SDL_WarpMouseInWindow(m_SDLWindow, width, height);*/
             break;
 
-            // Camera Controls
-        case SDLK_w:
-            cameraPos -= cameraSpeed * cameraFront;
-            camera->SetCameraPos(cameraPos);
-            break;
+        case SDL_KEYDOWN:
+            switch (event.key.keysym.sym) {
+            case SDLK_ESCAPE:
+                m_QuitApp = true;
+                break;
 
-        case SDLK_s:
-            cameraPos += cameraSpeed * cameraFront;
-            camera->SetCameraPos(cameraPos);
-            break;
+                // Changing scenes 1...6
+            case SDLK_1:
+                m_CurrSceneNum = 1;
+                break;
+            case SDLK_2:
+                m_CurrSceneNum = 2;
+                break;
+            case SDLK_3:
+                m_CurrSceneNum = 3;
+                break;
+            case SDLK_4:
+                m_CurrSceneNum = 4;
+                break;
+            case SDLK_5:
+                m_CurrSceneNum = 5;
+                break;
+            case SDLK_6:
+                m_CurrSceneNum = 6;
+                break;
 
-        case SDLK_a:
-            cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-            camera->SetCameraPos(cameraPos);
-            break;
+                // Camera Controls
+            case SDLK_w:
+                cameraPos -= cameraSpeed * cameraFront;
+                camera->SetCameraPos(cameraPos);
+                break;
 
-        case SDLK_d:
-            cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-            camera->SetCameraPos(cameraPos);
-            break;
+            case SDLK_s:
+                cameraPos += cameraSpeed * cameraFront;
+                camera->SetCameraPos(cameraPos);
+                break;
 
-            // Increment/Decrement Subdivision
-        case SDLK_EQUALS:
-            ListOfScenes[m_CurrSceneNum - 1]->IncrementSubdivision();
-            break;
-        case SDLK_KP_PLUS:
-            ListOfScenes[m_CurrSceneNum - 1]->IncrementSubdivision();
-            break;
+            case SDLK_a:
+                cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+                camera->SetCameraPos(cameraPos);
+                break;
 
-        case SDLK_MINUS:
-            if (*ListOfScenes[m_CurrSceneNum - 1]->GetSubdivisions() > 1) {
-                ListOfScenes[m_CurrSceneNum - 1]->DecrementSubdivision();
+            case SDLK_d:
+                cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+                camera->SetCameraPos(cameraPos);
+                break;
+
+                // Increment/Decrement Subdivision
+            case SDLK_EQUALS:
+                ListOfScenes[m_CurrSceneNum - 1]->IncrementSubdivision();
+                break;
+            case SDLK_KP_PLUS:
+                ListOfScenes[m_CurrSceneNum - 1]->IncrementSubdivision();
+                break;
+
+            case SDLK_MINUS:
+                if (*ListOfScenes[m_CurrSceneNum - 1]->GetSubdivisions() > 1) {
+                    ListOfScenes[m_CurrSceneNum - 1]->DecrementSubdivision();
+                    break;
+                }
+                else {
+                    break;
+                }
+            case SDLK_KP_MINUS:
+                if (*ListOfScenes[m_CurrSceneNum - 1]->GetSubdivisions() > 1) {
+                    ListOfScenes[m_CurrSceneNum - 1]->DecrementSubdivision();
+                    break;
+                }
+                else {
+                    break;
+                }
+
+                // Showing OSD
+            case SDLK_h:
+                m_ShowOSD = !m_ShowOSD;
+                break;
+
+                // Toggle Lighting
+            case SDLK_l:
+                ListOfScenes[m_CurrSceneNum - 1]->ToggleLighting();
+                break;
+
+                // Increment/Decrement # of Lights
+            case SDLK_PERIOD:
+                m_NumOfLights += 1;
+                break;
+
+            case SDLK_COMMA:
+                if (m_NumOfLights > 1) {
+                    m_NumOfLights -= 1;
+                    break;
+                }
+                else {
+                    break;
+                }
+
+                // Toggle Depth Buffering
+            case SDLK_z:
+                ListOfScenes[m_CurrSceneNum - 1]->ToggleDepthBuffer();
+                break;
+
+                // Toggle Backface Culling
+            case SDLK_c:
+                ListOfScenes[m_CurrSceneNum - 1]->ToggleBackface();
                 break;
             }
-            else {
-                break;
-            }
-        case SDLK_KP_MINUS:
-            if (*ListOfScenes[m_CurrSceneNum - 1]->GetSubdivisions() > 1) {
-                ListOfScenes[m_CurrSceneNum - 1]->DecrementSubdivision();
-                break;
-            }
-            else {
-                break;
-            }
-
-            // Showing OSD
-        case SDLK_h:
-            m_ShowOSD = !m_ShowOSD;
-            break;
-
-            // Toggle Lighting
-        case SDLK_l:
-            ListOfScenes[m_CurrSceneNum - 1]->ToggleLighting();
-            break;
-
-            // Increment/Decrement # of Lights
-        case SDLK_PERIOD:
-            m_NumOfLights += 1;
-            break;
-
-        case SDLK_COMMA:
-            if (m_NumOfLights > 1) {
-                m_NumOfLights -= 1;
-                break;
-            }
-            else {
-                break;
-            }
-
-            // Toggle Depth Buffering
-        case SDLK_z:
-            ListOfScenes[m_CurrSceneNum - 1]->ToggleDepthBuffer();
-            break;
-
-            // Toggle Backface Culling
-        case SDLK_c:
-            ListOfScenes[m_CurrSceneNum - 1]->ToggleBackface();
-            break;
         }
     }
 }
@@ -194,6 +204,7 @@ void AssignmentApp::CheckInput()
 void AssignmentApp::UpdateState(unsigned int td_milli)
 {
     // This is where we will do all our model updating, physics, etc...
+   camera->Mouse_Callback(m_SDLWindow);
 }
 
 // Render On-Screen Display
@@ -258,31 +269,40 @@ void AssignmentApp::RenderOSD()
     gltSetText(depth_on, depthOnText.c_str());
     gltSetText(backface_on, backfaceOnText.c_str());
 
-    gltBeginDraw();
-    gltColor(0.0f, 1.0f, 0.0f, 1.0f);
-    gltDrawText2D(scene_num, 10, 10, 2.0);
-    gltDrawText2D(display_rates, 10, 60, 2.0);
-    gltDrawText2D(fps_rates, 10, 110, 2.0);
-    gltDrawText2D(subdivision_num, 10, 160, 2.0);
-    gltDrawText2D(vertices_num, 10, 210, 2.0);
-    gltDrawText2D(faces_num, 10, 260, 2.0);
-    gltDrawText2D(data_num, 10, 310, 2.0);
-    gltDrawText2D(lights_on, 10, 360, 2.0);
-    gltDrawText2D(depth_on, 10, 410, 2.0);
-    gltDrawText2D(backface_on, 10, 460, 2.0);
-    gltEndDraw();
-    glUseProgram(0);
+    if (m_ShowOSD) {
+        gltBeginDraw();
+        gltColor(0.0f, 1.0f, 0.0f, 1.0f);
+        gltDrawText2D(scene_num, 10, 10, 2.0);
+        gltDrawText2D(display_rates, 10, 60, 2.0);
+        gltDrawText2D(fps_rates, 10, 110, 2.0);
+        gltDrawText2D(subdivision_num, 10, 160, 2.0);
+        gltDrawText2D(vertices_num, 10, 210, 2.0);
+        gltDrawText2D(faces_num, 10, 260, 2.0);
+        gltDrawText2D(data_num, 10, 310, 2.0);
+        gltDrawText2D(lights_on, 10, 360, 2.0);
+        gltDrawText2D(depth_on, 10, 410, 2.0);
+        gltDrawText2D(backface_on, 10, 460, 2.0);
+        gltEndDraw();
+        glUseProgram(0);
 
-    gltDeleteText(scene_num);
-    gltDeleteText(display_rates);
-    gltDeleteText(fps_rates);
-    gltDeleteText(subdivision_num);
-    gltDeleteText(vertices_num);
-    gltDeleteText(faces_num);
-    gltDeleteText(data_num);
-    gltDeleteText(lights_on);
-    gltDeleteText(depth_on);
-    gltDeleteText(backface_on);
+        gltDeleteText(scene_num);
+        gltDeleteText(display_rates);
+        gltDeleteText(fps_rates);
+        gltDeleteText(subdivision_num);
+        gltDeleteText(vertices_num);
+        gltDeleteText(faces_num);
+        gltDeleteText(data_num);
+        gltDeleteText(lights_on);
+        gltDeleteText(depth_on);
+        gltDeleteText(backface_on);
+    }
+    else {
+        gltBeginDraw();
+        gltDrawText2D(fps_rates, 10, 10, 2.0);
+        gltEndDraw();
+        glUseProgram(0);
+        gltDeleteText(fps_rates);
+    }
 }
 
 void AssignmentApp::RenderFrame()
@@ -290,7 +310,7 @@ void AssignmentApp::RenderFrame()
     glClearColor(0.5, 0.5, 0.5, 1.0);
     glEnable(GL_DEPTH_TEST);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glViewport(0, 0, m_WindowWidth, m_WindowHeight);
+    glViewport(0, 0, width, height);
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -300,15 +320,13 @@ void AssignmentApp::RenderFrame()
     m_CurrScene->DrawAll();
 
     if (m_CurrSceneNum == 1) {
-        camera->ImmediateCamera();
+        camera->ImmediateCamera(width, height);
     }
     else {
-        camera->ModernCamera();
+        camera->ModernCamera(width, height);
     }
-
-    if (m_ShowOSD) {
-        RenderOSD();
-    }
+       
+    RenderOSD();
 
 
     int err;
@@ -324,11 +342,11 @@ int AssignmentApp::Init()
         return err;
     }
 
-    /*SDL_ShowCursor(SDL_DISABLE);*/
-
-    /*SDL_SetRelativeMouseMode(SDL_TRUE);*/
-
     gltInit();
+
+    SDL_SetRelativeMouseMode(SDL_TRUE);
+    SDL_GetWindowSize(m_SDLWindow, &width, &height);
+    SDL_WarpMouseInWindow(m_SDLWindow, width, height);
 
     // Instantiate all 6 scenes in an array/data struct
     RTRSceneBase* sceneOne = new RTRSceneOne(m_WindowWidth, m_WindowHeight);
