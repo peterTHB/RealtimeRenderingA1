@@ -53,6 +53,9 @@ private:
     int width = 0;
     int height = 0;
 
+    float xRel = 0;
+    float yRel = 0;
+
     void CheckInput();
     void UpdateState(unsigned int td_milli);
     void RenderFrame();
@@ -81,14 +84,10 @@ void AssignmentApp::CheckInput()
     while (SDL_PollEvent(&event) != 0) {
         switch (event.type) {
 
-        case SDL_MOUSEBUTTONDOWN:
-            /*SDL_WarpMouseInWindow(m_SDLWindow, width, height);*/
-            camera->ToggleMoveMouse();
-            break;
-
-        case SDL_MOUSEBUTTONUP:
-            camera->ToggleMoveMouse();
-            /*SDL_WarpMouseInWindow(m_SDLWindow, width, height);*/
+        case SDL_MOUSEMOTION:
+            xRel = event.motion.xrel;
+            yRel = event.motion.yrel;
+            camera->Mouse_Callback(m_SDLWindow, xRel, yRel);
             break;
 
         case SDL_KEYDOWN:
@@ -204,7 +203,6 @@ void AssignmentApp::CheckInput()
 void AssignmentApp::UpdateState(unsigned int td_milli)
 {
     // This is where we will do all our model updating, physics, etc...
-   camera->Mouse_Callback(m_SDLWindow);
 }
 
 // Render On-Screen Display

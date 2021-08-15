@@ -5,7 +5,7 @@ Camera::Camera() {
     cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
     cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
     cameraWUp = cameraUp;
-    cameraSpeed = 1.0f;
+    cameraSpeed = 2.0f;
     deltaTime = 0.0f;
     lastFrame = 0.0f;
 
@@ -17,13 +17,11 @@ Camera::Camera() {
 
     checkMouse = true;
     pitch = 0.0f;
-    /*yaw = -90.0f;*/
+    //yaw = -90.0f;
     yaw = 90.0f;
     lastX = 0.0f;
     lastY = 0.0f;
     fov = 45.0f;
-
-    moveMouse = false;
 }
 
 void Camera::ImmediateCamera(int width, int height) {
@@ -54,38 +52,34 @@ void Camera::ModernCamera(int width, int height) {
     glLoadMatrixf(glm::value_ptr(view));
 }
 
-void Camera::Mouse_Callback(SDL_Window* window) {
-    if (moveMouse) {
-        SDL_GetWindowSize(window, &width, &height);
+void Camera::Mouse_Callback(SDL_Window* window, float xRel, float yRel) {
+    SDL_GetWindowSize(window, &width, &height);
 
-        int xPos, yPos;
-        SDL_GetMouseState(&xPos, &yPos);
+    int xPos, yPos;
+    SDL_GetMouseState(&xPos, &yPos);
 
-        if (checkMouse) {
-            lastX = xPos;
-            lastY = yPos;
-            checkMouse = false;
-        }
-
-        float xoffset = xPos - lastX;
-        float yoffset = lastY - yPos;
-
-        std::cout << "xoffset: " << xoffset << std::endl;
-        std::cout << "yoffset: " << yoffset << std::endl;
-
+    if (checkMouse) {
         lastX = xPos;
         lastY = yPos;
-
-        float sensitivity = 0.05f;
-        xoffset *= sensitivity;
-        yoffset *= sensitivity;
-
-        yaw += xoffset;
-        pitch += yoffset;
-
-        LockCamera();
-        UpdateVectors();
+        checkMouse = false;
     }
+
+    float xoffset = xPos - lastX;
+    float yoffset = lastY - yPos;
+
+    lastX = xPos;
+    lastY = yPos;
+
+    float sensitivity = 0.05f;
+    xoffset *= sensitivity;
+    yoffset *= sensitivity;
+
+    yaw += (-xRel * sensitivity);
+    pitch += (yRel * sensitivity);
+
+    LockCamera();
+    UpdateVectors();
+
 }
 
 void Camera::UpdateVectors() {
@@ -157,9 +151,4 @@ float* Camera::GetDeltaTime()
 
     float* deltaPtr = &deltaTime;
     return deltaPtr;
-}
-
-void Camera::ToggleMoveMouse()
-{
-    moveMouse = !moveMouse;
 }

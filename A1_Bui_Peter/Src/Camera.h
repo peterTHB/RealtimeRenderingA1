@@ -16,7 +16,7 @@ public:
 	Camera();
     virtual void ImmediateCamera(int width, int height);
     virtual void ModernCamera(int width, int height);
-    virtual void Mouse_Callback(SDL_Window* window);
+    virtual void Mouse_Callback(SDL_Window* window, float xRel, float yRel);
     virtual void UpdateVectors();
     virtual void LockCamera();
 
@@ -27,7 +27,6 @@ public:
     virtual glm::vec3* GetCameraUp();
     virtual const float* GetCameraSpeed();
     virtual float* GetDeltaTime();
-    virtual void ToggleMoveMouse();
 
 protected:
     glm::vec3 cameraPos;
@@ -49,6 +48,4 @@ protected:
     float lastX;
     float lastY;
     float fov;
-
-    bool moveMouse;
 };
