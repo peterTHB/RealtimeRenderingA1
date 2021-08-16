@@ -34,9 +34,10 @@ private:
 
     bool m_ShowOSD = true;
     int m_CurrSceneNum = 1;
-    float m_ResolutionRate = 0;
+    std::string m_Resolution = "";
     float m_RefreshRate = 0;
     float m_FPS = 0;
+    float FPSCheckCounter = 0;
     float m_VertexData = 0;
     int m_NumOfLights = 1;
 
@@ -56,10 +57,16 @@ private:
     float xRel = 0;
     float yRel = 0;
 
+    float totalFrames = 0.0f;
+    int totalFramesAmountsChecked = 0;
+    float totalSecondsPassed = 0.0f;
+
     void CheckInput();
     void UpdateState(unsigned int td_milli);
     void RenderFrame();
     void RenderOSD();
+    void CalculateFrames();
+    void GetRefreshRate();
 };
 
 bool AssignmentApp::Tick(unsigned int td_milli)
@@ -203,6 +210,8 @@ void AssignmentApp::CheckInput()
 void AssignmentApp::UpdateState(unsigned int td_milli)
 {
     // This is where we will do all our model updating, physics, etc...
+    CalculateFrames();
+    GetRefreshRate();
 }
 
 // Render On-Screen Display
@@ -221,7 +230,7 @@ void AssignmentApp::RenderOSD()
     GLTtext* backface_on = gltCreateText();
 
     std::string sceneNumText = "Scene: " + std::to_string(m_CurrSceneNum);
-    std::string displayText = "Resolution: " + std::to_string(m_ResolutionRate) +
+    std::string displayText = "Resolution: " + m_Resolution +
         " Refresh: " + std::to_string(m_RefreshRate);
     std::string fpsText = "FPS: " + std::to_string(m_FPS);
     std::string subdivisionText = "# of Subdivisions: " + std::to_string(
@@ -303,6 +312,46 @@ void AssignmentApp::RenderOSD()
     }
 }
 
+void AssignmentApp::CalculateFrames()
+{
+    static float frameRate = 0.0f;
+    static float lastTime = 0.0f;
+
+    float currentTime = SDL_GetTicks() * 0.001;
+
+    if (currentTime - lastTime > 1.0f) {
+        totalFrames += FPSCheckCounter;
+        lastTime = currentTime;
+        totalSecondsPassed++;
+        FPSCheckCounter = 0;
+    }
+
+    ++FPSCheckCounter;
+    ++totalFramesAmountsChecked;
+
+    if (totalFramesAmountsChecked == 100) {
+        m_FPS = totalFrames / totalSecondsPassed;
+        totalFramesAmountsChecked = 0;
+        totalFrames = 0;
+        totalSecondsPassed = 0;
+    }
+}
+
+void AssignmentApp::GetRefreshRate() {
+    SDL_DisplayMode mode;
+    int displayIndex = SDL_GetWindowDisplayIndex(m_SDLWindow);
+
+    int defaultRefreshRate = 60;
+
+    if (SDL_GetDesktopDisplayMode(displayIndex, &mode) != 0) {
+        m_RefreshRate = defaultRefreshRate;
+    }
+    if (mode.refresh_rate == 0) {
+        m_RefreshRate = defaultRefreshRate;
+    }
+    m_RefreshRate = mode.refresh_rate;
+}
+
 void AssignmentApp::RenderFrame()
 {
     glClearColor(0.5, 0.5, 0.5, 1.0);
@@ -360,6 +409,8 @@ int AssignmentApp::Init()
     ListOfScenes[3] = sceneFour;
     ListOfScenes[4] = sceneFive;
     ListOfScenes[5] = sceneSix;
+
+    m_Resolution = std::to_string(width) + "x" + std::to_string(height);
 
     return 0;
 }
