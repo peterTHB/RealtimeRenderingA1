@@ -19,6 +19,40 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <vector>
+
+GLfloat VertexPointsAndColours[] = {
+    // Front
+    -0.5f, -0.5f, 0.5f,
+    0.5f, -0.5f, 0.5,
+    0.5f, 0.5f, 0.5f,
+    -0.5f, 0.5f, 0.5f,
+    // Back
+    -0.5f, -0.5f, -0.5f,
+    0.5f, -0.5f, -0.5,
+    0.5f, 0.5f, -0.5f,
+    -0.5f, 0.5f, -0.5f,
+    // Left
+    -0.5f, -0.5f, -0.5f,
+    -0.5f, -0.5f, 0.5f,
+    -0.5f, 0.5f, 0.5f,
+    -0.5f, 0.5f, -0.5f,
+    // Right
+    0.5f, -0.5f, 0.5f,
+    0.5f, -0.5f, -0.5f,
+    0.5f, 0.5f, -0.5f,
+    0.5f, 0.5f, 0.5f,
+    // Top
+    -0.5f, 0.5f, 0.5f,
+    0.5f, 0.5f, 0.5f,
+    0.5f, 0.5f, -0.5f,
+    -0.5f, 0.5f, -0.5f,
+    // Bottom
+    -0.5f, -0.5f, -0.5f,
+    0.5f, -0.5f, -0.5f,
+    0.5f, -0.5f, 0.5f,
+    -0.5f, -0.5f, 0.5f
+};
 
 class AssignmentApp : public RTRApp
 {
@@ -43,8 +77,6 @@ private:
 
     RTRSceneBase* ListOfScenes[6] = {};
     RTRSceneBase* m_CurrScene = nullptr;
-
-    /*float* VertexPointsAndColours[100] = {};*/
 
     Camera* camera = new Camera();
 

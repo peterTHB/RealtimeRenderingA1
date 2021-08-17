@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Src\Cube.cpp" />
     <ClCompile Include="Src\Camera.cpp" />
     <ClCompile Include="Src\Geometry.cpp" />
     <ClCompile Include="Include\glad\glad.c" />
@@ -33,6 +34,7 @@
     <ClCompile Include="Src\RTRSceneTwo.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Src\Cube.h" />
     <ClInclude Include="Src\Camera.h" />
     <ClInclude Include="Src\RTRSceneFive.h" />
     <ClInclude Include="Src\RTRSceneFour.h" />

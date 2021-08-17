@@ -26,14 +26,7 @@ void RTRSceneFour::End() {
 void RTRSceneFour::DrawAll() {
 	Geometry* geom = new Geometry();
 
-	glPushMatrix();
-	glTranslatef(-0.5, 0.0, 0.0);
-	geom->DrawTriangle(0.6, 0.9, -0.2, 0.1, 0.5, 1.0);
-	geom->DrawTriangle(-0.6, -0.9, -0.2, 0.1, 1.0, 0.5);
-
-	geom->DrawTriangle(0.4, 0.6, 0.0, 0.0, 0.0, 1.0);
-	geom->DrawTriangle(-0.4, -0.6, 0.0, 0.0, 1.0, 0.0);
-	glPopMatrix();
+	
 
 	glUseProgram(0);
 }

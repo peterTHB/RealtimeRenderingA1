@@ -11,6 +11,8 @@ RTRSceneOne::RTRSceneOne(float windowWidth, float windowHeight)
 	m_Subdivisions = 1;
 	m_Vertices = 1;
 	m_Faces = 1;
+
+	geom = new Geometry();
 }
 
 void RTRSceneOne::Init() {
@@ -24,10 +26,8 @@ void RTRSceneOne::End() {
 }
 
 void RTRSceneOne::DrawAll() {
-	Geometry* geom = new Geometry();
-
-	geom->DrawAllImmediate();
-
+	/*geom->DrawAllImmediate();*/
+	geom->DrawTest();
 	glUseProgram(0);
 }
 

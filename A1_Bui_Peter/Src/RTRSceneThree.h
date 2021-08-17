@@ -34,4 +34,6 @@ protected:
 	int m_Subdivisions;
 	int m_Vertices;
 	int m_Faces;
+
+	Geometry* geom;
 };
