@@ -1,5 +1,44 @@
 #include "Geometry.h"
 
+GLfloat VertexPointsAndColoursCopy[] = {
+	// Points         Colours
+	// Front
+	-0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+	0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+	0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+	-0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 1.0f,
+	// Back
+	-0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+	0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+	0.5f, 0.5f, -0.5f, 0.0f, 0.0f, 1.0f,
+	-0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 1.0f,
+	// Left
+	-0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+	-0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+	-0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+	-0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 1.0f,
+	// Right
+	0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+	0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+	0.5f, 0.5f, -0.5f, 0.0f, 0.0f, 1.0f,
+	0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 1.0f,
+	// Top
+	-0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+	0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+	0.5f, 0.5f, -0.5f, 0.0f, 0.0f, 1.0f,
+	-0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 1.0f,
+	// Bottom
+	-0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+	0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+	0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+	-0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 1.0f
+};
+
+unsigned int facesCopy[] = {
+	0, 1, 2,
+	0, 2, 3
+};
+
 struct Materials
 {
 	glm::vec3 Ambient;
@@ -8,49 +47,32 @@ struct Materials
 	float Shininess;
 };
 
-GLfloat vertex_points[] = {
-	-0.5f, -0.5f, 0.0f,
-	0.5f, -0.5f, 0.0f,
-	0.5f,  0.5f, 0.0f,
-	-0.5f,  0.5f, 0.0f
-};
-
-GLfloat vertex_colours[] = {
-	1.0f, 0.0f, 0.0f,
-	0.0f, 1.0f, 0.0f,
-	0.0f, 0.0f, 1.0f,
-	1.0f, 0.0f, 1.0f
-};
-
-unsigned int faces[] = {
-	0, 1, 2,
-	0, 2, 3
-};
-
 Geometry::Geometry() {
-	Cube c = Cube(0, 0, 0, 0.5);
-	Cubes.push_back(c);
+	/*Cube c = Cube(0, 0, 0, 0.5);
+	Cubes.push_back(c);*/
 }
 
 void Geometry::DrawAllImmediate() {
-	
+
 }
 
 void Geometry::DrawAllModern() {
 
 }
 
-void Geometry::DrawTest() {
-	glPushMatrix();
+void Geometry::DrawCubeWithPoints(GLfloat vertexAndColours[], unsigned int faces[]) {
 	glBegin(GL_TRIANGLES);
-	for (int i = 0; i < 6; i++) {
-		glColor3f(vertex_colours[faces[i] + (faces[i] * 2)], vertex_colours[faces[i] + (faces[i] * 2) + 1], 
-			vertex_colours[faces[i] + (faces[i] * 2) + 2]);
-		glVertex3f(vertex_points[faces[i] +(faces[i] * 2)], vertex_points[faces[i] + (faces[i] * 2) + 1], 
-			vertex_points[faces[i] + (faces[i] * 2) + 2]);
+	for (int j = 0; j < 6; j++) {
+		for (int i = 0; i < 6; i++) {
+			glColor3f(vertexAndColours[(faces[i] + (faces[i] * 5) + 3) + (j * 24)],
+				vertexAndColours[(faces[i] + (faces[i] * 5) + 4) + (j * 24)],
+				vertexAndColours[(faces[i] + (faces[i] * 5) + 5) + (j * 24)]);
+			glVertex3f(vertexAndColours[(faces[i] + (faces[i] * 5)) + (j * 24)],
+				vertexAndColours[(faces[i] + (faces[i] * 5) + 1) + (j * 24)],
+				vertexAndColours[(faces[i] + (faces[i] * 5) + 2) + (j * 24)]);
+		}
 	}
 	glEnd();
-	glPopMatrix();
 	glUseProgram(0);
 }
 

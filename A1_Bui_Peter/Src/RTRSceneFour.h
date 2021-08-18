@@ -3,7 +3,7 @@
 
 class RTRSceneFour : public RTRSceneBase {
 public:
-	RTRSceneFour(float windowWidth, float windowHeight);
+	RTRSceneFour(float windowWidth, float windowHeight, GLfloat vertexAndColours[], unsigned int faces[]);
 	virtual void Init();
 	virtual void End();
 	virtual void DrawAll();
@@ -36,4 +36,6 @@ protected:
 	int m_Faces;
 
 	Geometry* geom;
+	unsigned int facesCopy[6];
+	GLfloat verAndColCopy[144];
 };

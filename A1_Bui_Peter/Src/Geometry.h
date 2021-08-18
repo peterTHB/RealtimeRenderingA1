@@ -15,7 +15,7 @@ public:
 	Geometry();
 	virtual void DrawAllImmediate();
 	virtual void DrawAllModern();
-	virtual void DrawTest();
+	virtual void DrawCubeWithPoints(GLfloat vertexAndColours[], unsigned int faces[]);
 	virtual void DrawCube();
 	virtual glm::vec3 CalculateNormals(glm::vec3 point0, glm::vec3 point1, glm::vec3 point2);
 

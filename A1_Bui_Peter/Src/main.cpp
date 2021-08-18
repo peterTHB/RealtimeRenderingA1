@@ -22,36 +22,42 @@
 #include <vector>
 
 GLfloat VertexPointsAndColours[] = {
+    // Points         Colours
     // Front
-    -0.5f, -0.5f, 0.5f,
-    0.5f, -0.5f, 0.5,
-    0.5f, 0.5f, 0.5f,
-    -0.5f, 0.5f, 0.5f,
+    -0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+    0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+    0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+    -0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 1.0f,
     // Back
-    -0.5f, -0.5f, -0.5f,
-    0.5f, -0.5f, -0.5,
-    0.5f, 0.5f, -0.5f,
-    -0.5f, 0.5f, -0.5f,
+    -0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+    0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+    0.5f, 0.5f, -0.5f, 0.0f, 0.0f, 1.0f,
+    -0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 1.0f,
     // Left
-    -0.5f, -0.5f, -0.5f,
-    -0.5f, -0.5f, 0.5f,
-    -0.5f, 0.5f, 0.5f,
-    -0.5f, 0.5f, -0.5f,
+    -0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+    -0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+    -0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+    -0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 1.0f,
     // Right
-    0.5f, -0.5f, 0.5f,
-    0.5f, -0.5f, -0.5f,
-    0.5f, 0.5f, -0.5f,
-    0.5f, 0.5f, 0.5f,
+    0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+    0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+    0.5f, 0.5f, -0.5f, 0.0f, 0.0f, 1.0f,
+    0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 1.0f,
     // Top
-    -0.5f, 0.5f, 0.5f,
-    0.5f, 0.5f, 0.5f,
-    0.5f, 0.5f, -0.5f,
-    -0.5f, 0.5f, -0.5f,
+    -0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+    0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+    0.5f, 0.5f, -0.5f, 0.0f, 0.0f, 1.0f,
+    -0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 1.0f,
     // Bottom
-    -0.5f, -0.5f, -0.5f,
-    0.5f, -0.5f, -0.5f,
-    0.5f, -0.5f, 0.5f,
-    -0.5f, -0.5f, 0.5f
+    -0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+    0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+    0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+    -0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 1.0f
+};
+
+unsigned int faces[] = {
+    0, 1, 2,
+    0, 2, 3
 };
 
 class AssignmentApp : public RTRApp
@@ -427,13 +433,13 @@ int AssignmentApp::Init()
     SDL_GetWindowSize(m_SDLWindow, &width, &height);
     SDL_WarpMouseInWindow(m_SDLWindow, width, height);
 
-    // Instantiate all 6 scenes in an array/data struct
-    RTRSceneBase* sceneOne = new RTRSceneOne(m_WindowWidth, m_WindowHeight);
-    RTRSceneBase* sceneTwo = new RTRSceneTwo(m_WindowWidth, m_WindowHeight);
-    RTRSceneBase* sceneThree = new RTRSceneThree(m_WindowWidth, m_WindowHeight);
-    RTRSceneBase* sceneFour = new RTRSceneFour(m_WindowWidth, m_WindowHeight);
-    RTRSceneBase* sceneFive = new RTRSceneFive(m_WindowWidth, m_WindowHeight);
-    RTRSceneBase* sceneSix = new RTRSceneSix(m_WindowWidth, m_WindowHeight);
+    // Instantiate all 6 scenes and store in an array/data struct
+    RTRSceneBase* sceneOne = new RTRSceneOne(m_WindowWidth, m_WindowHeight, VertexPointsAndColours, faces);
+    RTRSceneBase* sceneTwo = new RTRSceneTwo(m_WindowWidth, m_WindowHeight, VertexPointsAndColours, faces);
+    RTRSceneBase* sceneThree = new RTRSceneThree(m_WindowWidth, m_WindowHeight, VertexPointsAndColours, faces);
+    RTRSceneBase* sceneFour = new RTRSceneFour(m_WindowWidth, m_WindowHeight, VertexPointsAndColours, faces);
+    RTRSceneBase* sceneFive = new RTRSceneFive(m_WindowWidth, m_WindowHeight, VertexPointsAndColours, faces);
+    RTRSceneBase* sceneSix = new RTRSceneSix(m_WindowWidth, m_WindowHeight, VertexPointsAndColours, faces);
 
     ListOfScenes[0] = sceneOne;
     ListOfScenes[1] = sceneTwo;

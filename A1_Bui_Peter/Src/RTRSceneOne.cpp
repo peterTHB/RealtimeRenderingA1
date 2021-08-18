@@ -1,7 +1,7 @@
 #include "RTRSceneOne.h"
 #include "Geometry.h"
 
-RTRSceneOne::RTRSceneOne(float windowWidth, float windowHeight)
+RTRSceneOne::RTRSceneOne(float windowWidth, float windowHeight, GLfloat vertexAndColours[], unsigned int faces[])
 {
 	m_WindowWidth = windowWidth;
 	m_WindowHeight = windowHeight;
@@ -13,6 +13,13 @@ RTRSceneOne::RTRSceneOne(float windowWidth, float windowHeight)
 	m_Faces = 1;
 
 	geom = new Geometry();
+
+	for (int i = 0; i < sizeof(verAndColCopy) / sizeof(verAndColCopy[0]); i++) {
+		verAndColCopy[i] = vertexAndColours[i];
+	}
+	for (int j = 0; j < sizeof(facesCopy) / sizeof(facesCopy[0]); j++) {
+		facesCopy[j] = faces[j];
+	}
 }
 
 void RTRSceneOne::Init() {
@@ -26,9 +33,8 @@ void RTRSceneOne::End() {
 }
 
 void RTRSceneOne::DrawAll() {
+	geom->DrawCubeWithPoints(verAndColCopy, facesCopy);
 	/*geom->DrawAllImmediate();*/
-	geom->DrawTest();
-	glUseProgram(0);
 }
 
 bool* RTRSceneOne::GetDepthBuffer()

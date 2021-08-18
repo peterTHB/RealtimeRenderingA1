@@ -1,7 +1,7 @@
 #include "RTRSceneThree.h"
 #include "Geometry.h"
 
-RTRSceneThree::RTRSceneThree(float windowWidth, float windowHeight)
+RTRSceneThree::RTRSceneThree(float windowWidth, float windowHeight, GLfloat vertexAndColours[], unsigned int faces[])
 {
 	m_WindowWidth = windowWidth;
 	m_WindowHeight = windowHeight;
@@ -11,6 +11,15 @@ RTRSceneThree::RTRSceneThree(float windowWidth, float windowHeight)
 	m_Subdivisions = 1;
 	m_Vertices = 1;
 	m_Faces = 1;
+
+	geom = new Geometry();
+	
+	for (int i = 0; i < sizeof(verAndColCopy) / sizeof(verAndColCopy[0]); i++) {
+		verAndColCopy[i] = vertexAndColours[i];
+	}
+	for (int j = 0; j < sizeof(facesCopy) / sizeof(facesCopy[0]); j++) {
+		facesCopy[j] = faces[j];
+	}
 }
 
 void RTRSceneThree::Init() {
@@ -24,9 +33,7 @@ void RTRSceneThree::End() {
 }
 
 void RTRSceneThree::DrawAll() {
-	Geometry* geom = new Geometry();
-
-	glUseProgram(0);
+	geom->DrawCubeWithPoints(verAndColCopy, facesCopy);
 }
 
 bool* RTRSceneThree::GetDepthBuffer()
