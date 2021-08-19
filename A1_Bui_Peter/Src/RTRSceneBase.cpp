@@ -1,5 +1,4 @@
 #include "RTRSceneBase.h"
-#include "Geometry.h"
 
 RTRSceneBase::RTRSceneBase() {
 	m_WindowWidth = 0;
@@ -10,6 +9,9 @@ RTRSceneBase::RTRSceneBase() {
 	m_Subdivisions = 1;
 	m_Vertices = 1;
 	m_Faces = 1;
+
+	geom = nullptr;
+	cube = nullptr;
 }
 
 RTRSceneBase::RTRSceneBase(float windowWidth, float windowHeight) {
@@ -21,22 +23,30 @@ RTRSceneBase::RTRSceneBase(float windowWidth, float windowHeight) {
 	m_Subdivisions = 1;
 	m_Vertices = 1;
 	m_Faces = 1;
+
+	geom = nullptr;
+	cube = nullptr;
 }
 
 void RTRSceneBase::Init() {
-
+	glMatrixMode(GL_PROJECTION);
+	glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
+	glMatrixMode(GL_MODELVIEW);
 }
 
 void RTRSceneBase::End() {
-
+	geom = nullptr;
+	cube = nullptr;
+	facesCopy.clear();
+	listOfVertexes.clear();
 }
 
 void RTRSceneBase::DrawAll() {
-	Geometry* geom = new Geometry();
 
-	geom->DrawAllImmediate();
+}
 
-	glUseProgram(0);
+void RTRSceneBase::DrawCubes()
+{
 }
 
 bool* RTRSceneBase::GetDepthBuffer()
@@ -98,24 +108,4 @@ void RTRSceneBase::IncrementSubdivision()
 void RTRSceneBase::DecrementSubdivision()
 {
 	m_Subdivisions -= 1;
-}
-
-void RTRSceneBase::IncrementVertices()
-{
-	m_Vertices += 1;
-}
-
-void RTRSceneBase::DecrementVertices()
-{
-	m_Vertices -= 1;
-}
-
-void RTRSceneBase::IncrementFaces()
-{
-	m_Faces += 1;
-}
-
-void RTRSceneBase::DecrementFaces()
-{
-	m_Faces -= 1;
 }

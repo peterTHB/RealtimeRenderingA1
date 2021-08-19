@@ -55,7 +55,7 @@ std::vector<GLfloat> VertexPointsAndColours = {
     -0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 1.0f
 };
 
-unsigned int faces[] = {
+std::vector<int> faces = {
     0, 1, 2,
     0, 2, 3
 };
@@ -184,9 +184,11 @@ void AssignmentApp::CheckInput()
 
                 // Increment/Decrement Subdivision
             case SDLK_EQUALS:
+                ListOfScenes[m_CurrSceneNum - 1]->DrawCubes();
                 ListOfScenes[m_CurrSceneNum - 1]->IncrementSubdivision();
                 break;
             case SDLK_KP_PLUS:
+                ListOfScenes[m_CurrSceneNum - 1]->DrawCubes();
                 ListOfScenes[m_CurrSceneNum - 1]->IncrementSubdivision();
                 break;
 
@@ -458,6 +460,13 @@ void AssignmentApp::Done()
     gltTerminate();
 
     RTRApp::Done();
+
+    ListOfScenes[0]->End();
+    ListOfScenes[1]->End();
+    ListOfScenes[2]->End();
+    ListOfScenes[3]->End();
+    ListOfScenes[4]->End();
+    ListOfScenes[5]->End();
 
     ListOfScenes[0] = nullptr;
     ListOfScenes[1] = nullptr;

@@ -6,6 +6,7 @@
 #include <stb/stb_image.h>
 #include <vector>
 #include "Geometry.h"
+#include "Cube.h"
 
 class RTRSceneBase {
 public:
@@ -14,6 +15,7 @@ public:
 	virtual void Init();
 	virtual void End();
 	virtual void DrawAll();
+	virtual void DrawCubes();
 	
 	virtual bool* GetDepthBuffer();
 	virtual bool* GetBackface();
@@ -27,10 +29,6 @@ public:
 	virtual int* GetFaces();
 	virtual void IncrementSubdivision();
 	virtual void DecrementSubdivision();
-	virtual void IncrementVertices();
-	virtual void DecrementVertices();
-	virtual void IncrementFaces();
-	virtual void DecrementFaces();
 
 protected:
 	float m_WindowHeight;
@@ -41,4 +39,10 @@ protected:
 	int m_Subdivisions;
 	int m_Vertices;
 	int m_Faces;
+
+	Geometry* geom;
+	Cube* cube;
+	std::vector<Cube> Cubes;
+	std::vector<int> facesCopy;
+	std::vector<std::vector<GLfloat>> listOfVertexes;
 };

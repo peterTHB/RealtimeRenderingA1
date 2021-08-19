@@ -1,7 +1,6 @@
 #include "RTRSceneOne.h"
-#include "Geometry.h"
 
-RTRSceneOne::RTRSceneOne(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndColours, unsigned int faces[])
+RTRSceneOne::RTRSceneOne(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndColours, std::vector<int> faces)
 {
 	m_WindowWidth = windowWidth;
 	m_WindowHeight = windowHeight;
@@ -12,12 +11,14 @@ RTRSceneOne::RTRSceneOne(float windowWidth, float windowHeight, std::vector<GLfl
 	m_Vertices = 1;
 	m_Faces = 1;
 
-	geom = new Geometry();
+	geom = new Geometry;
+	cube = new Cube(0.0f, 0.0f, 0.0f, 1.0f);
+	Cubes.push_back(*cube);
 
-	verAndColCopy = vertexAndColours;
-	for (int j = 0; j < sizeof(facesCopy) / sizeof(facesCopy[0]); j++) {
-		facesCopy[j] = faces[j];
-	}
+	facesCopy = faces;
+	std::vector<std::vector<GLfloat>> placeholder;
+	placeholder.push_back(vertexAndColours);
+	listOfVertexes.push_back(placeholder);
 }
 
 void RTRSceneOne::Init() {
@@ -27,12 +28,62 @@ void RTRSceneOne::Init() {
 }
 
 void RTRSceneOne::End() {
+	geom = nullptr;
+	cube = nullptr;
+	facesCopy.clear();
 
+	for (auto tier1 : listOfVertexes) {
+		for (auto tier2 : tier1) {
+			tier2.clear();
+		}
+	}
+	listOfVertexes.clear();
 }
 
 void RTRSceneOne::DrawAll() {
-	geom->DrawCubeWithPoints(verAndColCopy, facesCopy);
-	/*geom->DrawAllImmediate();*/
+	int currSubdivision = m_Subdivisions - 1;
+	/*geom->DrawCubeWithPoints(listOfVertexes.at(currSubdivision), facesCopy);*/
+	geom->DrawCubeWithPoints(listOfVertexes.at(0), facesCopy);
+}
+
+void RTRSceneOne::DrawCubes()
+{
+	int currCalSubdivision = m_Subdivisions - 1;
+
+	if (listOfVertexes.size() == m_Subdivisions) {
+		std::vector<Cube> newCube;
+
+		for (Cube currCube : Cubes) {
+			std::vector<Cube> createdCube = currCube.CalculateCube();
+			newCube.insert(newCube.end(), createdCube.begin(), createdCube.end());
+		}
+
+		this->Cubes = newCube;
+
+		std::vector<std::vector<GLfloat>> newVertexPositions;
+		int currVertexList = 0;
+		int uptickPerTwenty = 0;
+
+		for (auto& currCube : Cubes) {
+			std::vector<GLfloat> currVector = listOfVertexes.at(currCalSubdivision).at(currVertexList);
+
+			std::vector<GLfloat> newPositions = cube->CalculateNewPositions(currCube,
+				currVector, facesCopy);
+			newVertexPositions.push_back(newPositions);
+
+			uptickPerTwenty++;
+
+			if (currVertexList < listOfVertexes.at(currCalSubdivision).size() - 1 &&
+				uptickPerTwenty == 20) {
+				currVertexList++;
+				uptickPerTwenty = 0;
+			}
+		}
+
+		std::cout << newVertexPositions.size() << std::endl;
+
+		listOfVertexes.push_back(newVertexPositions);
+	}
 }
 
 bool* RTRSceneOne::GetDepthBuffer()
@@ -94,25 +145,5 @@ void RTRSceneOne::IncrementSubdivision()
 void RTRSceneOne::DecrementSubdivision()
 {
 	m_Subdivisions -= 1;
-}
-
-void RTRSceneOne::IncrementVertices()
-{
-	m_Vertices += 1;
-}
-
-void RTRSceneOne::DecrementVertices()
-{
-	m_Vertices -= 1;
-}
-
-void RTRSceneOne::IncrementFaces()
-{
-	m_Faces += 1;
-}
-
-void RTRSceneOne::DecrementFaces()
-{
-	m_Faces -= 1;
 }
 

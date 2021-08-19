@@ -9,8 +9,7 @@ struct Materials
 };
 
 Geometry::Geometry() {
-	/*Cube c = Cube(0, 0, 0, 1.0);
-	Cubes.push_back(c);*/
+
 }
 
 void Geometry::DrawAllImmediate() {
@@ -21,32 +20,30 @@ void Geometry::DrawAllModern() {
 
 }
 
-void Geometry::DrawCubeWithPoints(std::vector<GLfloat> vertexAndColours, unsigned int faces[]) {
+void Geometry::DrawCubeWithPoints(std::vector<std::vector<GLfloat>> vertexAndColoursHolder, std::vector<int> faces) {
 	glBegin(GL_TRIANGLES);
-	for (int j = 0; j < 6; j++) {
-		for (int i = 0; i < 6; i++) {
-			glColor3f(vertexAndColours.at((faces[i] + (faces[i] * 5) + 3) + (j * 24)),
-				vertexAndColours.at((faces[i] + (faces[i] * 5) + 4) + (j * 24)),
-				vertexAndColours.at((faces[i] + (faces[i] * 5) + 5) + (j * 24)));
-			glVertex3f(vertexAndColours.at((faces[i] + (faces[i] * 5)) + (j * 24)),
-				vertexAndColours.at((faces[i] + (faces[i] * 5) + 1) + (j * 24)),
-				vertexAndColours.at((faces[i] + (faces[i] * 5) + 2) + (j * 24)));
+	for (auto& VACVertex : vertexAndColoursHolder) {
+		for (int j = 0; j < VACVertex.size() / 24; j++) {
+			for (int i = 0; i < faces.size(); i++) {
+				int posColourZero = (faces.at(i) + (faces.at(i) * 5) + 3) + (j * 24);
+				int posColourOne = (faces.at(i) + (faces.at(i) * 5) + 4) + (j * 24);
+				int posColourTwo = (faces.at(i) + (faces.at(i) * 5) + 5) + (j * 24);
+
+				int posVertexZero = (faces.at(i) + (faces.at(i) * 5)) + (j * 24);
+				int posVertexOne = (faces.at(i) + (faces.at(i) * 5) + 1) + (j * 24);
+				int posVertexTwo = (faces.at(i) + (faces.at(i) * 5) + 2) + (j * 24);
+
+				glColor3f(VACVertex.at(posColourZero),
+					VACVertex.at(posColourOne),
+					VACVertex.at(posColourTwo));
+				glVertex3f(VACVertex.at(posVertexZero),
+					VACVertex.at(posVertexOne),
+					VACVertex.at(posVertexTwo));
+			}
 		}
 	}
 	glEnd();
 	glUseProgram(0);
-}
-
-void Geometry::DrawCube()
-{
-	std::vector<Cube> newCube;
-
-	for (Cube cube : Cubes) {
-		std::vector<Cube> createdCube = cube.DrawCube();
-		newCube.insert(newCube.end(), createdCube.begin(), createdCube.end());
-	}
-
-	this->Cubes = newCube;
 }
 
 glm::vec3 Geometry::CalculateNormals(glm::vec3 point0, glm::vec3 point1, glm::vec3 point2)

@@ -1,7 +1,6 @@
 #include "RTRSceneTwo.h"
-#include "Geometry.h"
 
-RTRSceneTwo::RTRSceneTwo(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndColours, unsigned int faces[])
+RTRSceneTwo::RTRSceneTwo(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndColours, std::vector<int> faces)
 {
 	m_WindowWidth = windowWidth;
 	m_WindowHeight = windowHeight;
@@ -12,12 +11,14 @@ RTRSceneTwo::RTRSceneTwo(float windowWidth, float windowHeight, std::vector<GLfl
 	m_Vertices = 1;
 	m_Faces = 1;
 
-	geom = new Geometry();
-	
-	verAndColCopy = vertexAndColours;
-	for (int j = 0; j < sizeof(facesCopy) / sizeof(facesCopy[0]); j++) {
-		facesCopy[j] = faces[j];
-	}
+	geom = new Geometry;
+	cube = new Cube(0.0f, 0.0f, 0.0f, 1.0f);
+	Cubes.push_back(*cube);
+
+	facesCopy = faces;
+	std::vector<std::vector<GLfloat>> placeholder;
+	placeholder.push_back(vertexAndColours);
+	listOfVertexes.push_back(placeholder);
 }
 
 void RTRSceneTwo::Init() {
@@ -27,11 +28,24 @@ void RTRSceneTwo::Init() {
 }
 
 void RTRSceneTwo::End() {
-
+	geom = nullptr;
+	cube = nullptr;
+	facesCopy.clear();
+	
+	for (auto tier1 : listOfVertexes) {
+		for (auto tier2 : tier1) {
+			tier2.clear();
+		}
+	}
+	listOfVertexes.clear();
 }
 
 void RTRSceneTwo::DrawAll() {
-	geom->DrawCubeWithPoints(verAndColCopy, facesCopy);
+	
+}
+
+void RTRSceneTwo::DrawCubes()
+{
 }
 
 bool* RTRSceneTwo::GetDepthBuffer()
@@ -93,24 +107,4 @@ void RTRSceneTwo::IncrementSubdivision()
 void RTRSceneTwo::DecrementSubdivision()
 {
 	m_Subdivisions -= 1;
-}
-
-void RTRSceneTwo::IncrementVertices()
-{
-	m_Vertices += 1;
-}
-
-void RTRSceneTwo::DecrementVertices()
-{
-	m_Vertices -= 1;
-}
-
-void RTRSceneTwo::IncrementFaces()
-{
-	m_Faces += 1;
-}
-
-void RTRSceneTwo::DecrementFaces()
-{
-	m_Faces -= 1;
 }

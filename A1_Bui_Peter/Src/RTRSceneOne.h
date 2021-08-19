@@ -3,10 +3,11 @@
 
 class RTRSceneOne : public RTRSceneBase {
 public:
-	RTRSceneOne(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndColours, unsigned int faces[]);
+	RTRSceneOne(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndColours, std::vector<int> faces);
 	virtual void Init();
 	virtual void End();
 	virtual void DrawAll();
+	virtual void DrawCubes();
 
 	virtual bool* GetDepthBuffer();
 	virtual bool* GetBackface();
@@ -20,10 +21,6 @@ public:
 	virtual int* GetFaces();
 	virtual void IncrementSubdivision();
 	virtual void DecrementSubdivision();
-	virtual void IncrementVertices();
-	virtual void DecrementVertices();
-	virtual void IncrementFaces();
-	virtual void DecrementFaces();
 
 protected:
 	float m_WindowHeight;
@@ -36,6 +33,8 @@ protected:
 	int m_Faces;
 
 	Geometry* geom;
-	unsigned int facesCopy[6];
-	std::vector<GLfloat> verAndColCopy;
+	Cube* cube;
+	std::vector<Cube> Cubes;
+	std::vector<int> facesCopy;
+	std::vector<std::vector<std::vector<GLfloat>>> listOfVertexes;
 };

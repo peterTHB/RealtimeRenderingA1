@@ -1,0 +1,5 @@
+﻿  Cube.cpp
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\Cube.cpp(40,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\Cube.cpp(41,21): warning C4018: '<': signed/unsigned mismatch
+  RTRApp.vcxproj -> C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Build\Debug - x86\A1.exe
+  0 File(s) copied
