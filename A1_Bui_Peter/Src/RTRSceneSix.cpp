@@ -1,7 +1,7 @@
 #include "RTRSceneSix.h"
 #include "Geometry.h"
 
-RTRSceneSix::RTRSceneSix(float windowWidth, float windowHeight, GLfloat vertexAndColours[], unsigned int faces[])
+RTRSceneSix::RTRSceneSix(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndColours, unsigned int faces[])
 {
 	m_WindowWidth = windowWidth;
 	m_WindowHeight = windowHeight;
@@ -13,10 +13,8 @@ RTRSceneSix::RTRSceneSix(float windowWidth, float windowHeight, GLfloat vertexAn
 	m_Faces = 1;
 
 	geom = new Geometry();
-	
-	for (int i = 0; i < sizeof(verAndColCopy) / sizeof(verAndColCopy[0]); i++) {
-		verAndColCopy[i] = vertexAndColours[i];
-	}
+
+	verAndColCopy = vertexAndColours;
 	for (int j = 0; j < sizeof(facesCopy) / sizeof(facesCopy[0]); j++) {
 		facesCopy[j] = faces[j];
 	}

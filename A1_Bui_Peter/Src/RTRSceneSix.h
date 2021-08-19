@@ -3,7 +3,7 @@
 
 class RTRSceneSix : public RTRSceneBase {
 public:
-	RTRSceneSix(float windowWidth, float windowHeight, GLfloat vertexAndColours[], unsigned int faces[]);
+	RTRSceneSix(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndColours, unsigned int faces[]);
 	virtual void Init();
 	virtual void End();
 	virtual void DrawAll();
@@ -37,5 +37,5 @@ protected:
 
 	Geometry* geom;
 	unsigned int facesCopy[6];
-	GLfloat verAndColCopy[144];
+	std::vector<GLfloat> verAndColCopy;
 };

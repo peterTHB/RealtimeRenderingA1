@@ -1,7 +1,7 @@
 #include "RTRSceneOne.h"
 #include "Geometry.h"
 
-RTRSceneOne::RTRSceneOne(float windowWidth, float windowHeight, GLfloat vertexAndColours[], unsigned int faces[])
+RTRSceneOne::RTRSceneOne(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndColours, unsigned int faces[])
 {
 	m_WindowWidth = windowWidth;
 	m_WindowHeight = windowHeight;
@@ -14,9 +14,7 @@ RTRSceneOne::RTRSceneOne(float windowWidth, float windowHeight, GLfloat vertexAn
 
 	geom = new Geometry();
 
-	for (int i = 0; i < sizeof(verAndColCopy) / sizeof(verAndColCopy[0]); i++) {
-		verAndColCopy[i] = vertexAndColours[i];
-	}
+	verAndColCopy = vertexAndColours;
 	for (int j = 0; j < sizeof(facesCopy) / sizeof(facesCopy[0]); j++) {
 		facesCopy[j] = faces[j];
 	}

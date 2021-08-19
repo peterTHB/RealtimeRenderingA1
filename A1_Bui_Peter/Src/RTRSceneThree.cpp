@@ -1,7 +1,7 @@
 #include "RTRSceneThree.h"
 #include "Geometry.h"
 
-RTRSceneThree::RTRSceneThree(float windowWidth, float windowHeight, GLfloat vertexAndColours[], unsigned int faces[])
+RTRSceneThree::RTRSceneThree(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndColours, unsigned int faces[])
 {
 	m_WindowWidth = windowWidth;
 	m_WindowHeight = windowHeight;
@@ -14,9 +14,7 @@ RTRSceneThree::RTRSceneThree(float windowWidth, float windowHeight, GLfloat vert
 
 	geom = new Geometry();
 	
-	for (int i = 0; i < sizeof(verAndColCopy) / sizeof(verAndColCopy[0]); i++) {
-		verAndColCopy[i] = vertexAndColours[i];
-	}
+	verAndColCopy = vertexAndColours;
 	for (int j = 0; j < sizeof(facesCopy) / sizeof(facesCopy[0]); j++) {
 		facesCopy[j] = faces[j];
 	}

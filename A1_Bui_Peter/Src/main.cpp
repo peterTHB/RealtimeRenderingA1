@@ -21,7 +21,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
 
-GLfloat VertexPointsAndColours[] = {
+std::vector<GLfloat> VertexPointsAndColours = {
     // Points         Colours
     // Front
     -0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
