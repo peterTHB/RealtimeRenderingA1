@@ -13,6 +13,8 @@
 #include "RTRSceneFive.h"
 #include "RTRSceneSix.h"
 #include "Camera.h"
+#include "Cube.h"
+
 
 #define GLT_IMPLEMENTATION
 #include <gltext/gltext.h>
@@ -270,7 +272,7 @@ void AssignmentApp::RenderOSD()
     GLTtext* backface_on = gltCreateText();
 
     std::string sceneNumText = "Scene: " + std::to_string(m_CurrSceneNum);
-    std::string displayText = "Resolution: " + m_Resolution +
+    std::string displayText = "Resolution: " + m_Resolution + "\n" +
         " Refresh: " + std::to_string(m_RefreshRate);
     std::string fpsText = "FPS: " + std::to_string(m_FPS);
     std::string subdivisionText = "# of Subdivisions: " + std::to_string(
@@ -319,16 +321,16 @@ void AssignmentApp::RenderOSD()
     if (m_ShowOSD) {
         gltBeginDraw();
         gltColor(0.0f, 1.0f, 0.0f, 1.0f);
-        gltDrawText2D(scene_num, 10, 10, 2.0);
-        gltDrawText2D(display_rates, 10, 60, 2.0);
-        gltDrawText2D(fps_rates, 10, 110, 2.0);
-        gltDrawText2D(subdivision_num, 10, 160, 2.0);
-        gltDrawText2D(vertices_num, 10, 210, 2.0);
-        gltDrawText2D(faces_num, 10, 260, 2.0);
-        gltDrawText2D(data_num, 10, 310, 2.0);
-        gltDrawText2D(lights_on, 10, 360, 2.0);
-        gltDrawText2D(depth_on, 10, 410, 2.0);
-        gltDrawText2D(backface_on, 10, 460, 2.0);
+        gltDrawText2D(scene_num, 10, 10, 1.5);
+        gltDrawText2D(display_rates, 10, 50, 1.5);
+        gltDrawText2D(fps_rates, 10, 120, 1.5);
+        gltDrawText2D(subdivision_num, 10, 160, 1.5);
+        gltDrawText2D(vertices_num, 10, 200, 1.5);
+        gltDrawText2D(faces_num, 10, 240, 1.5);
+        gltDrawText2D(data_num, 10, 280, 1.5);
+        gltDrawText2D(lights_on, 10, 320, 1.5);
+        gltDrawText2D(depth_on, 10, 360, 1.5);
+        gltDrawText2D(backface_on, 10, 400, 1.5);
         gltEndDraw();
         glUseProgram(0);
 

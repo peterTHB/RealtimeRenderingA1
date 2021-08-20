@@ -16,6 +16,4 @@ public:
 	virtual void DrawAllModern();
 	virtual void DrawCubeWithPoints(std::vector<std::vector<GLfloat>> vertexAndColoursHolder, std::vector<int> faces);
 	virtual glm::vec3 CalculateNormals(glm::vec3 point0, glm::vec3 point1, glm::vec3 point2);
-
-private:
 };

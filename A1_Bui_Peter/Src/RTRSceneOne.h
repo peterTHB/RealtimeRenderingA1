@@ -36,5 +36,6 @@ protected:
 	Cube* cube;
 	std::vector<Cube> Cubes;
 	std::vector<int> facesCopy;
+	std::vector<std::vector<GLfloat>> listOfMidVertexes;
 	std::vector<std::vector<std::vector<GLfloat>>> listOfVertexes;
 };

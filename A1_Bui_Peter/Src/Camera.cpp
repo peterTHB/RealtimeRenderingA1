@@ -1,7 +1,7 @@
 #include "Camera.h"
 
 Camera::Camera() {
-    cameraPos = glm::vec3(0.0f, 0.0f, -3.0f);
+    cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
     cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
     cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
     cameraWUp = cameraUp;
@@ -17,7 +17,7 @@ Camera::Camera() {
 
     checkMouse = true;
     pitch = 0.0f;
-    yaw = -90.0f;
+    yaw = 90.0f;
     lastX = 0.0f;
     lastY = 0.0f;
     fov = 45.0f;

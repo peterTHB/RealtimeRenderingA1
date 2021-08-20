@@ -17,7 +17,12 @@ std::vector<Cube> Cube::CalculateCube()
 				int sum = abs(i) + abs(j) + abs(k);
 				float radius = dimensions / 3;
 				if (sum > 1) {
-					Cube newCube(pos.x + i * radius, pos.y + j * radius, pos.z + k * radius, radius);
+					Cube newCube(this->pos.x + (i * radius), this->pos.y + (j * radius), this->pos.z + (k * radius), radius);
+
+					/*if (cubeVector.size() < 1) {
+						cubeVector.push_back(newCube);
+					}*/
+
 					cubeVector.push_back(newCube);
 				}
 			}
@@ -27,25 +32,34 @@ std::vector<Cube> Cube::CalculateCube()
 	return cubeVector;
 }
 
-std::vector<GLfloat> Cube::CalculateNewPositions(Cube currCube, std::vector<GLfloat> VerAndColPoints, 
-	std::vector<int> Faces) {
+void Cube::CalculateNewRadius() {
+	float radius = dimensions / 3;
+
+	this->dimensions = radius;
+}
+
+std::vector<GLfloat> Cube::CalculateNewPositions(Cube currCube, std::vector<GLfloat> VerAndColPoints) {
 	float currCubePosX = *currCube.GetPosX();
 	float currCubePosY = *currCube.GetPosY();
 	float currCubePosZ = *currCube.GetPosZ();
 
-	for (int j = 0; j < VerAndColPoints.size() / 24; j++) {
-		for (int i = 0; i < Faces.size(); i++) {
-			int posZero = (Faces.at(i) + (Faces.at(i) * 5)) + (j * 24);
-			int posOne = (Faces.at(i) + (Faces.at(i) * 5) + 1) + (j * 24);
-			int posTwo = (Faces.at(i) + (Faces.at(i) * 5) + 2) + (j * 24);
+	int totalFaceQuadrants = VerAndColPoints.size() / 24;
 
-			float newPosX = (VerAndColPoints.at(posZero) + currCubePosX) / 3;
-			float newPosY = (VerAndColPoints.at(posOne) + currCubePosY) / 3;
-			float newPosZ = (VerAndColPoints.at(posTwo) + currCubePosZ) / 3;
+	for (int j = 0; j < totalFaceQuadrants; j++) {
+		for (int i = 0; i < 4; i++) {
+			int posX = (i + (i * 5)) + (j * 24);
+			int posY = (i + (i * 5) + 1) + (j * 24);
+			int posZ = (i + (i * 5) + 2) + (j * 24);
 
-			VerAndColPoints.at(posZero) = newPosX;
-			VerAndColPoints.at(posOne) = newPosY;
-			VerAndColPoints.at(posTwo) = newPosZ;
+			float newPosX = (VerAndColPoints.at(posX) / 3.0f - currCubePosX);
+			float newPosY = (VerAndColPoints.at(posY) / 3.0f + currCubePosY);
+			float newPosZ = (VerAndColPoints.at(posZ) / 3.0f - currCubePosZ);
+
+			/*std::cout << newPosX << "/" << newPosY << "/" << newPosZ << std::endl;*/
+
+			VerAndColPoints.at(posX) = newPosX;
+			VerAndColPoints.at(posY) = newPosY;
+			VerAndColPoints.at(posZ) = newPosZ;
 		}
 	}
 
@@ -68,4 +82,9 @@ float* Cube::GetPosZ()
 {
 	float* position = &pos.z;
 	return position;
+}
+
+float* Cube::GetRadius() {
+	float* radius = &dimensions;
+	return radius;
 }

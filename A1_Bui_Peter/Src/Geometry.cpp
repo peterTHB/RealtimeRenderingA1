@@ -25,20 +25,20 @@ void Geometry::DrawCubeWithPoints(std::vector<std::vector<GLfloat>> vertexAndCol
 	for (auto& VACVertex : vertexAndColoursHolder) {
 		for (int j = 0; j < VACVertex.size() / 24; j++) {
 			for (int i = 0; i < faces.size(); i++) {
-				int posColourZero = (faces.at(i) + (faces.at(i) * 5) + 3) + (j * 24);
-				int posColourOne = (faces.at(i) + (faces.at(i) * 5) + 4) + (j * 24);
-				int posColourTwo = (faces.at(i) + (faces.at(i) * 5) + 5) + (j * 24);
+				int posColourX = (faces.at(i) + (faces.at(i) * 5) + 3) + (j * 24);
+				int posColourY = (faces.at(i) + (faces.at(i) * 5) + 4) + (j * 24);
+				int posColourZ = (faces.at(i) + (faces.at(i) * 5) + 5) + (j * 24);
 
-				int posVertexZero = (faces.at(i) + (faces.at(i) * 5)) + (j * 24);
-				int posVertexOne = (faces.at(i) + (faces.at(i) * 5) + 1) + (j * 24);
-				int posVertexTwo = (faces.at(i) + (faces.at(i) * 5) + 2) + (j * 24);
+				int posVertexX = (faces.at(i) + (faces.at(i) * 5)) + (j * 24);
+				int posVertexY = (faces.at(i) + (faces.at(i) * 5) + 1) + (j * 24);
+				int posVertexZ = (faces.at(i) + (faces.at(i) * 5) + 2) + (j * 24);
 
-				glColor3f(VACVertex.at(posColourZero),
-					VACVertex.at(posColourOne),
-					VACVertex.at(posColourTwo));
-				glVertex3f(VACVertex.at(posVertexZero),
-					VACVertex.at(posVertexOne),
-					VACVertex.at(posVertexTwo));
+				glColor3f(VACVertex.at(posColourX),
+					VACVertex.at(posColourY),
+					VACVertex.at(posColourZ));
+				glVertex3f(VACVertex.at(posVertexX),
+					VACVertex.at(posVertexY),
+					VACVertex.at(posVertexZ));
 			}
 		}
 	}

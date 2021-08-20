@@ -19,6 +19,7 @@ RTRSceneOne::RTRSceneOne(float windowWidth, float windowHeight, std::vector<GLfl
 	std::vector<std::vector<GLfloat>> placeholder;
 	placeholder.push_back(vertexAndColours);
 	listOfVertexes.push_back(placeholder);
+	listOfMidVertexes.push_back(vertexAndColours);
 }
 
 void RTRSceneOne::Init() {
@@ -60,26 +61,20 @@ void RTRSceneOne::DrawCubes()
 		this->Cubes = newCube;
 
 		std::vector<std::vector<GLfloat>> newVertexPositions;
-		int currVertexList = 0;
-		int uptickPerTwenty = 0;
+		std::vector<GLfloat> currVector = listOfMidVertexes.at(currCalSubdivision);
 
 		for (auto& currCube : Cubes) {
-			std::vector<GLfloat> currVector = listOfVertexes.at(currCalSubdivision).at(currVertexList);
-
-			std::vector<GLfloat> newPositions = cube->CalculateNewPositions(currCube,
-				currVector, facesCopy);
+			std::vector<GLfloat> newPositions = cube->CalculateNewPositions(currCube, currVector);
 			newVertexPositions.push_back(newPositions);
-
-			uptickPerTwenty++;
-
-			if (currVertexList < listOfVertexes.at(currCalSubdivision).size() - 1 &&
-				uptickPerTwenty == 20) {
-				currVertexList++;
-				uptickPerTwenty = 0;
-			}
 		}
 
 		listOfVertexes.push_back(newVertexPositions);
+
+		// calculate middle cube position
+		cube->CalculateNewRadius();
+
+		std::vector<GLfloat> storingNewMidVector = cube->CalculateNewPositions(*cube, currVector);
+		listOfMidVertexes.push_back(storingNewMidVector);
 	}
 }
 

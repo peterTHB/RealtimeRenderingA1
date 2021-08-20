@@ -1,8 +1,3 @@
-﻿  Cube.cpp
-C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\Cube.cpp(36,20): warning C4018: '<': signed/unsigned mismatch
-C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\Cube.cpp(37,21): warning C4018: '<': signed/unsigned mismatch
-  RTRSceneOne.cpp
-C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\RTRSceneOne.cpp(75,23): warning C4018: '<': signed/unsigned mismatch
-  Generating Code...
+﻿  RTRSceneOne.cpp
   RTRApp.vcxproj -> C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Build\Debug - x86\A1.exe
   0 File(s) copied
