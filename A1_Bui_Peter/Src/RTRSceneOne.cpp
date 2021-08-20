@@ -42,8 +42,7 @@ void RTRSceneOne::End() {
 
 void RTRSceneOne::DrawAll() {
 	int currSubdivision = m_Subdivisions - 1;
-	/*geom->DrawCubeWithPoints(listOfVertexes.at(currSubdivision), facesCopy);*/
-	geom->DrawCubeWithPoints(listOfVertexes.at(0), facesCopy);
+	geom->DrawCubeWithPoints(listOfVertexes.at(currSubdivision), facesCopy);
 }
 
 void RTRSceneOne::DrawCubes()
@@ -79,8 +78,6 @@ void RTRSceneOne::DrawCubes()
 				uptickPerTwenty = 0;
 			}
 		}
-
-		std::cout << newVertexPositions.size() << std::endl;
 
 		listOfVertexes.push_back(newVertexPositions);
 	}

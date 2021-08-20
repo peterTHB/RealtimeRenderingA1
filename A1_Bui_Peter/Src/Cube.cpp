@@ -33,10 +33,6 @@ std::vector<GLfloat> Cube::CalculateNewPositions(Cube currCube, std::vector<GLfl
 	float currCubePosY = *currCube.GetPosY();
 	float currCubePosZ = *currCube.GetPosZ();
 
-	std::cout << currCubePosX << std::endl;
-	std::cout << currCubePosY << std::endl;
-	std::cout << currCubePosZ << std::endl;
-
 	for (int j = 0; j < VerAndColPoints.size() / 24; j++) {
 		for (int i = 0; i < Faces.size(); i++) {
 			int posZero = (Faces.at(i) + (Faces.at(i) * 5)) + (j * 24);
