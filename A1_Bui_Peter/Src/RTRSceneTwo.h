@@ -23,6 +23,8 @@ public:
 	virtual void IncrementSubdivision();
 	virtual void DecrementSubdivision();
 
+	virtual int DrawModern();
+
 protected:
 	float m_WindowHeight;
 	float m_WindowWidth;
@@ -38,4 +40,9 @@ protected:
 	std::vector<Cube> Cubes;
 	std::vector<int> facesCopy;
 	std::vector<std::vector<std::vector<GLfloat>>> listOfVertexes;
+
+	unsigned int m_VertexArray;
+	unsigned int m_VertexBuffer;
+	unsigned int m_FaceElementBuffer;
+	unsigned int m_SquareProgram;
 };

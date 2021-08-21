@@ -70,6 +70,7 @@ public:
     int Init();
     void Done();
     bool Tick(unsigned int td_milli);
+    int testModern();
 
 private:
     bool m_QuitApp = false;
@@ -109,6 +110,7 @@ private:
     void CalculateFrames();
     void GetRefreshRate();
 };
+
 
 bool AssignmentApp::Tick(unsigned int td_milli)
 {
