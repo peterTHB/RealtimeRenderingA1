@@ -1,6 +1,7 @@
 #include "RTRSceneSix.h"
 
-RTRSceneSix::RTRSceneSix(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndColours, std::vector<int> faces)
+RTRSceneSix::RTRSceneSix(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndColours, 
+	std::vector<int> faces, Lighting* lighting)
 {
 	m_WindowWidth = windowWidth;
 	m_WindowHeight = windowHeight;

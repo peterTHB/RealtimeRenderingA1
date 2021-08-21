@@ -3,7 +3,8 @@
 
 class RTRSceneOne : public RTRSceneBase {
 public:
-	RTRSceneOne(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndColours, std::vector<int> faces);
+	RTRSceneOne(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndColours, 
+		std::vector<int> faces, Lighting* lighting);
 	virtual void Init();
 	virtual void End();
 	virtual void DrawAll();
@@ -29,11 +30,12 @@ protected:
 	bool m_BackfaceState;
 	bool m_LightingState;
 	int m_Subdivisions;
-	int m_Vertices;
-	int m_Faces;
 
 	Geometry* geom;
 	Cube* cube;
+	Lighting* lighting;
+	std::vector<int> amountOfVertices;
+	std::vector<int> amountOfFaces;
 	std::vector<Cube> Cubes;
 	std::vector<int> facesCopy;
 	std::vector<std::vector<GLfloat>> listOfMidVertexes;

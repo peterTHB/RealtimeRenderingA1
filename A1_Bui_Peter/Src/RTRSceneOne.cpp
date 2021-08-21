@@ -1,6 +1,7 @@
 #include "RTRSceneOne.h"
 
-RTRSceneOne::RTRSceneOne(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndColours, std::vector<int> faces)
+RTRSceneOne::RTRSceneOne(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndColours, 
+	std::vector<int> faces, Lighting* lighting)
 {
 	m_WindowWidth = windowWidth;
 	m_WindowHeight = windowHeight;
@@ -8,12 +9,14 @@ RTRSceneOne::RTRSceneOne(float windowWidth, float windowHeight, std::vector<GLfl
 	m_BackfaceState = false;
 	m_LightingState = false;
 	m_Subdivisions = 1;
-	m_Vertices = 1;
-	m_Faces = 1;
+
+	amountOfVertices.push_back(8);
+	amountOfFaces.push_back(6);
 
 	geom = new Geometry;
 	cube = new Cube(0.0f, 0.0f, 0.0f, 1.0f);
 	Cubes.push_back(*cube);
+	lighting = lighting;
 
 	facesCopy = faces;
 	std::vector<std::vector<GLfloat>> placeholder;
@@ -43,7 +46,7 @@ void RTRSceneOne::End() {
 
 void RTRSceneOne::DrawAll() {
 	int currSubdivision = m_Subdivisions - 1;
-	geom->DrawCubeWithPoints(listOfVertexes.at(currSubdivision), facesCopy);
+	geom->DrawAllImmediate(listOfVertexes.at(currSubdivision), facesCopy);
 }
 
 void RTRSceneOne::DrawCubes()
@@ -69,6 +72,12 @@ void RTRSceneOne::DrawCubes()
 		}
 
 		listOfVertexes.push_back(newVertexPositions);
+
+		int totalFaces = 6 * newVertexPositions.size();
+		int totalVertices = 8 * newVertexPositions.size();
+
+		amountOfFaces.push_back(totalFaces);
+		amountOfVertices.push_back(totalVertices);
 
 		// calculate middle cube position
 		cube->CalculateNewRadius();
@@ -119,13 +128,15 @@ int* RTRSceneOne::GetSubdivisions()
 
 int* RTRSceneOne::GetVertices()
 {
-	int* number = &m_Vertices;
+	int currSubdivision = m_Subdivisions - 1;
+	int* number = &amountOfVertices.at(currSubdivision);
 	return number;
 }
 
 int* RTRSceneOne::GetFaces()
 {
-	int* number = &m_Faces;
+	int currSubdivision = m_Subdivisions - 1;
+	int* number = &amountOfFaces.at(currSubdivision);
 	return number;
 }
 

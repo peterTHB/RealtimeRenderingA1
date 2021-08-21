@@ -1,6 +1,7 @@
 #include "RTRSceneThree.h"
 
-RTRSceneThree::RTRSceneThree(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndColours, std::vector<int> faces)
+RTRSceneThree::RTRSceneThree(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndColours, 
+	std::vector<int> faces, Lighting* lighting)
 {
 	m_WindowWidth = windowWidth;
 	m_WindowHeight = windowHeight;
@@ -31,6 +32,8 @@ void RTRSceneThree::End() {
 	geom = nullptr;
 	cube = nullptr;
 	facesCopy.clear();
+
+	Cubes.clear();
 	
 	for (auto tier1 : listOfVertexes) {
 		for (auto tier2 : tier1) {

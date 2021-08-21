@@ -1,6 +1,7 @@
 #include "RTRSceneFive.h"
 
-RTRSceneFive::RTRSceneFive(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndColours, std::vector<int> faces)
+RTRSceneFive::RTRSceneFive(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndColours, 
+	std::vector<int> faces, Lighting* lighting)
 {
 	m_WindowWidth = windowWidth;
 	m_WindowHeight = windowHeight;

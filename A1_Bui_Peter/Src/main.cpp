@@ -14,7 +14,7 @@
 #include "RTRSceneSix.h"
 #include "Camera.h"
 #include "Cube.h"
-
+#include "Lighting.h"
 
 #define GLT_IMPLEMENTATION
 #include <gltext/gltext.h>
@@ -25,16 +25,16 @@
 
 std::vector<GLfloat> VertexPointsAndColours = {
     // Points         Colours
+    // Back
+    0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+    -0.5f, 0.5f, -0.5f, 0.0f, 0.0f, 1.0f,
+    0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 1.0f,
     // Front
     -0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
     0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
     0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
     -0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 1.0f,
-    // Back
-    -0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
-    0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-    0.5f, 0.5f, -0.5f, 0.0f, 0.0f, 1.0f,
-    -0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 1.0f,
     // Left
     -0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
     -0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
@@ -87,6 +87,7 @@ private:
     RTRSceneBase* m_CurrScene = nullptr;
 
     Camera* camera = new Camera();
+    Lighting* lighting = new Lighting();
 
     float deltaX = 0.0f;
     float deltaY = 0.0f;
@@ -199,17 +200,14 @@ void AssignmentApp::CheckInput()
                     ListOfScenes[m_CurrSceneNum - 1]->DecrementSubdivision();
                     break;
                 }
-                else {
-                    break;
-                }
+                break;
+
             case SDLK_KP_MINUS:
                 if (*ListOfScenes[m_CurrSceneNum - 1]->GetSubdivisions() > 1) {
                     ListOfScenes[m_CurrSceneNum - 1]->DecrementSubdivision();
                     break;
                 }
-                else {
-                    break;
-                }
+                break;
 
                 // Showing OSD
             case SDLK_h:
@@ -223,7 +221,10 @@ void AssignmentApp::CheckInput()
 
                 // Increment/Decrement # of Lights
             case SDLK_PERIOD:
-                m_NumOfLights += 1;
+                if (m_NumOfLights < 10) {
+                    m_NumOfLights += 1;
+                    break;
+                }
                 break;
 
             case SDLK_COMMA:
@@ -231,9 +232,7 @@ void AssignmentApp::CheckInput()
                     m_NumOfLights -= 1;
                     break;
                 }
-                else {
-                    break;
-                }
+                break;
 
                 // Toggle Depth Buffering
             case SDLK_z:
@@ -396,10 +395,26 @@ void AssignmentApp::GetRefreshRate() {
 
 void AssignmentApp::RenderFrame()
 {
-    glClearColor(0.5, 0.5, 0.5, 1.0);
-    glEnable(GL_DEPTH_TEST);
+    glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glViewport(0, 0, width, height);
+
+    if (*ListOfScenes[m_CurrSceneNum - 1]->GetDepthBuffer()) {
+        glEnable(GL_DEPTH_TEST);
+        glDepthFunc(GL_LESS);
+    }
+    else {
+        glDisable(GL_DEPTH_TEST);
+    }
+
+    if (*ListOfScenes[m_CurrSceneNum - 1]->GetBackface()) {
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
+        glFrontFace(GL_CCW);
+    }
+    else {
+        glDisable(GL_CULL_FACE);
+    }
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -414,9 +429,23 @@ void AssignmentApp::RenderFrame()
     else {
         camera->ModernCamera(width, height);
     }
-       
-    RenderOSD();
 
+    if (*ListOfScenes[m_CurrSceneNum - 1]->GetLighting()) {
+        glEnable(GL_NORMALIZE);
+        glEnable(GL_LIGHTING);
+        if (m_CurrSceneNum == 1) {
+            lighting->ImmediateSpotLighting(m_NumOfLights);
+        }
+        else {
+            lighting->ModernSpotLighting(m_NumOfLights);
+        }
+    }
+    else {
+        glDisable(GL_LIGHTING);
+        glDisable(GL_NORMALIZE);
+    }
+
+    RenderOSD();
 
     int err;
     while ((err = glGetError()) != GL_NO_ERROR)
@@ -438,12 +467,12 @@ int AssignmentApp::Init()
     SDL_WarpMouseInWindow(m_SDLWindow, width, height);
 
     // Instantiate all 6 scenes and store in an array/data struct
-    RTRSceneBase* sceneOne = new RTRSceneOne(m_WindowWidth, m_WindowHeight, VertexPointsAndColours, faces);
-    RTRSceneBase* sceneTwo = new RTRSceneTwo(m_WindowWidth, m_WindowHeight, VertexPointsAndColours, faces);
-    RTRSceneBase* sceneThree = new RTRSceneThree(m_WindowWidth, m_WindowHeight, VertexPointsAndColours, faces);
-    RTRSceneBase* sceneFour = new RTRSceneFour(m_WindowWidth, m_WindowHeight, VertexPointsAndColours, faces);
-    RTRSceneBase* sceneFive = new RTRSceneFive(m_WindowWidth, m_WindowHeight, VertexPointsAndColours, faces);
-    RTRSceneBase* sceneSix = new RTRSceneSix(m_WindowWidth, m_WindowHeight, VertexPointsAndColours, faces);
+    RTRSceneBase* sceneOne = new RTRSceneOne(m_WindowWidth, m_WindowHeight, VertexPointsAndColours, faces, lighting);
+    RTRSceneBase* sceneTwo = new RTRSceneTwo(m_WindowWidth, m_WindowHeight, VertexPointsAndColours, faces, lighting);
+    RTRSceneBase* sceneThree = new RTRSceneThree(m_WindowWidth, m_WindowHeight, VertexPointsAndColours, faces, lighting);
+    RTRSceneBase* sceneFour = new RTRSceneFour(m_WindowWidth, m_WindowHeight, VertexPointsAndColours, faces, lighting);
+    RTRSceneBase* sceneFive = new RTRSceneFive(m_WindowWidth, m_WindowHeight, VertexPointsAndColours, faces, lighting);
+    RTRSceneBase* sceneSix = new RTRSceneSix(m_WindowWidth, m_WindowHeight, VertexPointsAndColours, faces, lighting);
 
     ListOfScenes[0] = sceneOne;
     ListOfScenes[1] = sceneTwo;
@@ -453,6 +482,9 @@ int AssignmentApp::Init()
     ListOfScenes[5] = sceneSix;
 
     m_Resolution = std::to_string(width) + "x" + std::to_string(height);
+
+    lighting->InstantiateImmediate();
+    lighting->InstantiateModern();
 
     return 0;
 }

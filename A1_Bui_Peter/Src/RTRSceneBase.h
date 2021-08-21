@@ -7,6 +7,7 @@
 #include <vector>
 #include "Geometry.h"
 #include "Cube.h"
+#include "Lighting.h"
 
 class RTRSceneBase {
 public:

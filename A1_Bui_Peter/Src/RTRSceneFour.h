@@ -3,7 +3,8 @@
 
 class RTRSceneFour : public RTRSceneBase {
 public:
-	RTRSceneFour(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndColours, std::vector<int> faces);
+	RTRSceneFour(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndColours, 
+		std::vector<int> faces, Lighting* lighting);
 	virtual void Init();
 	virtual void End();
 	virtual void DrawAll();

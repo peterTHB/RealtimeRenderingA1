@@ -19,10 +19,6 @@ std::vector<Cube> Cube::CalculateCube()
 				if (sum > 1) {
 					Cube newCube(this->pos.x + (i * radius), this->pos.y + (j * radius), this->pos.z + (k * radius), radius);
 
-					/*if (cubeVector.size() < 1) {
-						cubeVector.push_back(newCube);
-					}*/
-
 					cubeVector.push_back(newCube);
 				}
 			}
@@ -54,8 +50,6 @@ std::vector<GLfloat> Cube::CalculateNewPositions(Cube currCube, std::vector<GLfl
 			float newPosX = (VerAndColPoints.at(posX) / 3.0f - currCubePosX);
 			float newPosY = (VerAndColPoints.at(posY) / 3.0f + currCubePosY);
 			float newPosZ = (VerAndColPoints.at(posZ) / 3.0f - currCubePosZ);
-
-			/*std::cout << newPosX << "/" << newPosY << "/" << newPosZ << std::endl;*/
 
 			VerAndColPoints.at(posX) = newPosX;
 			VerAndColPoints.at(posY) = newPosY;

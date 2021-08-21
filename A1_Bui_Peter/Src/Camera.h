@@ -7,6 +7,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "Lighting.h"
 #ifndef M_PI
 #define M_PI = 3.1415926535
 #endif
@@ -48,4 +49,6 @@ protected:
     float lastX;
     float lastY;
     float fov;
+
+    Lighting* lighting;
 };

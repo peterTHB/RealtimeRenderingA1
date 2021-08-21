@@ -21,6 +21,8 @@ Camera::Camera() {
     lastX = 0.0f;
     lastY = 0.0f;
     fov = 45.0f;
+
+    lighting = new Lighting();
 }
 
 void Camera::ImmediateCamera(int width, int height) {
@@ -35,6 +37,8 @@ void Camera::ImmediateCamera(int width, int height) {
     glLoadMatrixf(glm::value_ptr(proj));
     glMatrixMode(GL_MODELVIEW);
     glLoadMatrixf(glm::value_ptr(view));
+
+    lighting->ImmediateLighting(cameraPos);
 }
 
 void Camera::ModernCamera(int width, int height) {
@@ -78,7 +82,6 @@ void Camera::Mouse_Callback(SDL_Window* window, float xRel, float yRel) {
 
     LockCamera();
     UpdateVectors();
-
 }
 
 void Camera::UpdateVectors() {
