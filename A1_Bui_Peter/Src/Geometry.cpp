@@ -1,7 +1,14 @@
 #include "Geometry.h"
 
-Geometry::Geometry() {
+Geometry::Geometry()
+{
 	lighting = new Lighting();
+	sceneShader = nullptr;
+}
+
+Geometry::Geometry(RTRShader* shader) {
+	lighting = new Lighting();
+	sceneShader = shader;
 }
 
 void Geometry::DrawAllImmediate(std::vector<std::vector<GLfloat>> vertexAndColoursHolder, std::vector<int> faces) {

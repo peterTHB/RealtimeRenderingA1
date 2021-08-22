@@ -4,7 +4,7 @@
 class RTRSceneSix : public RTRSceneBase {
 public:
 	RTRSceneSix(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndColours, 
-		std::vector<int> faces, Lighting* lighting);
+		std::vector<int> faces, Lighting* lighting, RTRShader* shader);
 	virtual void Init();
 	virtual void End();
 	virtual void DrawAll();
@@ -43,8 +43,8 @@ protected:
 	std::vector<std::vector<GLfloat>> listOfMidVertexes;
 	std::vector<std::vector<std::vector<GLfloat>>> listOfVertexes;
 
+	RTRShader* sceneShader;
 	unsigned int m_VertexArray;
 	unsigned int m_VertexBuffer;
 	unsigned int m_FaceElementBuffer;
-	unsigned int m_SquareProgram;
 };

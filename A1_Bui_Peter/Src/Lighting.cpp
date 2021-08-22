@@ -159,3 +159,11 @@ void Lighting::ModernSpotLighting(int amountOfLights)
 {
 	InstantiateModern();
 }
+
+void Lighting::ImmediateMaterial()
+{
+}
+
+void Lighting::ModernMaterial()
+{
+}

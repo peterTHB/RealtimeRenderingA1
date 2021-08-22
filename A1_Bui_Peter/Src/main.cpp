@@ -70,7 +70,6 @@ public:
     int Init();
     void Done();
     bool Tick(unsigned int td_milli);
-    int testModern();
 
 private:
     bool m_QuitApp = false;
@@ -87,7 +86,10 @@ private:
     RTRSceneBase* ListOfScenes[6] = {};
     RTRSceneBase* m_CurrScene = nullptr;
 
-    Camera* camera = new Camera();
+    // Instantiate shader
+    RTRShader* sceneShader = new RTRShader();
+
+    Camera* camera = new Camera(sceneShader);
     Lighting* lighting = new Lighting();
 
     float deltaX = 0.0f;
@@ -418,9 +420,6 @@ void AssignmentApp::RenderFrame()
         glDisable(GL_CULL_FACE);
     }
 
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
     m_CurrScene = ListOfScenes[m_CurrSceneNum - 1];
     m_CurrScene->Init();
     m_CurrScene->DrawAll();
@@ -433,12 +432,14 @@ void AssignmentApp::RenderFrame()
     }
 
     if (*ListOfScenes[m_CurrSceneNum - 1]->GetLighting()) {
-        glEnable(GL_NORMALIZE);
-        glEnable(GL_LIGHTING);
         if (m_CurrSceneNum == 1) {
+            glEnable(GL_NORMALIZE);
+            glEnable(GL_LIGHTING);
             lighting->ImmediateSpotLighting(m_NumOfLights);
         }
         else {
+            glDisable(GL_LIGHTING);
+            glDisable(GL_NORMALIZE);
             lighting->ModernSpotLighting(m_NumOfLights);
         }
     }
@@ -449,9 +450,10 @@ void AssignmentApp::RenderFrame()
 
     RenderOSD();
 
-    int err;
-    while ((err = glGetError()) != GL_NO_ERROR)
-        printf("Error");
+    //int err;
+    //while ((err = glGetError()) != GL_NO_ERROR)
+    //    //printf("Error");
+    //    std::cout << "Error: " << err << std::endl;
 
     SDL_GL_SwapWindow(m_SDLWindow);
 }
@@ -469,12 +471,18 @@ int AssignmentApp::Init()
     SDL_WarpMouseInWindow(m_SDLWindow, width, height);
 
     // Instantiate all 6 scenes and store in an array/data struct
-    RTRSceneBase* sceneOne = new RTRSceneOne(m_WindowWidth, m_WindowHeight, VertexPointsAndColours, faces, lighting);
-    RTRSceneBase* sceneTwo = new RTRSceneTwo(m_WindowWidth, m_WindowHeight, VertexPointsAndColours, faces, lighting);
-    RTRSceneBase* sceneThree = new RTRSceneThree(m_WindowWidth, m_WindowHeight, VertexPointsAndColours, faces, lighting);
-    RTRSceneBase* sceneFour = new RTRSceneFour(m_WindowWidth, m_WindowHeight, VertexPointsAndColours, faces, lighting);
-    RTRSceneBase* sceneFive = new RTRSceneFive(m_WindowWidth, m_WindowHeight, VertexPointsAndColours, faces, lighting);
-    RTRSceneBase* sceneSix = new RTRSceneSix(m_WindowWidth, m_WindowHeight, VertexPointsAndColours, faces, lighting);
+    RTRSceneBase* sceneOne = new RTRSceneOne(m_WindowWidth, m_WindowHeight, 
+        VertexPointsAndColours, faces, lighting);
+    RTRSceneBase* sceneTwo = new RTRSceneTwo(m_WindowWidth, m_WindowHeight, 
+        VertexPointsAndColours, faces, lighting, sceneShader);
+    RTRSceneBase* sceneThree = new RTRSceneThree(m_WindowWidth, m_WindowHeight, 
+        VertexPointsAndColours, faces, lighting, sceneShader);
+    RTRSceneBase* sceneFour = new RTRSceneFour(m_WindowWidth, m_WindowHeight, 
+        VertexPointsAndColours, faces, lighting, sceneShader);
+    RTRSceneBase* sceneFive = new RTRSceneFive(m_WindowWidth, m_WindowHeight, 
+        VertexPointsAndColours, faces, lighting, sceneShader);
+    RTRSceneBase* sceneSix = new RTRSceneSix(m_WindowWidth, m_WindowHeight, 
+        VertexPointsAndColours, faces, lighting, sceneShader);
 
     ListOfScenes[0] = sceneOne;
     ListOfScenes[1] = sceneTwo;

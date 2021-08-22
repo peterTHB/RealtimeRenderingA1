@@ -78,9 +78,6 @@ int RTRApp::Init()
     }
 
     std::cout << "RTR:MESSAGE: OpenGL version " << GLVersion.major << "." << GLVersion.minor << " initialised." << std::endl;
-    
-    /*glEnable(GL_DEBUG_OUTPUT);
-    glDebugMessageCallback(MessageCallback, 0);*/
 
     return 0;
 }

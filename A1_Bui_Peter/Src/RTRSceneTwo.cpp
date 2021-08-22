@@ -1,7 +1,7 @@
 #include "RTRSceneTwo.h"
 
 RTRSceneTwo::RTRSceneTwo(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndColours, 
-	std::vector<int> faces, Lighting* lighting)
+	std::vector<int> faces, Lighting* lighting, RTRShader* shader)
 {
 	m_WindowWidth = windowWidth;
 	m_WindowHeight = windowHeight;
@@ -9,8 +9,8 @@ RTRSceneTwo::RTRSceneTwo(float windowWidth, float windowHeight, std::vector<GLfl
 	m_BackfaceState = false;
 	m_LightingState = false;
 	m_Subdivisions = 1;
-	m_Vertices = 1;
-	m_Faces = 1;
+	m_Vertices = 8;
+	m_Faces = 6;
 
     amountOfVertices.push_back(8);
     amountOfFaces.push_back(6);
@@ -26,19 +26,17 @@ RTRSceneTwo::RTRSceneTwo(float windowWidth, float windowHeight, std::vector<GLfl
     listOfVertexes.push_back(placeholder);
     listOfMidVertexes.push_back(vertexAndColours);
 
-    // Instantiate shader
-    SceneShader = new RTRShader();
-
+    sceneShader = shader;
     m_VertexArray = 0;
     m_VertexBuffer = 0;
     m_FaceElementBuffer = 0;
-    m_SquareProgram = 0;
+
+    modelMatrix = glm::mat4(1.0f);
 }
 
 void RTRSceneTwo::Init() {
-	glMatrixMode(GL_PROJECTION);
-	glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
-	glMatrixMode(GL_MODELVIEW);
+    // Using shader
+    sceneShader->Load("RTRShader.vert", "RTRShader.frag");
 }
 
 void RTRSceneTwo::End() {
@@ -52,15 +50,6 @@ void RTRSceneTwo::End() {
 		}
 	}
 	listOfVertexes.clear();
-
-    glDeleteVertexArrays(1, &m_VertexArray);
-    glDeleteBuffers(1, &m_VertexBuffer);
-    glDeleteBuffers(1, &m_FaceElementBuffer);
-    glDeleteProgram(m_SquareProgram);
-    m_VertexArray = 0;
-    m_VertexBuffer = 0;
-    m_FaceElementBuffer = 0;
-    m_SquareProgram = 0;
 }
 
 void RTRSceneTwo::DrawAll() {
@@ -68,9 +57,6 @@ void RTRSceneTwo::DrawAll() {
 }
 
 void RTRSceneTwo::DrawModern() {
-    // Use shader here
-    SceneShader->Load("RTRShader.vert", "RTRShader.frag");
-
     glGenBuffers(1, &m_VertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
     glBufferData(GL_ARRAY_BUFFER, listOfVertexes.at(0).at(0).size() * sizeof(GLfloat),
@@ -88,10 +74,34 @@ void RTRSceneTwo::DrawModern() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_FaceElementBuffer);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, facesCopy.size() * sizeof(int), facesCopy.data(), GL_STATIC_DRAW);
 
-    glUseProgram(*SceneShader->GetID());
+    glUseProgram(*sceneShader->GetID());
     glBindVertexArray(m_VertexArray);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
+
+    static float rotDegPerSec = 180.0f;
+    static float rotAngle = 0.0f;
+
+    rotAngle = rotAngle + rotDegPerSec * ((float)1.0 / 1000.0f);
+
+    if (rotAngle >= 360.0f) {
+        rotAngle = rotAngle - 360.0f;
+    }
+
+    /*modelMatrix = glm::mat4(1.0f);*/
+    /*modelMatrix = glm::rotate(modelMatrix, glm::radians(-45.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+    modelMatrix = glm::rotate(modelMatrix, glm::radians(rotAngle), glm::vec3(0.0f, 0.0f, 1.0f));*/
+    sceneShader->SetMat4("model", modelMatrix);
+
+    /*std::cout << "Model matrix" << std::endl;
+    std::cout << "Error: " << glGetError() << std::endl;*/
+
+    glDeleteVertexArrays(1, &m_VertexArray);
+    glDeleteBuffers(1, &m_VertexBuffer);
+    glDeleteBuffers(1, &m_FaceElementBuffer);
+    m_VertexArray = 0;
+    m_VertexBuffer = 0;
+    m_FaceElementBuffer = 0;
 }
 
 void RTRSceneTwo::CreateCubes()

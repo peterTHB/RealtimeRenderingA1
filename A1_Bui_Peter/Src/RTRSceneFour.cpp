@@ -1,7 +1,7 @@
 #include "RTRSceneFour.h"
 
 RTRSceneFour::RTRSceneFour(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndColours, 
-	std::vector<int> faces, Lighting* lighting)
+	std::vector<int> faces, Lighting* lighting, RTRShader* shader)
 {
 	m_WindowWidth = windowWidth;
 	m_WindowHeight = windowHeight;
@@ -26,16 +26,15 @@ RTRSceneFour::RTRSceneFour(float windowWidth, float windowHeight, std::vector<GL
 	listOfVertexes.push_back(placeholder);
 	listOfMidVertexes.push_back(vertexAndColours);
 
+	sceneShader = shader;
 	m_VertexArray = 0;
 	m_VertexBuffer = 0;
 	m_FaceElementBuffer = 0;
-	m_SquareProgram = 0;
 }
 
 void RTRSceneFour::Init() {
-	glMatrixMode(GL_PROJECTION);
-	glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
-	glMatrixMode(GL_MODELVIEW);
+	// Using shader
+	sceneShader->Load("RTRShader.vert", "RTRShader.frag");
 }
 
 void RTRSceneFour::End() {

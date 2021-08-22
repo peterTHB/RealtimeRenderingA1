@@ -8,13 +8,11 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "Lighting.h"
-#ifndef M_PI
-#define M_PI = 3.1415926535
-#endif
+#include "RTRShader.h"
 
 class Camera {
 public:
-	Camera();
+	Camera(RTRShader* shader);
     virtual void ImmediateCamera(int width, int height);
     virtual void ModernCamera(int width, int height);
     virtual void Mouse_Callback(SDL_Window* window, float xRel, float yRel);
@@ -51,4 +49,8 @@ protected:
     float fov;
 
     Lighting* lighting;
+    RTRShader* sceneShader;
+
+    glm::mat4 projMatrix;
+    glm::mat4 viewMatrix;
 };

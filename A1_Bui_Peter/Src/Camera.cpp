@@ -1,6 +1,6 @@
 #include "Camera.h"
 
-Camera::Camera() {
+Camera::Camera(RTRShader* shader) {
     cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
     cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
     cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -20,9 +20,13 @@ Camera::Camera() {
     yaw = 90.0f;
     lastX = 0.0f;
     lastY = 0.0f;
-    fov = 45.0f;
+    fov = 60.0f;
 
     lighting = new Lighting();
+    sceneShader = shader;
+
+    projMatrix = glm::mat4(1.0f);
+    viewMatrix = glm::mat4(1.0f);
 }
 
 void Camera::ImmediateCamera(int width, int height) {
@@ -46,13 +50,19 @@ void Camera::ModernCamera(int width, int height) {
     this->width = width;
     this->height = height;
 
-    proj = glm::perspective(glm::radians(45.0f), (float)width / (float)height, 1.0f, 100.0f);
-    view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+    /*std::cout << "Got proj and view" << std::endl;*/
 
-    glMatrixMode(GL_PROJECTION);
-    glLoadMatrixf(glm::value_ptr(proj));
-    glMatrixMode(GL_MODELVIEW);
-    glLoadMatrixf(glm::value_ptr(view));
+    proj = glm::perspective(glm::radians(fov), (float)width / (float)height, 1.0f, 100.0f);
+    sceneShader->SetMat4("projection", proj);
+
+    //std::cout << "Error: " << glGetError() << std::endl;
+
+    view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+    sceneShader->SetMat4("view", view);
+
+   /* std::cout << "Error: " << glGetError() << std::endl;*/
+
+    std::cout << cameraPos.x + cameraFront.x << "/" << cameraPos.y + cameraFront.y << "/" << cameraPos.z + cameraFront.z << std::endl;
 }
 
 void Camera::Mouse_Callback(SDL_Window* window, float xRel, float yRel) {
