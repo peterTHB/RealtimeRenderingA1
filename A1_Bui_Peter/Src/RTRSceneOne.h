@@ -8,7 +8,7 @@ public:
 	virtual void Init();
 	virtual void End();
 	virtual void DrawAll();
-	virtual void DrawCubes();
+	virtual void CreateCubes();
 
 	virtual bool* GetDepthBuffer();
 	virtual bool* GetBackface();

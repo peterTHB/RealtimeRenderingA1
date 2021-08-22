@@ -12,14 +12,24 @@ RTRSceneSix::RTRSceneSix(float windowWidth, float windowHeight, std::vector<GLfl
 	m_Vertices = 1;
 	m_Faces = 1;
 
+	amountOfVertices.push_back(8);
+	amountOfFaces.push_back(6);
+
 	geom = new Geometry;
 	cube = new Cube(0.0f, 0.0f, 0.0f, 1.0f);
 	Cubes.push_back(*cube);
+	lighting = lighting;
 
 	facesCopy = faces;
 	std::vector<std::vector<GLfloat>> placeholder;
 	placeholder.push_back(vertexAndColours);
 	listOfVertexes.push_back(placeholder);
+	listOfMidVertexes.push_back(vertexAndColours);
+
+	m_VertexArray = 0;
+	m_VertexBuffer = 0;
+	m_FaceElementBuffer = 0;
+	m_SquareProgram = 0;
 }
 
 void RTRSceneSix::Init() {
@@ -45,8 +55,42 @@ void RTRSceneSix::DrawAll() {
 	
 }
 
-void RTRSceneSix::DrawCubes()
+void RTRSceneSix::CreateCubes()
 {
+	int currCalSubdivision = m_Subdivisions - 1;
+
+	if (listOfVertexes.size() == m_Subdivisions) {
+		std::vector<Cube> newCube;
+
+		for (Cube currCube : Cubes) {
+			std::vector<Cube> createdCube = currCube.CalculateCube();
+			newCube.insert(newCube.end(), createdCube.begin(), createdCube.end());
+		}
+
+		this->Cubes = newCube;
+
+		std::vector<std::vector<GLfloat>> newVertexPositions;
+		std::vector<GLfloat> currVector = listOfMidVertexes.at(currCalSubdivision);
+
+		for (auto& currCube : Cubes) {
+			std::vector<GLfloat> newPositions = cube->CalculateNewPositions(currCube, currVector);
+			newVertexPositions.push_back(newPositions);
+		}
+
+		listOfVertexes.push_back(newVertexPositions);
+
+		int totalFaces = 6 * newVertexPositions.size();
+		int totalVertices = 8 * newVertexPositions.size();
+
+		amountOfFaces.push_back(totalFaces);
+		amountOfVertices.push_back(totalVertices);
+
+		// calculate middle cube position
+		cube->CalculateNewRadius();
+
+		std::vector<GLfloat> storingNewMidVector = cube->CalculateNewPositions(*cube, currVector);
+		listOfMidVertexes.push_back(storingNewMidVector);
+	}
 }
 
 bool* RTRSceneSix::GetDepthBuffer()

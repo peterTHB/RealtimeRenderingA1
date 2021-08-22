@@ -1,5 +1,44 @@
-﻿  Cube.cpp
+﻿  RTRSceneBase.cpp
+  RTRSceneFive.cpp
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\RTRSceneFive.cpp(82,49): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\RTRSceneFive.cpp(83,52): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  RTRSceneFour.cpp
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\RTRSceneFour.cpp(82,49): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\RTRSceneFour.cpp(83,52): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   RTRSceneOne.cpp
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\RTRSceneOne.cpp(76,49): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\RTRSceneOne.cpp(77,52): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  RTRSceneSix.cpp
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\RTRSceneSix.cpp(82,49): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\RTRSceneSix.cpp(83,52): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  RTRSceneThree.cpp
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\RTRSceneThree.cpp(84,49): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\RTRSceneThree.cpp(85,52): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  RTRSceneTwo.cpp
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\RTRSceneTwo.cpp(121,55): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\RTRSceneTwo.cpp(122,58): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  RTRShader.cpp
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\RTRShader.cpp(36,36): warning C4101: 'e': unreferenced local variable
+  main.cpp
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Include\gltext\gltext.h(300,29): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\main.cpp(138,32): warning C4244: '=': conversion from 'Sint32' to 'float', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\main.cpp(139,32): warning C4244: '=': conversion from 'Sint32' to 'float', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\main.cpp(363,23): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\main.cpp(390,25): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\main.cpp(393,25): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\main.cpp(395,25): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\main.cpp(472,61): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\main.cpp(472,46): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\main.cpp(473,61): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\main.cpp(473,46): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\main.cpp(474,65): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\main.cpp(474,50): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\main.cpp(475,63): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\main.cpp(475,48): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\main.cpp(476,63): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\main.cpp(476,48): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\main.cpp(477,61): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\main.cpp(477,46): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   Generating Code...
   RTRApp.vcxproj -> C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Build\Debug - x64\A1.exe
   0 File(s) copied

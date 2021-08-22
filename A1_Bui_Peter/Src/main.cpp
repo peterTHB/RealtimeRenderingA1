@@ -189,11 +189,11 @@ void AssignmentApp::CheckInput()
 
                 // Increment/Decrement Subdivision
             case SDLK_EQUALS:
-                ListOfScenes[m_CurrSceneNum - 1]->DrawCubes();
+                ListOfScenes[m_CurrSceneNum - 1]->CreateCubes();
                 ListOfScenes[m_CurrSceneNum - 1]->IncrementSubdivision();
                 break;
             case SDLK_KP_PLUS:
-                ListOfScenes[m_CurrSceneNum - 1]->DrawCubes();
+                ListOfScenes[m_CurrSceneNum - 1]->CreateCubes();
                 ListOfScenes[m_CurrSceneNum - 1]->IncrementSubdivision();
                 break;
 

@@ -51,8 +51,13 @@
     <ClInclude Include="Src\RTRApp.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Src\RTRApp.frag" />
-    <None Include="Src\RTRApp.vert" />
+    <None Include="RTRShader.geom" />
+    <None Include="RTRShader.frag">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="RTRShader.vert">
+      <FileType>Document</FileType>
+    </None>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

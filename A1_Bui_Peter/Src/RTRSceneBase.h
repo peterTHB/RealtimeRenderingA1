@@ -8,6 +8,7 @@
 #include "Geometry.h"
 #include "Cube.h"
 #include "Lighting.h"
+#include "RTRShader.h"
 
 class RTRSceneBase {
 public:
@@ -16,7 +17,7 @@ public:
 	virtual void Init();
 	virtual void End();
 	virtual void DrawAll();
-	virtual void DrawCubes();
+	virtual void CreateCubes();
 	
 	virtual bool* GetDepthBuffer();
 	virtual bool* GetBackface();

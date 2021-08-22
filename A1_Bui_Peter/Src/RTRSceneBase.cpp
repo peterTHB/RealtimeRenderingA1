@@ -45,7 +45,7 @@ void RTRSceneBase::DrawAll() {
 
 }
 
-void RTRSceneBase::DrawCubes()
+void RTRSceneBase::CreateCubes()
 {
 }
 

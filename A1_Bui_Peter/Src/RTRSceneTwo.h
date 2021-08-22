@@ -8,7 +8,7 @@ public:
 	virtual void Init();
 	virtual void End();
 	virtual void DrawAll();
-	virtual void DrawCubes();
+	virtual void CreateCubes();
 
 	virtual bool* GetDepthBuffer();
 	virtual bool* GetBackface();
@@ -23,7 +23,7 @@ public:
 	virtual void IncrementSubdivision();
 	virtual void DecrementSubdivision();
 
-	virtual int DrawModern();
+	virtual void DrawModern();
 
 protected:
 	float m_WindowHeight;
@@ -37,10 +37,15 @@ protected:
 
 	Geometry* geom;
 	Cube* cube;
+	Lighting* lighting;
+	std::vector<int> amountOfVertices;
+	std::vector<int> amountOfFaces;
 	std::vector<Cube> Cubes;
 	std::vector<int> facesCopy;
+	std::vector<std::vector<GLfloat>> listOfMidVertexes;
 	std::vector<std::vector<std::vector<GLfloat>>> listOfVertexes;
 
+	RTRShader* SceneShader;
 	unsigned int m_VertexArray;
 	unsigned int m_VertexBuffer;
 	unsigned int m_FaceElementBuffer;

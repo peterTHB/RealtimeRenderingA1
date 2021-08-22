@@ -12,14 +12,22 @@ RTRSceneTwo::RTRSceneTwo(float windowWidth, float windowHeight, std::vector<GLfl
 	m_Vertices = 1;
 	m_Faces = 1;
 
-	geom = new Geometry;
-	cube = new Cube(0.0f, 0.0f, 0.0f, 1.0f);
-	Cubes.push_back(*cube);
+    amountOfVertices.push_back(8);
+    amountOfFaces.push_back(6);
 
-	facesCopy = faces;
-	std::vector<std::vector<GLfloat>> placeholder;
-	placeholder.push_back(vertexAndColours);
-	listOfVertexes.push_back(placeholder);
+    geom = new Geometry;
+    cube = new Cube(0.0f, 0.0f, 0.0f, 1.0f);
+    Cubes.push_back(*cube);
+    lighting = lighting;
+
+    facesCopy = faces;
+    std::vector<std::vector<GLfloat>> placeholder;
+    placeholder.push_back(vertexAndColours);
+    listOfVertexes.push_back(placeholder);
+    listOfMidVertexes.push_back(vertexAndColours);
+
+    // Instantiate shader
+    SceneShader = new RTRShader();
 
     m_VertexArray = 0;
     m_VertexBuffer = 0;
@@ -59,7 +67,10 @@ void RTRSceneTwo::DrawAll() {
     DrawModern();
 }
 
-int RTRSceneTwo::DrawModern() {
+void RTRSceneTwo::DrawModern() {
+    // Use shader here
+    SceneShader->Load("RTRShader.vert", "RTRShader.frag");
+
     glGenBuffers(1, &m_VertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
     glBufferData(GL_ARRAY_BUFFER, listOfVertexes.at(0).at(0).size() * sizeof(GLfloat),
@@ -77,66 +88,48 @@ int RTRSceneTwo::DrawModern() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_FaceElementBuffer);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, facesCopy.size() * sizeof(int), facesCopy.data(), GL_STATIC_DRAW);
 
-    int err_ok;
-    char err_info[512];
-
-    const char* vertex_shader_source = "#version 400\n"
-        "layout (location = 0) in vec3 vertex_position;\n"
-        "layout (location = 1) in vec3 vertex_color;\n"
-        "out vec3 v_color;\n"
-        "void main() {\n"
-        "  v_color = vertex_color;\n"
-        "  gl_Position = vec4(vertex_position.x, vertex_position.y, vertex_position.z, 1.0);\n"
-        "}\0";
-    unsigned int vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertex_shader, 1, &vertex_shader_source, nullptr);
-    glCompileShader(vertex_shader);
-    glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &err_ok);
-    if (!err_ok) {
-        glGetShaderInfoLog(vertex_shader, 512, nullptr, err_info);
-        std::cout << "RTR:ERROR: Vertex Shader failed to compile. Error: " << err_info << std::endl;
-        return -1;
-    }
-
-    const char* fragment_shader_source = "#version 400\n"
-        "in vec3 v_color;\n"
-        "out vec4 fragment_color;\n"
-        "void main() {\n"
-        "  fragment_color = vec4(v_color, 1.0f);\n"
-        "}\0";
-    unsigned int fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragment_shader, 1, &fragment_shader_source, nullptr);
-    glCompileShader(fragment_shader);
-    glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &err_ok);
-    if (!err_ok) {
-        glGetShaderInfoLog(fragment_shader, 512, nullptr, err_info);
-        std::cout << "RTR:ERROR: Fragment Shader failed to compile. Error: " << err_info << std::endl;
-        return -2;
-    }
-
-    m_SquareProgram = glCreateProgram();
-    glAttachShader(m_SquareProgram, vertex_shader);
-    glAttachShader(m_SquareProgram, fragment_shader);
-    glLinkProgram(m_SquareProgram);
-    glGetProgramiv(m_SquareProgram, GL_LINK_STATUS, &err_ok);
-    if (!err_ok) {
-        glGetProgramInfoLog(m_SquareProgram, 512, NULL, err_info);
-        std::cout << "RTR:ERROR: Shader Program failed to link. Error: " << err_info << std::endl;
-        return -3;
-    }
-    glDeleteShader(vertex_shader);
-    glDeleteShader(fragment_shader);
-
-    glUseProgram(m_SquareProgram);
+    glUseProgram(*SceneShader->GetID());
     glBindVertexArray(m_VertexArray);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
-
-    return 0;
 }
 
-void RTRSceneTwo::DrawCubes()
+void RTRSceneTwo::CreateCubes()
 {
+    int currCalSubdivision = m_Subdivisions - 1;
+
+    if (listOfVertexes.size() == m_Subdivisions) {
+        std::vector<Cube> newCube;
+
+        for (Cube currCube : Cubes) {
+            std::vector<Cube> createdCube = currCube.CalculateCube();
+            newCube.insert(newCube.end(), createdCube.begin(), createdCube.end());
+        }
+
+        this->Cubes = newCube;
+
+        std::vector<std::vector<GLfloat>> newVertexPositions;
+        std::vector<GLfloat> currVector = listOfMidVertexes.at(currCalSubdivision);
+
+        for (auto& currCube : Cubes) {
+            std::vector<GLfloat> newPositions = cube->CalculateNewPositions(currCube, currVector);
+            newVertexPositions.push_back(newPositions);
+        }
+
+        listOfVertexes.push_back(newVertexPositions);
+
+        int totalFaces = 6 * newVertexPositions.size();
+        int totalVertices = 8 * newVertexPositions.size();
+
+        amountOfFaces.push_back(totalFaces);
+        amountOfVertices.push_back(totalVertices);
+
+        // calculate middle cube position
+        cube->CalculateNewRadius();
+
+        std::vector<GLfloat> storingNewMidVector = cube->CalculateNewPositions(*cube, currVector);
+        listOfMidVertexes.push_back(storingNewMidVector);
+    }
 }
 
 bool* RTRSceneTwo::GetDepthBuffer()

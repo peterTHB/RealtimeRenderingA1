@@ -103,10 +103,13 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Src\RTRApp.vert">
+    <None Include="RTRShader.frag">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Src\RTRApp.frag">
+    <None Include="RTRShader.geom">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="RTRShader.vert">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

@@ -49,7 +49,7 @@ void RTRSceneOne::DrawAll() {
 	geom->DrawAllImmediate(listOfVertexes.at(currSubdivision), facesCopy);
 }
 
-void RTRSceneOne::DrawCubes()
+void RTRSceneOne::CreateCubes()
 {
 	int currCalSubdivision = m_Subdivisions - 1;
 
