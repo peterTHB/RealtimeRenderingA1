@@ -12,16 +12,6 @@ Geometry::Geometry(RTRShader* shader) {
 }
 
 void Geometry::DrawAllImmediate(std::vector<std::vector<GLfloat>> vertexAndColoursHolder, std::vector<int> faces) {
-	GLfloat ambientArray[] = { 0.2f, 1.0f, 0.2f, 1.0f };
-	GLfloat diffuseArray[] = { 0.2f, 0.2f, 1.0f, 1.0f };
-	GLfloat specularArray[] = { 1.0f, 0.2f, 0.2f, 1.0f };
-	GLfloat shinyArray[] = { 100.0f };
-
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ambientArray);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuseArray);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specularArray);
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shinyArray);
-
 	DrawCubeWithPoints(vertexAndColoursHolder, faces);
 }
 
@@ -42,10 +32,19 @@ void Geometry::DrawCubeWithPoints(std::vector<std::vector<GLfloat>> vertexAndCol
 				int posVertexY = (faces.at(i) + (faces.at(i) * 5) + 1) + (j * 24);
 				int posVertexZ = (faces.at(i) + (faces.at(i) * 5) + 2) + (j * 24);
 
+				GLfloat ambientArray[] = { 0.6f, 0.6f, 0.6f, 1.0f };
+				GLfloat diffuseArray[] = { 0.8f, 0.8f, 0.8f, 1.0f };
+				GLfloat specularArray[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+				GLfloat shinyArray[] = { 50.0f };
+
+				glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ambientArray);
+				glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuseArray);
+				glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specularArray);
+				glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shinyArray);
+
 				glColor3f(VACVertex.at(posColourX),
 					VACVertex.at(posColourY),
 					VACVertex.at(posColourZ));
-				glNormal3f(0.0f, 0.0f, 1.0f);
 				glVertex3f(VACVertex.at(posVertexX),
 					VACVertex.at(posVertexY),
 					VACVertex.at(posVertexZ));

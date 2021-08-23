@@ -26,35 +26,35 @@
 std::vector<GLfloat> VertexPointsAndColours = {
     // Points         Colours
     // Back
-    0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
-    -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-    -0.5f, 0.5f, -0.5f, 0.0f, 0.0f, 1.0f,
-    0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 1.0f,
+    -1.0f, 1.0f, -1.0f, 1.0f, 0.0f, 0.0f,
+    -1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 0.0f,
+    1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 0.0f,
+    1.0f, 1.0f, -1.0f, 1.0f, 0.0f, 0.0f,
     // Front
-    -0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
-    0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
-    0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
-    -0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 1.0f,
+    1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+    1.0f, -1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+    -1.0f, -1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+    -1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
     // Left
-    -0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
-    -0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
-    -0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
-    -0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 1.0f,
+    -1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+    -1.0f, -1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+    -1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 1.0f,
+    -1.0f, 1.0f, -1.0f, 0.0f, 0.0f, 1.0f,
     // Right
-    0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
-    0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-    0.5f, 0.5f, -0.5f, 0.0f, 0.0f, 1.0f,
-    0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 1.0f,
-    // Top
-    -0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
-    0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
-    0.5f, 0.5f, -0.5f, 0.0f, 0.0f, 1.0f,
-    -0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 1.0f,
+    1.0f, 1.0f, -1.0f, 1.0f, 0.0f, 1.0f,
+    1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 1.0f,
+    1.0f, -1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+    1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
     // Bottom
-    -0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
-    0.5f, -0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
-    0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
-    -0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 1.0f
+    1.0f, -1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+    1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 0.0f,
+    -1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 0.0f,
+    -1.0f, -1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+    // Top
+    1.0f, 1.0f, -1.0f, 0.0f, 1.0f, 1.0f,
+    1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+    -1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+    -1.0f, 1.0f, -1.0f, 0.0f, 1.0f, 1.0f
 };
 
 std::vector<int> faces = {
@@ -170,12 +170,12 @@ void AssignmentApp::CheckInput()
 
                 // Camera Controls
             case SDLK_w:
-                cameraPos -= cameraSpeed * cameraFront;
+                cameraPos += cameraSpeed * cameraFront;
                 camera->SetCameraPos(cameraPos);
                 break;
 
             case SDLK_s:
-                cameraPos += cameraSpeed * cameraFront;
+                cameraPos -= cameraSpeed * cameraFront;
                 camera->SetCameraPos(cameraPos);
                 break;
 
@@ -433,27 +433,28 @@ void AssignmentApp::RenderFrame()
 
     if (*ListOfScenes[m_CurrSceneNum - 1]->GetLighting()) {
         if (m_CurrSceneNum == 1) {
-            glEnable(GL_NORMALIZE);
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            glShadeModel(GL_SMOOTH);
             glEnable(GL_LIGHTING);
             lighting->ImmediateSpotLighting(m_NumOfLights);
         }
         else {
+            glDisable(GL_BLEND);
             glDisable(GL_LIGHTING);
-            glDisable(GL_NORMALIZE);
             lighting->ModernSpotLighting(m_NumOfLights);
         }
     }
     else {
         glDisable(GL_LIGHTING);
-        glDisable(GL_NORMALIZE);
+        glDisable(GL_BLEND);
     }
 
     RenderOSD();
 
-    //int err;
-    //while ((err = glGetError()) != GL_NO_ERROR)
-    //    //printf("Error");
-    //    std::cout << "Error: " << err << std::endl;
+    int err;
+    while ((err = glGetError()) != GL_NO_ERROR)
+        std::cout << "Error: " << err << std::endl;
 
     SDL_GL_SwapWindow(m_SDLWindow);
 }

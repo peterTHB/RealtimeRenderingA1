@@ -14,7 +14,7 @@ RTRSceneOne::RTRSceneOne(float windowWidth, float windowHeight, std::vector<GLfl
 	amountOfFaces.push_back(6);
 
 	geom = new Geometry;
-	cube = new Cube(0.0f, 0.0f, 0.0f, 1.0f);
+	cube = new Cube(0.0f, 0.0f, 0.0f, 2.0f);
 	Cubes.push_back(*cube);
 	lighting = lighting;
 
@@ -26,9 +26,6 @@ RTRSceneOne::RTRSceneOne(float windowWidth, float windowHeight, std::vector<GLfl
 }
 
 void RTRSceneOne::Init() {
-	glMatrixMode(GL_PROJECTION);
-	glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
-	glMatrixMode(GL_MODELVIEW);
 }
 
 void RTRSceneOne::End() {

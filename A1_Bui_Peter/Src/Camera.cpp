@@ -1,7 +1,7 @@
 #include "Camera.h"
 
 Camera::Camera(RTRShader* shader) {
-    cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
+    cameraPos = glm::vec3(0.0f, 0.0f, 4.0f);
     cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
     cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
     cameraWUp = cameraUp;
@@ -17,7 +17,7 @@ Camera::Camera(RTRShader* shader) {
 
     checkMouse = true;
     pitch = 0.0f;
-    yaw = 90.0f;
+    yaw = -90.0f;
     lastX = 0.0f;
     lastY = 0.0f;
     fov = 60.0f;
@@ -34,7 +34,7 @@ void Camera::ImmediateCamera(int width, int height) {
     this->width = width;
     this->height = height;
 
-    proj = glm::perspective(glm::radians(fov), (float)width / (float)height, 1.0f, 100.0f);
+    proj = glm::perspective(glm::radians(fov), (float)width / (float)height, 0.1f, 100.0f);
     view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
     glMatrixMode(GL_PROJECTION);
@@ -42,7 +42,7 @@ void Camera::ImmediateCamera(int width, int height) {
     glMatrixMode(GL_MODELVIEW);
     glLoadMatrixf(glm::value_ptr(view));
 
-    lighting->ImmediateLighting(cameraPos);
+    lighting->ImmediateLighting(cameraPos + cameraFront);
 }
 
 void Camera::ModernCamera(int width, int height) {
@@ -50,19 +50,11 @@ void Camera::ModernCamera(int width, int height) {
     this->width = width;
     this->height = height;
 
-    /*std::cout << "Got proj and view" << std::endl;*/
-
-    proj = glm::perspective(glm::radians(fov), (float)width / (float)height, 1.0f, 100.0f);
+    proj = glm::perspective(glm::radians(fov), (float)width / (float)height, 1.0f, 10.0f);
     sceneShader->SetMat4("projection", proj);
-
-    //std::cout << "Error: " << glGetError() << std::endl;
 
     view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
     sceneShader->SetMat4("view", view);
-
-   /* std::cout << "Error: " << glGetError() << std::endl;*/
-
-    std::cout << cameraPos.x + cameraFront.x << "/" << cameraPos.y + cameraFront.y << "/" << cameraPos.z + cameraFront.z << std::endl;
 }
 
 void Camera::Mouse_Callback(SDL_Window* window, float xRel, float yRel) {
@@ -87,15 +79,17 @@ void Camera::Mouse_Callback(SDL_Window* window, float xRel, float yRel) {
     xoffset *= sensitivity;
     yoffset *= sensitivity;
 
-    yaw += (-xRel * sensitivity);
-    pitch += (yRel * sensitivity);
+    yaw += (xRel * sensitivity);
+    pitch += (-yRel * sensitivity);
 
     LockCamera();
     UpdateVectors();
 }
 
 void Camera::UpdateVectors() {
-    glm::vec3 direction;
+    glm::vec3 direction = glm::vec3(0.0f, 0.0f, 0.0f);
+    glGetError();
+    /*std::cout << "DIRECTION ITSELF Error: " << glGetError() << std::endl;*/
 
     direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
     direction.y = sin(glm::radians(pitch));
