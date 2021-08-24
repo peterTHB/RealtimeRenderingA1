@@ -84,6 +84,8 @@ std::vector<GLfloat> Cube::CalculateNewPositionsModern(Cube currCube, std::vecto
 		}
 	}
 
+	//std::cout << "SIZE: " << VerAndColPoints.size() / 36 << std::endl;
+
 	return VerAndColPoints;
 }
 

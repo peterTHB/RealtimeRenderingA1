@@ -65,15 +65,17 @@ void RTRSceneTwo::DrawModern(Camera* camera) {
     // VBO
     glGenBuffers(1, &m_VertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
-    glBufferData(GL_ARRAY_BUFFER, listOfVertexes.at(currSubdivision).at(0).size() * sizeof(GLfloat),
-        listOfVertexes.at(currSubdivision).at(0).data(), GL_STATIC_DRAW);
-   /* std::vector<GLfloat> allVertices;
+    //glBufferData(GL_ARRAY_BUFFER, listOfVertexes.at(currSubdivision).at(0).size() * sizeof(GLfloat),
+    //    listOfVertexes.at(currSubdivision).at(0).data(), GL_STATIC_DRAW);
+    std::vector<GLfloat> allVertices;
     for (int i = 0; i < listOfVertexes.at(currSubdivision).size(); i++) {
         allVertices.insert(allVertices.end(), listOfVertexes.at(currSubdivision).at(i).begin(), 
             listOfVertexes.at(currSubdivision).at(i).end());
     }
 
-    glBufferData(GL_ARRAY_BUFFER, allVertices.size() * sizeof(GLfloat), allVertices.data(), GL_STATIC_DRAW);*/
+    /*std::cout << "Section: " << allVertices.size() / 216 << std::endl;*/
+
+    glBufferData(GL_ARRAY_BUFFER, allVertices.size() * sizeof(GLfloat), allVertices.data(), GL_STATIC_DRAW);
 
     // VAO
     glGenVertexArrays(1, &m_VertexArray);
@@ -124,6 +126,8 @@ void RTRSceneTwo::CreateCubes()
 
         this->Cubes = newCube;
 
+        std::cout << "HOW MANY OUT: " << Cubes.size() << std::endl;
+
         std::vector<std::vector<GLfloat>> newVertexPositions;
         std::vector<GLfloat> currVector = listOfMidVertexes.at(currCalSubdivision);
 
@@ -133,30 +137,6 @@ void RTRSceneTwo::CreateCubes()
         }
 
         listOfVertexes.push_back(newVertexPositions);
-        
-        //-------------------------------------------
-
-         // Make buffer for cubes
-        glGenBuffers(1, &m_InstancedVertexBuffer);
-        glBindBuffer(GL_ARRAY_BUFFER, m_InstancedVertexBuffer);
-        std::vector<GLfloat> allNewPositions;
-        for (int i = 0; i < newVertexPositions.size(); i++) {
-            allNewPositions.insert(allNewPositions.end(), newVertexPositions.at(i).begin(), 
-                newVertexPositions.at(i).end());
-        }
-        glBufferData(GL_ARRAY_BUFFER, newVertexPositions.size() * sizeof(GLfloat),
-            &allNewPositions[0], GL_STREAM_DRAW);
-
-        //enable vertex attribute 3 -> mat4
-        glEnableVertexAttribArray(4);
-        glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
-
-        // tell OpenGL this is an instanced vertex attribute.
-        glVertexAttribDivisor(2, 1);
-
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-        //------------------------------------------
 
         int totalFaces = 6 * newVertexPositions.size();
         int totalVertices = 8 * newVertexPositions.size();
@@ -169,6 +149,30 @@ void RTRSceneTwo::CreateCubes()
 
         std::vector<GLfloat> storingNewMidVector = cube->CalculateNewPositionsModern(*cube, currVector);
         listOfMidVertexes.push_back(storingNewMidVector);
+
+        //-------------------------------------------
+
+        //// Make buffer for cubes
+        //glGenBuffers(1, &m_InstancedVertexBuffer);
+        //glBindBuffer(GL_ARRAY_BUFFER, m_InstancedVertexBuffer);
+        //std::vector<GLfloat> allNewPositions;
+        //for (int i = 0; i < newVertexPositions.size(); i++) {
+        //    allNewPositions.insert(allNewPositions.end(), newVertexPositions.at(i).begin(),
+        //        newVertexPositions.at(i).end());
+        //}
+        //glBufferData(GL_ARRAY_BUFFER, newVertexPositions.size() * sizeof(GLfloat),
+        //    &allNewPositions[0], GL_STREAM_DRAW);
+
+        ////enable vertex attribute 3 -> mat4
+        //glEnableVertexAttribArray(2);
+        //glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
+
+        //// tell OpenGL this is an instanced vertex attribute.
+        //glVertexAttribDivisor(2, 1);
+
+        ///*glBindBuffer(GL_ARRAY_BUFFER, 0);*/
+
+        //------------------------------------------
     }
 }
 
