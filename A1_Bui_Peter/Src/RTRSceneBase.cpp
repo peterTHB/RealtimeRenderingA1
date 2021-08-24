@@ -41,7 +41,7 @@ void RTRSceneBase::End() {
 	listOfVertexes.clear();
 }
 
-void RTRSceneBase::DrawAll() {
+void RTRSceneBase::DrawAll(Camera* camera) {
 
 }
 

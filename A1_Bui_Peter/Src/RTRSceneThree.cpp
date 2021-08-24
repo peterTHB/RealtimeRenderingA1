@@ -15,18 +15,20 @@ RTRSceneThree::RTRSceneThree(float windowWidth, float windowHeight, std::vector<
 	amountOfVertices.push_back(8);
 	amountOfFaces.push_back(6);
 
-	geom = new Geometry;
-	cube = new Cube(0.0f, 0.0f, 0.0f, 2.0f);
+	sceneShader = shader;
+	geom = new Geometry(sceneShader);
+	cube = new Cube(0.0f, 0.0f, 0.0f, 1.0f);
 	Cubes.push_back(*cube);
 	lighting = lighting;
 
 	facesCopy = faces;
 	std::vector<std::vector<GLfloat>> placeholder;
-	placeholder.push_back(vertexAndColours);
+	std::vector<GLfloat> newVertexPositions =
+		cube->CalculateNewVertexPositions(*cube, vertexAndColours, facesCopy);
+	placeholder.push_back(newVertexPositions);
 	listOfVertexes.push_back(placeholder);
-	listOfMidVertexes.push_back(vertexAndColours);
+	listOfMidVertexes.push_back(newVertexPositions);
 
-	sceneShader = shader;
 	m_VertexArray = 0;
 	m_VertexBuffer = 0;
 	m_FaceElementBuffer = 0;
@@ -52,7 +54,7 @@ void RTRSceneThree::End() {
 	listOfVertexes.clear();
 }
 
-void RTRSceneThree::DrawAll() {
+void RTRSceneThree::DrawAll(Camera* camera) {
 	
 }
 
@@ -74,7 +76,7 @@ void RTRSceneThree::CreateCubes()
 		std::vector<GLfloat> currVector = listOfMidVertexes.at(currCalSubdivision);
 
 		for (auto& currCube : Cubes) {
-			std::vector<GLfloat> newPositions = cube->CalculateNewPositions(currCube, currVector);
+			std::vector<GLfloat> newPositions = cube->CalculateNewPositionsModern(currCube, currVector);
 			newVertexPositions.push_back(newPositions);
 		}
 
@@ -89,7 +91,7 @@ void RTRSceneThree::CreateCubes()
 		// calculate middle cube position
 		cube->CalculateNewRadius();
 
-		std::vector<GLfloat> storingNewMidVector = cube->CalculateNewPositions(*cube, currVector);
+		std::vector<GLfloat> storingNewMidVector = cube->CalculateNewPositionsModern(*cube, currVector);
 		listOfMidVertexes.push_back(storingNewMidVector);
 	}
 }

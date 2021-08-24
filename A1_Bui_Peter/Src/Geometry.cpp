@@ -12,14 +12,14 @@ Geometry::Geometry(RTRShader* shader) {
 }
 
 void Geometry::DrawAllImmediate(std::vector<std::vector<GLfloat>> vertexAndColoursHolder, std::vector<int> faces) {
-	DrawCubeWithPoints(vertexAndColoursHolder, faces);
+	DrawCubeWithPointsImmediate(vertexAndColoursHolder, faces);
 }
 
-void Geometry::DrawAllModern() {
-
+void Geometry::DrawAllModern(std::vector<std::vector<GLfloat>> vertexAndColoursHolder, std::vector<int> faces) {
+	DrawCubeWithPointsModern(vertexAndColoursHolder, faces);
 }
 
-void Geometry::DrawCubeWithPoints(std::vector<std::vector<GLfloat>> vertexAndColoursHolder, std::vector<int> faces) {
+void Geometry::DrawCubeWithPointsImmediate(std::vector<std::vector<GLfloat>> vertexAndColoursHolder, std::vector<int> faces) {
 	glBegin(GL_TRIANGLES);
 	for (auto& VACVertex : vertexAndColoursHolder) {
 		for (int j = 0; j < VACVertex.size() / 24; j++) {
@@ -53,6 +53,18 @@ void Geometry::DrawCubeWithPoints(std::vector<std::vector<GLfloat>> vertexAndCol
 	}
 	glEnd();
 	glUseProgram(0);
+}
+
+void Geometry::DrawCubeWithPointsModern(std::vector<std::vector<GLfloat>> vertexAndColoursHolder, std::vector<int> faces)
+{
+	glm::mat4 model = glm::mat4(1.0f);
+	sceneShader->SetMat4("model", model);
+	
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+	
+	//glDrawArraysInstanced(GL_TRIANGLES, 0, 36, Cubes.size());
+
+	/*glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);*/
 }
 
 glm::vec3 Geometry::CalculateNormals(glm::vec3 point0, glm::vec3 point1, glm::vec3 point2)

@@ -15,21 +15,24 @@ RTRSceneTwo::RTRSceneTwo(float windowWidth, float windowHeight, std::vector<GLfl
     amountOfVertices.push_back(8);
     amountOfFaces.push_back(6);
 
-    geom = new Geometry;
-    cube = new Cube(0.0f, 0.0f, 0.0f, 2.0f);
+    sceneShader = shader;
+    geom = new Geometry(sceneShader);
+    cube = new Cube(0.0f, 0.0f, 0.0f, 1.0f);
     Cubes.push_back(*cube);
     lighting = lighting;
 
     facesCopy = faces;
     std::vector<std::vector<GLfloat>> placeholder;
-    placeholder.push_back(vertexAndColours);
+    std::vector<GLfloat> newVertexPositions = 
+        cube->CalculateNewVertexPositions(*cube, vertexAndColours, facesCopy);
+    placeholder.push_back(newVertexPositions);
     listOfVertexes.push_back(placeholder);
-    listOfMidVertexes.push_back(vertexAndColours);
+    listOfMidVertexes.push_back(newVertexPositions);
 
-    sceneShader = shader;
     m_VertexArray = 0;
     m_VertexBuffer = 0;
     m_FaceElementBuffer = 0;
+    m_InstancedVertexBuffer = 0;
 
     modelMatrix = glm::mat4(1.0f);
 }
@@ -52,16 +55,27 @@ void RTRSceneTwo::End() {
 	listOfVertexes.clear();
 }
 
-void RTRSceneTwo::DrawAll() {
-    DrawModern();
+void RTRSceneTwo::DrawAll(Camera* camera) {
+    DrawModern(camera);
 }
 
-void RTRSceneTwo::DrawModern() {
+void RTRSceneTwo::DrawModern(Camera* camera) {
+    int currSubdivision = m_Subdivisions - 1;
+         
+    // VBO
     glGenBuffers(1, &m_VertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
-    glBufferData(GL_ARRAY_BUFFER, listOfVertexes.at(0).at(0).size() * sizeof(GLfloat),
-        listOfVertexes.at(0).at(0).data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, listOfVertexes.at(currSubdivision).at(0).size() * sizeof(GLfloat),
+        listOfVertexes.at(currSubdivision).at(0).data(), GL_STATIC_DRAW);
+   /* std::vector<GLfloat> allVertices;
+    for (int i = 0; i < listOfVertexes.at(currSubdivision).size(); i++) {
+        allVertices.insert(allVertices.end(), listOfVertexes.at(currSubdivision).at(i).begin(), 
+            listOfVertexes.at(currSubdivision).at(i).end());
+    }
 
+    glBufferData(GL_ARRAY_BUFFER, allVertices.size() * sizeof(GLfloat), allVertices.data(), GL_STATIC_DRAW);*/
+
+    // VAO
     glGenVertexArrays(1, &m_VertexArray);
     glBindVertexArray(m_VertexArray);
     glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
@@ -70,38 +84,30 @@ void RTRSceneTwo::DrawModern() {
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
     glEnableVertexAttribArray(1);
 
+    // EBO
     glGenBuffers(1, &m_FaceElementBuffer);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_FaceElementBuffer);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, facesCopy.size() * sizeof(int), facesCopy.data(), GL_STATIC_DRAW);
 
     glUseProgram(*sceneShader->GetID());
+    
+    // Camera View and Proj
+    camera->ModernCamera(m_WindowWidth, m_WindowHeight);
+
     glBindVertexArray(m_VertexArray);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    // Model
+    geom->DrawAllModern(listOfVertexes.at(currSubdivision), facesCopy);
+
     glBindVertexArray(0);
-
-    static float rotDegPerSec = 180.0f;
-    static float rotAngle = 0.0f;
-
-    rotAngle = rotAngle + rotDegPerSec * ((float)1.0 / 1000.0f);
-
-    if (rotAngle >= 360.0f) {
-        rotAngle = rotAngle - 360.0f;
-    }
-
-    /*modelMatrix = glm::mat4(1.0f);*/
-    /*modelMatrix = glm::rotate(modelMatrix, glm::radians(-45.0f), glm::vec3(1.0f, 0.0f, 0.0f));*/
-    //modelMatrix = glm::rotate(modelMatrix, glm::radians(rotAngle), glm::vec3(0.0f, 0.0f, 1.0f));
-    sceneShader->SetMat4("model", modelMatrix);
-
-    /*std::cout << "Model matrix" << std::endl;
-    std::cout << "Error: " << glGetError() << std::endl;*/
 
     glDeleteVertexArrays(1, &m_VertexArray);
     glDeleteBuffers(1, &m_VertexBuffer);
     glDeleteBuffers(1, &m_FaceElementBuffer);
+    glDeleteBuffers(1, &m_InstancedVertexBuffer);
     m_VertexArray = 0;
     m_VertexBuffer = 0;
     m_FaceElementBuffer = 0;
+    m_InstancedVertexBuffer = 0;
 }
 
 void RTRSceneTwo::CreateCubes()
@@ -122,11 +128,35 @@ void RTRSceneTwo::CreateCubes()
         std::vector<GLfloat> currVector = listOfMidVertexes.at(currCalSubdivision);
 
         for (auto& currCube : Cubes) {
-            std::vector<GLfloat> newPositions = cube->CalculateNewPositions(currCube, currVector);
+            std::vector<GLfloat> newPositions = cube->CalculateNewPositionsModern(currCube, currVector);
             newVertexPositions.push_back(newPositions);
         }
 
         listOfVertexes.push_back(newVertexPositions);
+        
+        //-------------------------------------------
+
+         // Make buffer for cubes
+        glGenBuffers(1, &m_InstancedVertexBuffer);
+        glBindBuffer(GL_ARRAY_BUFFER, m_InstancedVertexBuffer);
+        std::vector<GLfloat> allNewPositions;
+        for (int i = 0; i < newVertexPositions.size(); i++) {
+            allNewPositions.insert(allNewPositions.end(), newVertexPositions.at(i).begin(), 
+                newVertexPositions.at(i).end());
+        }
+        glBufferData(GL_ARRAY_BUFFER, newVertexPositions.size() * sizeof(GLfloat),
+            &allNewPositions[0], GL_STREAM_DRAW);
+
+        //enable vertex attribute 3 -> mat4
+        glEnableVertexAttribArray(4);
+        glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
+
+        // tell OpenGL this is an instanced vertex attribute.
+        glVertexAttribDivisor(2, 1);
+
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+        //------------------------------------------
 
         int totalFaces = 6 * newVertexPositions.size();
         int totalVertices = 8 * newVertexPositions.size();
@@ -137,7 +167,7 @@ void RTRSceneTwo::CreateCubes()
         // calculate middle cube position
         cube->CalculateNewRadius();
 
-        std::vector<GLfloat> storingNewMidVector = cube->CalculateNewPositions(*cube, currVector);
+        std::vector<GLfloat> storingNewMidVector = cube->CalculateNewPositionsModern(*cube, currVector);
         listOfMidVertexes.push_back(storingNewMidVector);
     }
 }

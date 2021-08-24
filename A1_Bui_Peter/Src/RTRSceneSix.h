@@ -7,7 +7,7 @@ public:
 		std::vector<int> faces, Lighting* lighting, RTRShader* shader);
 	virtual void Init();
 	virtual void End();
-	virtual void DrawAll();
+	virtual void DrawAll(Camera* camera);
 	virtual void CreateCubes();
 	
 	virtual bool* GetDepthBuffer();

@@ -41,9 +41,10 @@ void RTRSceneOne::End() {
 	listOfVertexes.clear();
 }
 
-void RTRSceneOne::DrawAll() {
+void RTRSceneOne::DrawAll(Camera* camera) {
 	int currSubdivision = m_Subdivisions - 1;
 	geom->DrawAllImmediate(listOfVertexes.at(currSubdivision), facesCopy);
+	camera->ImmediateCamera(m_WindowWidth, m_WindowHeight);
 }
 
 void RTRSceneOne::CreateCubes()
@@ -64,7 +65,7 @@ void RTRSceneOne::CreateCubes()
 		std::vector<GLfloat> currVector = listOfMidVertexes.at(currCalSubdivision);
 
 		for (auto& currCube : Cubes) {
-			std::vector<GLfloat> newPositions = cube->CalculateNewPositions(currCube, currVector);
+			std::vector<GLfloat> newPositions = cube->CalculateNewPositionsImmediate(currCube, currVector);
 			newVertexPositions.push_back(newPositions);
 		}
 
@@ -79,7 +80,7 @@ void RTRSceneOne::CreateCubes()
 		// calculate middle cube position
 		cube->CalculateNewRadius();
 
-		std::vector<GLfloat> storingNewMidVector = cube->CalculateNewPositions(*cube, currVector);
+		std::vector<GLfloat> storingNewMidVector = cube->CalculateNewPositionsImmediate(*cube, currVector);
 		listOfMidVertexes.push_back(storingNewMidVector);
 	}
 }

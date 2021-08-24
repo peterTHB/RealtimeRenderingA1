@@ -9,6 +9,7 @@
 #include "Cube.h"
 #include "Lighting.h"
 #include "RTRShader.h"
+#include "Camera.h"
 
 class RTRSceneBase {
 public:
@@ -16,7 +17,7 @@ public:
 	RTRSceneBase(float windowWidth, float windowHeight);
 	virtual void Init();
 	virtual void End();
-	virtual void DrawAll();
+	virtual void DrawAll(Camera* camera);
 	virtual void CreateCubes();
 	
 	virtual bool* GetDepthBuffer();

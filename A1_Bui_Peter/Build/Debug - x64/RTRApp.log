@@ -1,3 +1,23 @@
-﻿  Lighting.cpp
+﻿  Cube.cpp
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\Cube.cpp(42,54): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\Cube.cpp(69,54): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\Cube.cpp(96,23): warning C4244: 'initializing': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\Cube.cpp(97,23): warning C4244: 'initializing': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\Cube.cpp(98,23): warning C4244: 'initializing': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\Cube.cpp(100,23): warning C4244: 'initializing': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\Cube.cpp(101,23): warning C4244: 'initializing': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\Cube.cpp(102,23): warning C4244: 'initializing': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\Cube.cpp(104,62): warning C4244: 'argument': conversion from 'GLfloat' to 'const unsigned __int64', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\Cube.cpp(104,95): warning C4244: 'argument': conversion from 'GLfloat' to 'const unsigned __int64', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\Cube.cpp(105,25): warning C4244: 'argument': conversion from 'GLfloat' to 'const unsigned __int64', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\Cube.cpp(105,58): warning C4244: 'argument': conversion from 'GLfloat' to 'const unsigned __int64', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\Cube.cpp(105,91): warning C4244: 'argument': conversion from 'GLfloat' to 'const unsigned __int64', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\Cube.cpp(105,124): warning C4244: 'argument': conversion from 'GLfloat' to 'const unsigned __int64', possible loss of data
+  RTRSceneTwo.cpp
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\RTRSceneTwo.cpp(95,41): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\RTRSceneTwo.cpp(95,26): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\RTRSceneTwo.cpp(161,55): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\RTRSceneTwo.cpp(162,58): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  Generating Code...
   RTRApp.vcxproj -> C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Build\Debug - x64\A1.exe
   0 File(s) copied

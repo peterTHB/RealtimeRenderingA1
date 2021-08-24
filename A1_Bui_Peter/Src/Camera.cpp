@@ -20,7 +20,7 @@ Camera::Camera(RTRShader* shader) {
     yaw = -90.0f;
     lastX = 0.0f;
     lastY = 0.0f;
-    fov = 60.0f;
+    fov = 45.0f;
 
     lighting = new Lighting();
     sceneShader = shader;
@@ -50,11 +50,11 @@ void Camera::ModernCamera(int width, int height) {
     this->width = width;
     this->height = height;
 
-    proj = glm::perspective(glm::radians(fov), (float)width / (float)height, 1.0f, 10.0f);
-    sceneShader->SetMat4("projection", proj);
-
+    view = glm::mat4(1.0f);
     view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
     sceneShader->SetMat4("view", view);
+    proj = glm::perspective(glm::radians(fov), (float)width / (float)height, 0.1f, 100.0f);
+    sceneShader->SetMat4("projection", proj);
 }
 
 void Camera::Mouse_Callback(SDL_Window* window, float xRel, float yRel) {
@@ -89,7 +89,6 @@ void Camera::Mouse_Callback(SDL_Window* window, float xRel, float yRel) {
 void Camera::UpdateVectors() {
     glm::vec3 direction = glm::vec3(0.0f, 0.0f, 0.0f);
     glGetError();
-    /*std::cout << "DIRECTION ITSELF Error: " << glGetError() << std::endl;*/
 
     direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
     direction.y = sin(glm::radians(pitch));

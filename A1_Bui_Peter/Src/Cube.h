@@ -13,8 +13,12 @@ class Cube {
 public:
 	Cube(float x, float y, float z, float dimensions);
 	virtual std::vector<Cube> CalculateCube();
-	virtual std::vector<GLfloat> CalculateNewPositions(Cube currCube, 
+	virtual std::vector<GLfloat> CalculateNewPositionsImmediate(Cube currCube,
 		std::vector<GLfloat> VerAndColPoints);
+	virtual std::vector<GLfloat> CalculateNewPositionsModern(Cube currCube,
+		std::vector<GLfloat> VerAndColPoints);
+	virtual std::vector<GLfloat> CalculateNewVertexPositions(Cube currCube, 
+		std::vector<GLfloat> VerAndColPoints, std::vector<int> faces);
 	virtual void CalculateNewRadius();
 	virtual float* GetPosX();
 	virtual float* GetPosY();

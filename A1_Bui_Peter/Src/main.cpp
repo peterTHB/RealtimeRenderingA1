@@ -25,37 +25,71 @@
 
 std::vector<GLfloat> VertexPointsAndColours = {
     // Points         Colours
-    // Back
-    -1.0f, 1.0f, -1.0f, 1.0f, 0.0f, 0.0f,
-    -1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 0.0f,
-    1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 0.0f,
-    1.0f, 1.0f, -1.0f, 1.0f, 0.0f, 0.0f,
+    //// Back
+    -0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+    0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+    0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
     // Front
-    1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-    1.0f, -1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-    -1.0f, -1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-    -1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+    0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+    0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+    -0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+    -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
     // Left
-    -1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-    -1.0f, -1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-    -1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 1.0f,
-    -1.0f, 1.0f, -1.0f, 0.0f, 0.0f, 1.0f,
+    -0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+    -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+    -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 1.0f,
+    -0.5f, 0.5f, -0.5f, 0.0f, 0.0f, 1.0f,
     // Right
-    1.0f, 1.0f, -1.0f, 1.0f, 0.0f, 1.0f,
-    1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 1.0f,
-    1.0f, -1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-    1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+    0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 1.0f,
+    0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 1.0f,
+    0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 1.0f,
+    0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 1.0f,
     // Bottom
-    1.0f, -1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-    1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 0.0f,
-    -1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 0.0f,
-    -1.0f, -1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+    0.5f, -0.5f, 0.5f, 1.0f, 1.0f, 0.0f,
+    0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 0.0f,
+    -0.5f, -0.5f, 0.5f, 1.0f, 1.0f, 0.0f,
     // Top
-    1.0f, 1.0f, -1.0f, 0.0f, 1.0f, 1.0f,
-    1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
-    -1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
-    -1.0f, 1.0f, -1.0f, 0.0f, 1.0f, 1.0f
+    0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 1.0f,
+    0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 1.0f,
+    -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 1.0f,
+    -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 1.0f
 };
+
+//std::vector<GLfloat> VertexPointsAndColours = {
+//    // Points         Colours
+//    // Back
+//    -1.0f, 1.0f, -1.0f, 1.0f, 0.0f, 0.0f,
+//    -1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 0.0f,
+//    1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 0.0f,
+//    1.0f, 1.0f, -1.0f, 1.0f, 0.0f, 0.0f,
+//    // Front
+//    1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+//    1.0f, -1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+//    -1.0f, -1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+//    -1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
+//    // Left
+//    -1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+//    -1.0f, -1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
+//    -1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 1.0f,
+//    -1.0f, 1.0f, -1.0f, 0.0f, 0.0f, 1.0f,
+//    // Right
+//    1.0f, 1.0f, -1.0f, 1.0f, 0.0f, 1.0f,
+//    1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 1.0f,
+//    1.0f, -1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+//    1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+//    // Bottom
+//    1.0f, -1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+//    1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 0.0f,
+//    -1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 0.0f,
+//    -1.0f, -1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+//    // Top
+//    1.0f, 1.0f, -1.0f, 0.0f, 1.0f, 1.0f,
+//    1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+//    -1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+//    -1.0f, 1.0f, -1.0f, 0.0f, 1.0f, 1.0f
+//};
 
 std::vector<int> faces = {
     0, 1, 2,
@@ -75,7 +109,7 @@ private:
     bool m_QuitApp = false;
 
     bool m_ShowOSD = true;
-    int m_CurrSceneNum = 1;
+    int m_CurrSceneNum = 2;
     std::string m_Resolution = "";
     float m_RefreshRate = 0;
     float m_FPS = 0;
@@ -422,14 +456,7 @@ void AssignmentApp::RenderFrame()
 
     m_CurrScene = ListOfScenes[m_CurrSceneNum - 1];
     m_CurrScene->Init();
-    m_CurrScene->DrawAll();
-
-    if (m_CurrSceneNum == 1) {
-        camera->ImmediateCamera(width, height);
-    }
-    else {
-        camera->ModernCamera(width, height);
-    }
+    m_CurrScene->DrawAll(camera);
 
     if (*ListOfScenes[m_CurrSceneNum - 1]->GetLighting()) {
         if (m_CurrSceneNum == 1) {
