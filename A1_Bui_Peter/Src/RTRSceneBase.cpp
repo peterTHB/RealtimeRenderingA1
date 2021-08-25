@@ -9,6 +9,8 @@ RTRSceneBase::RTRSceneBase() {
 	m_Subdivisions = 1;
 	m_Vertices = 1;
 	m_Faces = 1;
+	m_NumLights = 1;
+	m_VertexData = 0;
 
 	geom = nullptr;
 	cube = nullptr;
@@ -23,6 +25,8 @@ RTRSceneBase::RTRSceneBase(float windowWidth, float windowHeight) {
 	m_Subdivisions = 1;
 	m_Vertices = 1;
 	m_Faces = 1;
+	m_NumLights = 1;
+	m_VertexData = 0;
 
 	geom = nullptr;
 	cube = nullptr;
@@ -67,6 +71,12 @@ bool* RTRSceneBase::GetLighting()
 	return state;
 }
 
+int* RTRSceneBase::GetNumLights()
+{
+	int* number = &m_NumLights;
+	return number;
+}
+
 void RTRSceneBase::ToggleDepthBuffer()
 {
 	m_DepthState = !m_DepthState;
@@ -100,6 +110,12 @@ int* RTRSceneBase::GetFaces()
 	return number;
 }
 
+float* RTRSceneBase::GetVertexData()
+{
+	float* number = &m_VertexData;
+	return number;
+}
+
 void RTRSceneBase::IncrementSubdivision()
 {
 	m_Subdivisions += 1;
@@ -108,4 +124,14 @@ void RTRSceneBase::IncrementSubdivision()
 void RTRSceneBase::DecrementSubdivision()
 {
 	m_Subdivisions -= 1;
+}
+
+void RTRSceneBase::IncrementLights()
+{
+	m_NumLights += 1;
+}
+
+void RTRSceneBase::DecrementLights()
+{
+	m_NumLights -= 1;
 }

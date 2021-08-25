@@ -57,40 +57,6 @@ std::vector<GLfloat> VertexPointsAndColours = {
     -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 1.0f
 };
 
-//std::vector<GLfloat> VertexPointsAndColours = {
-//    // Points         Colours
-//    // Back
-//    -1.0f, 1.0f, -1.0f, 1.0f, 0.0f, 0.0f,
-//    -1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 0.0f,
-//    1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 0.0f,
-//    1.0f, 1.0f, -1.0f, 1.0f, 0.0f, 0.0f,
-//    // Front
-//    1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-//    1.0f, -1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-//    -1.0f, -1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-//    -1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f,
-//    // Left
-//    -1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-//    -1.0f, -1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
-//    -1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 1.0f,
-//    -1.0f, 1.0f, -1.0f, 0.0f, 0.0f, 1.0f,
-//    // Right
-//    1.0f, 1.0f, -1.0f, 1.0f, 0.0f, 1.0f,
-//    1.0f, -1.0f, -1.0f, 1.0f, 0.0f, 1.0f,
-//    1.0f, -1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-//    1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
-//    // Bottom
-//    1.0f, -1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-//    1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 0.0f,
-//    -1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 0.0f,
-//    -1.0f, -1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
-//    // Top
-//    1.0f, 1.0f, -1.0f, 0.0f, 1.0f, 1.0f,
-//    1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
-//    -1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
-//    -1.0f, 1.0f, -1.0f, 0.0f, 1.0f, 1.0f
-//};
-
 std::vector<int> faces = {
     0, 1, 2,
     0, 2, 3
@@ -109,13 +75,11 @@ private:
     bool m_QuitApp = false;
 
     bool m_ShowOSD = true;
-    int m_CurrSceneNum = 2;
+    int m_CurrSceneNum = 1;
     std::string m_Resolution = "";
     float m_RefreshRate = 0;
     float m_FPS = 0;
     float FPSCheckCounter = 0;
-    float m_VertexData = 0;
-    int m_NumOfLights = 1;
 
     RTRSceneBase* ListOfScenes[6] = {};
     RTRSceneBase* m_CurrScene = nullptr;
@@ -259,15 +223,15 @@ void AssignmentApp::CheckInput()
 
                 // Increment/Decrement # of Lights
             case SDLK_PERIOD:
-                if (m_NumOfLights < 10) {
-                    m_NumOfLights += 1;
+                if (*ListOfScenes[m_CurrSceneNum - 1]->GetNumLights() < 10) {
+                    ListOfScenes[m_CurrSceneNum - 1]->IncrementLights();
                     break;
                 }
                 break;
 
             case SDLK_COMMA:
-                if (m_NumOfLights > 1) {
-                    m_NumOfLights -= 1;
+                if (*ListOfScenes[m_CurrSceneNum - 1]->GetNumLights() > 1) {
+                    ListOfScenes[m_CurrSceneNum - 1]->DecrementLights();
                     break;
                 }
                 break;
@@ -318,7 +282,31 @@ void AssignmentApp::RenderOSD()
         *ListOfScenes[m_CurrSceneNum - 1]->GetVertices());
     std::string facesText = "# of Faces: " + std::to_string(
         *ListOfScenes[m_CurrSceneNum - 1]->GetFaces());
-    std::string vertexDataText = "Vertex Data: " + std::to_string(m_VertexData);
+
+    std::string splitVertexString = std::to_string((int)*ListOfScenes[m_CurrSceneNum - 1]->GetVertexData());
+    std::string appendVertexString = "";
+    int check = 0;
+    for (unsigned int i = splitVertexString.length(); i > 0; i -= 1) {
+        check++;
+        if (check == 3 && i == 1) {
+            int value = splitVertexString.at(i - 1) - 48;
+            std::string insertString = std::to_string(value);
+            appendVertexString.insert(0, insertString);
+        }
+        else if (check == 3) {
+            int value = splitVertexString.at(i - 1) - 48;
+            std::string insertString = "," + std::to_string(value);
+            appendVertexString.insert(0, insertString);
+            check = 0;
+        }
+        else {
+            int value = splitVertexString.at(i - 1) - 48;
+            std::string insertString = "" + std::to_string(value);
+            appendVertexString.insert(0, insertString);
+        }
+    }
+
+    std::string vertexDataText = "Vertex Data: " + appendVertexString;
     std::string lightsOnText = "";
     std::string depthOnText = "";
     std::string backfaceOnText = "";
@@ -455,8 +443,6 @@ void AssignmentApp::RenderFrame()
     }
 
     m_CurrScene = ListOfScenes[m_CurrSceneNum - 1];
-    m_CurrScene->Init();
-    m_CurrScene->DrawAll(camera);
 
     if (*ListOfScenes[m_CurrSceneNum - 1]->GetLighting()) {
         if (m_CurrSceneNum == 1) {
@@ -464,18 +450,20 @@ void AssignmentApp::RenderFrame()
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             glShadeModel(GL_SMOOTH);
             glEnable(GL_LIGHTING);
-            lighting->ImmediateSpotLighting(m_NumOfLights);
+            lighting->ImmediateSpotLighting(*ListOfScenes[m_CurrSceneNum - 1]->GetNumLights());
         }
         else {
             glDisable(GL_BLEND);
             glDisable(GL_LIGHTING);
-            lighting->ModernSpotLighting(m_NumOfLights);
         }
     }
     else {
         glDisable(GL_LIGHTING);
         glDisable(GL_BLEND);
     }
+
+    m_CurrScene->Init();
+    m_CurrScene->DrawAll(camera);
 
     RenderOSD();
 

@@ -10,8 +10,8 @@ struct Materials
 
 Lighting::Lighting()
 {
-	ambientLighting = { 1.0f, 1.0f, 1.0f, 1.0f };
-	diffuseLighting = { 1.0f, 1.0f, 1.0f, 1.0f };
+	ambientLighting = { 0.2f, 0.2f, 0.2f, 1.0f };
+	diffuseLighting = { 0.8f, 0.8f, 0.8f, 1.0f };
 	specularLighting = { 1.0f, 1.0f, 1.0f, 1.0f };
 }
 
@@ -144,20 +144,13 @@ void Lighting::InstantiateModern()
 
 }
 
-void Lighting::ModernLighting(glm::vec3 cameraPos)
+void Lighting::ModernLighting(int amountOfLights, unsigned int VBO)
 {
-	
-}
+	unsigned int lightVAO;
 
-void Lighting::ModernSpotLighting(int amountOfLights)
-{
-	InstantiateModern();
-}
-
-void Lighting::ImmediateMaterial()
-{
-}
-
-void Lighting::ModernMaterial()
-{
+	glGenVertexArrays(1, &lightVAO);
+	glBindVertexArray(lightVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
 }

@@ -9,11 +9,13 @@ RTRSceneFive::RTRSceneFive(float windowWidth, float windowHeight, std::vector<GL
 	m_BackfaceState = false;
 	m_LightingState = false;
 	m_Subdivisions = 1;
-	m_Vertices = 1;
-	m_Faces = 1;
+	m_Vertices = 8;
+	m_Faces = 6;
+	m_NumLights = 1;
+	m_VertexData = 0.0f;
 
-	amountOfVertices.push_back(8);
-	amountOfFaces.push_back(6);
+	amountOfVertices.push_back(m_Vertices);
+	amountOfFaces.push_back(m_Faces);
 
 	sceneShader = shader;
 	geom = new Geometry(sceneShader);
@@ -32,6 +34,7 @@ RTRSceneFive::RTRSceneFive(float windowWidth, float windowHeight, std::vector<GL
 	m_VertexArray = 0;
 	m_VertexBuffer = 0;
 	m_FaceElementBuffer = 0;
+	m_InstancedVertexBuffer = 0;
 }
 
 void RTRSceneFive::Init() {
@@ -54,6 +57,10 @@ void RTRSceneFive::End() {
 
 void RTRSceneFive::DrawAll(Camera* camera) {
 	
+}
+
+void RTRSceneFive::DrawModern(Camera* camera)
+{
 }
 
 void RTRSceneFive::CreateCubes()
@@ -80,8 +87,8 @@ void RTRSceneFive::CreateCubes()
 
 		listOfVertexes.push_back(newVertexPositions);
 
-		int totalFaces = 6 * newVertexPositions.size();
-		int totalVertices = 8 * newVertexPositions.size();
+		int totalFaces = m_Faces * newVertexPositions.size();
+		int totalVertices = m_Vertices * newVertexPositions.size();
 
 		amountOfFaces.push_back(totalFaces);
 		amountOfVertices.push_back(totalVertices);
@@ -112,6 +119,12 @@ bool* RTRSceneFive::GetLighting()
 	return state;
 }
 
+int* RTRSceneFive::GetNumLights()
+{
+	int* number = &m_NumLights;
+	return number;
+}
+
 void RTRSceneFive::ToggleDepthBuffer()
 {
 	m_DepthState = !m_DepthState;
@@ -135,13 +148,21 @@ int* RTRSceneFive::GetSubdivisions()
 
 int* RTRSceneFive::GetVertices()
 {
-	int* number = &m_Vertices;
+	int currSubdivision = m_Subdivisions - 1;
+	int* number = &amountOfVertices.at(currSubdivision);
 	return number;
 }
 
 int* RTRSceneFive::GetFaces()
 {
-	int* number = &m_Faces;
+	int currSubdivision = m_Subdivisions - 1;
+	int* number = &amountOfFaces.at(currSubdivision);
+	return number;
+}
+
+float* RTRSceneFive::GetVertexData()
+{
+	float* number = &m_VertexData;
 	return number;
 }
 
@@ -153,4 +174,14 @@ void RTRSceneFive::IncrementSubdivision()
 void RTRSceneFive::DecrementSubdivision()
 {
 	m_Subdivisions -= 1;
+}
+
+void RTRSceneFive::IncrementLights()
+{
+	m_NumLights += 1;
+}
+
+void RTRSceneFive::DecrementLights()
+{
+	m_NumLights -= 1;
 }

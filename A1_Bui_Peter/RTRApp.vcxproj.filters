@@ -60,6 +60,9 @@
     <ClCompile Include="Src\RTRShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Src\RTRShaderLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\RTRApp.h">
@@ -101,6 +104,9 @@
     <ClInclude Include="Src\RTRShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Src\RTRShaderLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="RTRShader.frag">
@@ -110,6 +116,12 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="RTRShader.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="RTRShaderLight.vert">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="RTRShaderLight.frag">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

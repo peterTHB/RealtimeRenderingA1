@@ -15,8 +15,8 @@ void Geometry::DrawAllImmediate(std::vector<std::vector<GLfloat>> vertexAndColou
 	DrawCubeWithPointsImmediate(vertexAndColoursHolder, faces);
 }
 
-void Geometry::DrawAllModern(std::vector<std::vector<GLfloat>> vertexAndColoursHolder, std::vector<int> faces) {
-	DrawCubeWithPointsModern(vertexAndColoursHolder, faces);
+void Geometry::DrawAllModern(std::vector<std::vector<GLfloat>> vertexAndColoursHolder, std::vector<int> faces, int size) {
+	DrawCubeWithPointsModern(vertexAndColoursHolder, faces, size);
 }
 
 void Geometry::DrawCubeWithPointsImmediate(std::vector<std::vector<GLfloat>> vertexAndColoursHolder, std::vector<int> faces) {
@@ -55,12 +55,15 @@ void Geometry::DrawCubeWithPointsImmediate(std::vector<std::vector<GLfloat>> ver
 	glUseProgram(0);
 }
 
-void Geometry::DrawCubeWithPointsModern(std::vector<std::vector<GLfloat>> vertexAndColoursHolder, std::vector<int> faces)
+void Geometry::DrawCubeWithPointsModern(std::vector<std::vector<GLfloat>> vertexAndColoursHolder, 
+	std::vector<int> faces, int size)
 {
 	glm::mat4 model = glm::mat4(1.0f);
 	sceneShader->SetMat4("model", model);
+
+	int newSize = 36 * size;
 	
-	glDrawArrays(GL_TRIANGLES, 0, 36);
+	glDrawArrays(GL_TRIANGLES, 0, newSize);
 	
 	//glDrawArraysInstanced(GL_TRIANGLES, 0, 36, Cubes.size());
 

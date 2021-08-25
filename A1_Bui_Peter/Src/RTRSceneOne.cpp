@@ -9,9 +9,13 @@ RTRSceneOne::RTRSceneOne(float windowWidth, float windowHeight, std::vector<GLfl
 	m_BackfaceState = false;
 	m_LightingState = false;
 	m_Subdivisions = 1;
+	m_Vertices = 8;
+	m_Faces = 6;
+	m_NumLights = 1;
+	m_VertexData = 0.0f;
 
-	amountOfVertices.push_back(8);
-	amountOfFaces.push_back(6);
+	amountOfVertices.push_back(m_Vertices);
+	amountOfFaces.push_back(m_Faces);
 
 	geom = new Geometry;
 	cube = new Cube(0.0f, 0.0f, 0.0f, 1.0f);
@@ -45,6 +49,8 @@ void RTRSceneOne::DrawAll(Camera* camera) {
 	int currSubdivision = m_Subdivisions - 1;
 	geom->DrawAllImmediate(listOfVertexes.at(currSubdivision), facesCopy);
 	camera->ImmediateCamera(m_WindowWidth, m_WindowHeight);
+	m_VertexData = listOfVertexes.at(currSubdivision).size() * 
+		listOfVertexes.at(currSubdivision).at(0).size() * sizeof(GLfloat);
 }
 
 void RTRSceneOne::CreateCubes()
@@ -103,6 +109,12 @@ bool* RTRSceneOne::GetLighting()
 	return state;
 }
 
+int* RTRSceneOne::GetNumLights()
+{
+	int* number = &m_NumLights;
+	return number;
+}
+
 void RTRSceneOne::ToggleDepthBuffer()
 {
 	m_DepthState = !m_DepthState;
@@ -138,6 +150,12 @@ int* RTRSceneOne::GetFaces()
 	return number;
 }
 
+float* RTRSceneOne::GetVertexData()
+{
+	float* number = &m_VertexData;
+	return number;
+}
+
 void RTRSceneOne::IncrementSubdivision()
 {
 	m_Subdivisions += 1;
@@ -146,5 +164,15 @@ void RTRSceneOne::IncrementSubdivision()
 void RTRSceneOne::DecrementSubdivision()
 {
 	m_Subdivisions -= 1;
+}
+
+void RTRSceneOne::IncrementLights()
+{
+	m_VertexData += 1;
+}
+
+void RTRSceneOne::DecrementLights()
+{
+	m_VertexData -= 1;
 }
 

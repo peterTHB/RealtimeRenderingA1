@@ -34,6 +34,7 @@
     <ClCompile Include="Src\RTRSceneSix.cpp" />
     <ClCompile Include="Src\RTRSceneThree.cpp" />
     <ClCompile Include="Src\RTRSceneTwo.cpp" />
+    <ClCompile Include="Src\RTRShaderLight.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\RTRShader.h" />
@@ -49,6 +50,7 @@
     <ClInclude Include="Src\Geometry.h" />
     <ClInclude Include="Src\RTRSceneBase.h" />
     <ClInclude Include="Src\RTRApp.h" />
+    <ClInclude Include="Src\RTRShaderLight.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="RTRShader.geom" />
@@ -58,6 +60,8 @@
     <None Include="RTRShader.vert">
       <FileType>Document</FileType>
     </None>
+    <None Include="RTRShaderLight.frag" />
+    <None Include="RTRShaderLight.vert" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

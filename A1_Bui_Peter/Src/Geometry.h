@@ -18,11 +18,11 @@ public:
 	virtual void DrawAllImmediate(std::vector<std::vector<GLfloat>> vertexAndColoursHolder, 
 		std::vector<int> faces);
 	virtual void DrawAllModern(std::vector<std::vector<GLfloat>> vertexAndColoursHolder, 
-		std::vector<int> faces);
+		std::vector<int> faces, int size);
 	virtual void DrawCubeWithPointsImmediate(std::vector<std::vector<GLfloat>> vertexAndColoursHolder,
 		std::vector<int> faces);
 	virtual void DrawCubeWithPointsModern(std::vector<std::vector<GLfloat>> vertexAndColoursHolder,
-		std::vector<int> faces);
+		std::vector<int> faces, int size);
 	virtual glm::vec3 CalculateNormals(glm::vec3 point0, glm::vec3 point1, glm::vec3 point2);
 	Lighting* lighting;
 

@@ -13,6 +13,7 @@ public:
 	virtual bool* GetDepthBuffer();
 	virtual bool* GetBackface();
 	virtual bool* GetLighting();
+	virtual int* GetNumLights();
 	virtual void ToggleDepthBuffer();
 	virtual void ToggleBackface();
 	virtual void ToggleLighting();
@@ -20,8 +21,11 @@ public:
 	virtual int* GetSubdivisions();
 	virtual int* GetVertices();
 	virtual int* GetFaces();
+	virtual float* GetVertexData();
 	virtual void IncrementSubdivision();
 	virtual void DecrementSubdivision();
+	virtual void IncrementLights();
+	virtual void DecrementLights();
 
 	virtual void DrawModern(Camera* camera);
 
@@ -34,6 +38,8 @@ protected:
 	int m_Subdivisions;
 	int m_Vertices;
 	int m_Faces;
+	int m_NumLights;
+	float m_VertexData;
 
 	Geometry* geom;
 	Cube* cube;
@@ -46,10 +52,9 @@ protected:
 	std::vector<std::vector<std::vector<GLfloat>>> listOfVertexes;
 
 	RTRShader* sceneShader;
+	RTRShaderLight* lightShader;
 	unsigned int m_VertexArray;
 	unsigned int m_VertexBuffer;
 	unsigned int m_FaceElementBuffer;
 	unsigned int m_InstancedVertexBuffer;
-
-	glm::mat4 modelMatrix;
 };

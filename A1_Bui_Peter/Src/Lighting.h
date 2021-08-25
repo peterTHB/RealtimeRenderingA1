@@ -16,10 +16,7 @@ public:
 	void InstantiateModern();
 	void ImmediateLighting(glm::vec3 cameraPos);
 	void ImmediateSpotLighting(int amountOfLights);
-	void ModernLighting(glm::vec3 cameraPos);
-	void ModernSpotLighting(int amountOfLights);
-	void ImmediateMaterial();
-	void ModernMaterial();
+	void ModernLighting(int amountOfLights, unsigned int VBO);
 
 protected:
 	std::vector<GLfloat> ambientLighting;

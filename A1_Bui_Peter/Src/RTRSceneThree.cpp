@@ -9,11 +9,13 @@ RTRSceneThree::RTRSceneThree(float windowWidth, float windowHeight, std::vector<
 	m_BackfaceState = false;
 	m_LightingState = false;
 	m_Subdivisions = 1;
-	m_Vertices = 1;
-	m_Faces = 1;
+	m_Vertices = 8;
+	m_Faces = 6;
+	m_NumLights = 1;
+	m_VertexData = 0.0f;
 
-	amountOfVertices.push_back(8);
-	amountOfFaces.push_back(6);
+	amountOfVertices.push_back(m_Vertices);
+	amountOfFaces.push_back(m_Faces);
 
 	sceneShader = shader;
 	geom = new Geometry(sceneShader);
@@ -32,6 +34,7 @@ RTRSceneThree::RTRSceneThree(float windowWidth, float windowHeight, std::vector<
 	m_VertexArray = 0;
 	m_VertexBuffer = 0;
 	m_FaceElementBuffer = 0;
+	m_InstancedVertexBuffer = 0;
 }
 
 void RTRSceneThree::Init() {
@@ -58,6 +61,17 @@ void RTRSceneThree::DrawAll(Camera* camera) {
 	
 }
 
+void RTRSceneThree::DrawModern(Camera* camera) {
+	/*glDeleteVertexArrays(1, &m_VertexArray);
+	glDeleteBuffers(1, &m_VertexBuffer);
+	glDeleteBuffers(1, &m_FaceElementBuffer);
+	glDeleteBuffers(1, &m_InstancedVertexBuffer);
+	m_VertexArray = 0;
+	m_VertexBuffer = 0;
+	m_FaceElementBuffer = 0;
+	m_InstancedVertexBuffer = 0;*/
+}
+
 void RTRSceneThree::CreateCubes()
 {
 	int currCalSubdivision = m_Subdivisions - 1;
@@ -82,8 +96,8 @@ void RTRSceneThree::CreateCubes()
 
 		listOfVertexes.push_back(newVertexPositions);
 
-		int totalFaces = 6 * newVertexPositions.size();
-		int totalVertices = 8 * newVertexPositions.size();
+		int totalFaces = m_Faces * newVertexPositions.size();
+		int totalVertices = m_Vertices * newVertexPositions.size();
 
 		amountOfFaces.push_back(totalFaces);
 		amountOfVertices.push_back(totalVertices);
@@ -93,6 +107,30 @@ void RTRSceneThree::CreateCubes()
 
 		std::vector<GLfloat> storingNewMidVector = cube->CalculateNewPositionsModern(*cube, currVector);
 		listOfMidVertexes.push_back(storingNewMidVector);
+
+		//-------------------------------------------
+
+		//// Make buffer for cubes
+		//glGenBuffers(1, &m_InstancedVertexBuffer);
+		//glBindBuffer(GL_ARRAY_BUFFER, m_InstancedVertexBuffer);
+		//std::vector<GLfloat> allNewPositions;
+		//for (int i = 0; i < newVertexPositions.size(); i++) {
+		//    allNewPositions.insert(allNewPositions.end(), newVertexPositions.at(i).begin(),
+		//        newVertexPositions.at(i).end());
+		//}
+		//glBufferData(GL_ARRAY_BUFFER, newVertexPositions.size() * sizeof(GLfloat),
+		//    &allNewPositions[0], GL_STREAM_DRAW);
+
+		////enable vertex attribute 3 -> mat4
+		//glEnableVertexAttribArray(2);
+		//glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
+
+		//// tell OpenGL this is an instanced vertex attribute.
+		//glVertexAttribDivisor(2, 1);
+
+		///*glBindBuffer(GL_ARRAY_BUFFER, 0);*/
+
+		//------------------------------------------
 	}
 }
 
@@ -112,6 +150,12 @@ bool* RTRSceneThree::GetLighting()
 {
 	bool* state = &m_LightingState;
 	return state;
+}
+
+int* RTRSceneThree::GetNumLights()
+{
+	int* number = &m_NumLights;
+	return number;
 }
 
 void RTRSceneThree::ToggleDepthBuffer()
@@ -137,13 +181,21 @@ int* RTRSceneThree::GetSubdivisions()
 
 int* RTRSceneThree::GetVertices()
 {
-	int* number = &m_Vertices;
+	int currSubdivision = m_Subdivisions - 1;
+	int* number = &amountOfVertices.at(currSubdivision);
 	return number;
 }
 
 int* RTRSceneThree::GetFaces()
 {
-	int* number = &m_Faces;
+	int currSubdivision = m_Subdivisions - 1;
+	int* number = &amountOfFaces.at(currSubdivision);
+	return number;
+}
+
+float* RTRSceneThree::GetVertexData()
+{
+	float* number = &m_VertexData;
 	return number;
 }
 
@@ -155,4 +207,14 @@ void RTRSceneThree::IncrementSubdivision()
 void RTRSceneThree::DecrementSubdivision()
 {
 	m_Subdivisions -= 1;
+}
+
+void RTRSceneThree::IncrementLights()
+{
+	m_NumLights += 1;
+}
+
+void RTRSceneThree::DecrementLights()
+{
+	m_NumLights -= 1;
 }
