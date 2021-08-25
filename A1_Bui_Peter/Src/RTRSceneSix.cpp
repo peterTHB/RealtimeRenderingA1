@@ -1,6 +1,6 @@
 #include "RTRSceneSix.h"
 
-RTRSceneSix::RTRSceneSix(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndColours, 
+RTRSceneSix::RTRSceneSix(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndNormals,
 	std::vector<int> faces, Lighting* lighting, RTRShader* shader)
 {
 	m_WindowWidth = windowWidth;
@@ -26,7 +26,7 @@ RTRSceneSix::RTRSceneSix(float windowWidth, float windowHeight, std::vector<GLfl
 	facesCopy = faces;
 	std::vector<std::vector<GLfloat>> placeholder;
 	std::vector<GLfloat> newVertexPositions =
-		cube->CalculateNewVertexPositions(*cube, vertexAndColours, facesCopy);
+		cube->CalculateNewVertexPositions(*cube, vertexAndNormals, facesCopy);
 	placeholder.push_back(newVertexPositions);
 	listOfVertexes.push_back(placeholder);
 	listOfMidVertexes.push_back(newVertexPositions);

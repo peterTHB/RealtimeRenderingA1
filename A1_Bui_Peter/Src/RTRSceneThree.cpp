@@ -1,6 +1,6 @@
 #include "RTRSceneThree.h"
 
-RTRSceneThree::RTRSceneThree(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndColours, 
+RTRSceneThree::RTRSceneThree(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndNormals,
 	std::vector<int> faces, Lighting* lighting, RTRShader* shader)
 {
 	m_WindowWidth = windowWidth;
@@ -26,7 +26,7 @@ RTRSceneThree::RTRSceneThree(float windowWidth, float windowHeight, std::vector<
 	facesCopy = faces;
 	std::vector<std::vector<GLfloat>> placeholder;
 	std::vector<GLfloat> newVertexPositions =
-		cube->CalculateNewVertexPositions(*cube, vertexAndColours, facesCopy);
+		cube->CalculateNewVertexPositions(*cube, vertexAndNormals, facesCopy);
 	placeholder.push_back(newVertexPositions);
 	listOfVertexes.push_back(placeholder);
 	listOfMidVertexes.push_back(newVertexPositions);

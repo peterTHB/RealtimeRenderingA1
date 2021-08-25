@@ -11,27 +11,25 @@ Geometry::Geometry(RTRShader* shader) {
 	sceneShader = shader;
 }
 
-void Geometry::DrawAllImmediate(std::vector<std::vector<GLfloat>> vertexAndColoursHolder, std::vector<int> faces) {
-	DrawCubeWithPointsImmediate(vertexAndColoursHolder, faces);
+void Geometry::DrawAllImmediate(std::vector<std::vector<GLfloat>> vertexAndNormalsHolder, std::vector<int> faces) {
+	DrawCubeWithPointsImmediate(vertexAndNormalsHolder, faces);
 }
 
-void Geometry::DrawAllModern(std::vector<std::vector<GLfloat>> vertexAndColoursHolder, std::vector<int> faces, int size) {
-	DrawCubeWithPointsModern(vertexAndColoursHolder, faces, size);
+void Geometry::DrawAllModern(std::vector<std::vector<GLfloat>> vertexAndNormalsHolder, std::vector<int> faces, int size) {
+	DrawCubeWithPointsModern(vertexAndNormalsHolder, faces, size);
 }
 
-void Geometry::DrawCubeWithPointsImmediate(std::vector<std::vector<GLfloat>> vertexAndColoursHolder, std::vector<int> faces) {
+void Geometry::DrawCubeWithPointsImmediate(std::vector<std::vector<GLfloat>> vertexAndNormalsHolder, std::vector<int> faces) {
 	glBegin(GL_TRIANGLES);
-	for (auto& VACVertex : vertexAndColoursHolder) {
-		for (int j = 0; j < VACVertex.size() / 24; j++) {
+	for (auto& VANVertex : vertexAndNormalsHolder) {
+		for (int j = 0; j < VANVertex.size() / 24; j++) {
 			for (int i = 0; i < faces.size(); i++) {
-				int posColourX = (faces.at(i) + (faces.at(i) * 5) + 3) + (j * 24);
-				int posColourY = (faces.at(i) + (faces.at(i) * 5) + 4) + (j * 24);
-				int posColourZ = (faces.at(i) + (faces.at(i) * 5) + 5) + (j * 24);
-
 				int posVertexX = (faces.at(i) + (faces.at(i) * 5)) + (j * 24);
 				int posVertexY = (faces.at(i) + (faces.at(i) * 5) + 1) + (j * 24);
 				int posVertexZ = (faces.at(i) + (faces.at(i) * 5) + 2) + (j * 24);
 
+				GLfloat colours = (float)i * 0.15f;
+				
 				GLfloat ambientArray[] = { 0.6f, 0.6f, 0.6f, 1.0f };
 				GLfloat diffuseArray[] = { 0.8f, 0.8f, 0.8f, 1.0f };
 				GLfloat specularArray[] = { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -42,12 +40,10 @@ void Geometry::DrawCubeWithPointsImmediate(std::vector<std::vector<GLfloat>> ver
 				glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specularArray);
 				glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shinyArray);
 
-				glColor3f(VACVertex.at(posColourX),
-					VACVertex.at(posColourY),
-					VACVertex.at(posColourZ));
-				glVertex3f(VACVertex.at(posVertexX),
-					VACVertex.at(posVertexY),
-					VACVertex.at(posVertexZ));
+				glColor3f(colours, colours, colours);
+				glVertex3f(VANVertex.at(posVertexX),
+					VANVertex.at(posVertexY),
+					VANVertex.at(posVertexZ));
 			}
 		}
 	}
@@ -55,7 +51,7 @@ void Geometry::DrawCubeWithPointsImmediate(std::vector<std::vector<GLfloat>> ver
 	glUseProgram(0);
 }
 
-void Geometry::DrawCubeWithPointsModern(std::vector<std::vector<GLfloat>> vertexAndColoursHolder, 
+void Geometry::DrawCubeWithPointsModern(std::vector<std::vector<GLfloat>> vertexAndNormalsHolder,
 	std::vector<int> faces, int size)
 {
 	glm::mat4 model = glm::mat4(1.0f);

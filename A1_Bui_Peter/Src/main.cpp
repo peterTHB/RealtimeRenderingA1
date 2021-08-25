@@ -23,38 +23,38 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
 
-std::vector<GLfloat> VertexPointsAndColours = {
+std::vector<GLfloat> VertexPointsAndNormals = {
     // Points         Colours
     //// Back
-    -0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
-    -0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
-    0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
-    0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+    -0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+    -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+    0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
+    0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
     // Front
-    0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
-    0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
-    -0.5f, -0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
-    -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
-    // Left
-    -0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+    0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+    0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
     -0.5f, -0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 1.0f,
-    -0.5f, 0.5f, -0.5f, 0.0f, 0.0f, 1.0f,
+    -0.5f, 0.5f, 0.5f, 0.0f, 0.0f, 1.0f,
+    // Left
+    -0.5f, 0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
+    -0.5f, -0.5f, 0.5f, -1.0f, 0.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
+    -0.5f, 0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
     // Right
-    0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 1.0f,
-    0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 1.0f,
-    0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 1.0f,
-    0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 1.0f,
+    0.5f, 0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+    0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.0f,
+    0.5f, -0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
+    0.5f, 0.5f, 0.5f, 1.0f, 0.0f, 0.0f,
     // Bottom
-    0.5f, -0.5f, 0.5f, 1.0f, 1.0f, 0.0f,
-    0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 0.0f,
-    -0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 0.0f,
-    -0.5f, -0.5f, 0.5f, 1.0f, 1.0f, 0.0f,
+    0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
+    0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f, 0.0f, -1.0f, 0.0f,
+    -0.5f, -0.5f, 0.5f, 0.0f, -1.0f, 0.0f,
     // Top
-    0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 1.0f,
-    0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 1.0f,
-    -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 1.0f,
-    -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 1.0f
+    0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+    0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+    -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f,
+    -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, 0.0f
 };
 
 std::vector<int> faces = {
@@ -75,7 +75,7 @@ private:
     bool m_QuitApp = false;
 
     bool m_ShowOSD = true;
-    int m_CurrSceneNum = 1;
+    int m_CurrSceneNum = 2;
     std::string m_Resolution = "";
     float m_RefreshRate = 0;
     float m_FPS = 0;
@@ -488,17 +488,17 @@ int AssignmentApp::Init()
 
     // Instantiate all 6 scenes and store in an array/data struct
     RTRSceneBase* sceneOne = new RTRSceneOne(m_WindowWidth, m_WindowHeight, 
-        VertexPointsAndColours, faces, lighting);
+        VertexPointsAndNormals, faces, lighting);
     RTRSceneBase* sceneTwo = new RTRSceneTwo(m_WindowWidth, m_WindowHeight, 
-        VertexPointsAndColours, faces, lighting, sceneShader);
+        VertexPointsAndNormals, faces, lighting, sceneShader);
     RTRSceneBase* sceneThree = new RTRSceneThree(m_WindowWidth, m_WindowHeight, 
-        VertexPointsAndColours, faces, lighting, sceneShader);
+        VertexPointsAndNormals, faces, lighting, sceneShader);
     RTRSceneBase* sceneFour = new RTRSceneFour(m_WindowWidth, m_WindowHeight, 
-        VertexPointsAndColours, faces, lighting, sceneShader);
+        VertexPointsAndNormals, faces, lighting, sceneShader);
     RTRSceneBase* sceneFive = new RTRSceneFive(m_WindowWidth, m_WindowHeight, 
-        VertexPointsAndColours, faces, lighting, sceneShader);
+        VertexPointsAndNormals, faces, lighting, sceneShader);
     RTRSceneBase* sceneSix = new RTRSceneSix(m_WindowWidth, m_WindowHeight, 
-        VertexPointsAndColours, faces, lighting, sceneShader);
+        VertexPointsAndNormals, faces, lighting, sceneShader);
 
     ListOfScenes[0] = sceneOne;
     ListOfScenes[1] = sceneTwo;

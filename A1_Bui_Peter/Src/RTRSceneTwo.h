@@ -3,7 +3,7 @@
 
 class RTRSceneTwo : public RTRSceneBase {
 public:
-	RTRSceneTwo(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndColours, 
+	RTRSceneTwo(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndNormals,
 		std::vector<int> faces, Lighting* lighting, RTRShader* shader);
 	virtual void Init();
 	virtual void End();
@@ -28,6 +28,7 @@ public:
 	virtual void DecrementLights();
 
 	virtual void DrawModern(Camera* camera);
+	virtual void MakeLighting(int numLights, Camera* camera);
 
 protected:
 	float m_WindowHeight;

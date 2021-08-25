@@ -1,6 +1,6 @@
 #include "RTRSceneTwo.h"
 
-RTRSceneTwo::RTRSceneTwo(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndColours, 
+RTRSceneTwo::RTRSceneTwo(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndNormals,
 	std::vector<int> faces, Lighting* lighting, RTRShader* shader)
 {
 	m_WindowWidth = windowWidth;
@@ -27,7 +27,7 @@ RTRSceneTwo::RTRSceneTwo(float windowWidth, float windowHeight, std::vector<GLfl
     facesCopy = faces;
     std::vector<std::vector<GLfloat>> placeholder;
     std::vector<GLfloat> newVertexPositions = 
-        cube->CalculateNewVertexPositions(*cube, vertexAndColours, facesCopy);
+        cube->CalculateNewVertexPositions(*cube, vertexAndNormals, facesCopy);
     placeholder.push_back(newVertexPositions);
     listOfVertexes.push_back(placeholder);
     listOfMidVertexes.push_back(newVertexPositions);
@@ -40,7 +40,7 @@ RTRSceneTwo::RTRSceneTwo(float windowWidth, float windowHeight, std::vector<GLfl
 void RTRSceneTwo::Init() {
     // Using shader
     sceneShader->Load("RTRShader.vert", "RTRShader.frag");
-    lightShader->Load("RTRShaderLight.vert", "RTRShaderLight.frag");
+    //lightShader->Load("RTRShaderLight.vert", "RTRShaderLight.frag");
 }
 
 void RTRSceneTwo::End() {
@@ -89,35 +89,15 @@ void RTRSceneTwo::DrawModern(Camera* camera) {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, facesCopy.size() * sizeof(int), facesCopy.data(), GL_STATIC_DRAW);
 
     glUseProgram(*sceneShader->GetID());
-    sceneShader->SetInt("material.diffuse", 0);
-    sceneShader->SetInt("material.specular", 1);
-    
-    /*sceneShader->SetVec3("light.position", lightPos);*/
-    sceneShader->SetVec3("light.position", *camera->GetCameraPos());
-    sceneShader->SetVec3("light.direction", *camera->GetCameraFront());
-    sceneShader->SetFloat("light.cutOff", glm::cos(glm::radians(12.5f)));
-    sceneShader->SetVec3("viewPos", *camera->GetCameraPos());
-    /*sceneShader->SetVec3("viewPos", lightPos);*/
 
-    // Colors
-    glm::vec3 lightColor;
-    lightColor.x = 0.8f;
-    lightColor.y = 0.8f;
-    lightColor.z = 0.8f;
-    glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
-    glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
-    sceneShader->SetVec3("material.ambient", ambientColor);
-    sceneShader->SetVec3("material.diffuse", diffuseColor);
-    sceneShader->SetVec3("material.specular", 0.5f, 0.5f, 0.5f);
-    sceneShader->SetFloat("material.shininess", 32.0f);
+    if (m_LightingState) {
+        sceneShader->SetBool("LightOn", true);
+    }
+    else {
+        sceneShader->SetBool("LightOn", false);
+    }
 
-    sceneShader->SetVec3("light.ambient", 0.2f, 0.2f, 0.2f);
-    sceneShader->SetVec3("light.diffuse", 0.5f, 0.5f, 0.5f);
-    sceneShader->SetVec3("light.specular", 1.0f, 1.0f, 1.0f);
-
-    sceneShader->SetFloat("light.constant", 1.0f);
-    sceneShader->SetFloat("light.linear", 0.09f);
-    sceneShader->SetFloat("light.quadratic", 0.032f);
+    MakeLighting(m_NumLights, camera);
 
     // Camera View and Proj
     camera->ModernCamera(m_WindowWidth, m_WindowHeight);
@@ -126,34 +106,7 @@ void RTRSceneTwo::DrawModern(Camera* camera) {
     // Model
     geom->DrawAllModern(listOfVertexes.at(currSubdivision), facesCopy, allVertices.size());
 
-    /*glBindVertexArray(0);*/
-
-    unsigned int lightVAO;
-
-    // Lighting
-    /*lighting->ModernLighting(m_NumLights, m_VertexBuffer);*/
-    //glGenVertexArrays(1, &lightVAO);
-    //glBindVertexArray(lightVAO);
-    //glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
-    //glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
-    //glEnableVertexAttribArray(0);
-    //glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
-    //glEnableVertexAttribArray(1);
-
-    //LightCube
-    /*glUseProgram(*lightShader->GetID());
-    glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)m_WindowWidth / (float)m_WindowHeight, 0.1f, 100.0f);
-    lightShader->SetMat4("projection", projection);
-    glm::mat4 view = glm::lookAt(*camera->GetCameraPos(), *camera->GetCameraPos() + *camera->GetCameraFront(), *camera->GetCameraUp());
-    lightShader->SetMat4("view", view);
-
-    glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, lightPos);
-    model = glm::scale(model, glm::vec3(0.3f));
-    lightShader->SetMat4("model", model);
-    glBindVertexArray(lightVAO);
-    glDrawArrays(GL_TRIANGLES, 0, 36);*/
-    //std::cout << "ERROR: " << glGetError() << std::endl;
+    glBindVertexArray(0);
 
     glDeleteVertexArrays(1, &m_VertexArray);
     glDeleteBuffers(1, &m_VertexBuffer);
@@ -161,6 +114,40 @@ void RTRSceneTwo::DrawModern(Camera* camera) {
     m_VertexArray = 0;
     m_VertexBuffer = 0;
     m_FaceElementBuffer = 0;
+}
+
+void RTRSceneTwo::MakeLighting(int numLights, Camera* camera)
+{
+    //sceneShader->SetInt("material.diffuse", 0);
+    //sceneShader->SetInt("material.specular", 1);
+
+    /*sceneShader->SetVec3("light.position", lightPos);*/
+    sceneShader->SetVec3("light.position", *camera->GetCameraPos());
+    sceneShader->SetVec3("light.direction", *camera->GetCameraFront());
+    //sceneShader->SetFloat("light.cutOff", glm::cos(glm::radians(12.5f)));
+    //sceneShader->SetFloat("light.outerCutOff", glm::cos(glm::radians(17.5f)));
+    sceneShader->SetVec3("viewPos", *camera->GetCameraPos());
+    /*sceneShader->SetVec3("viewPos", lightPos);*/
+
+    // Colors
+    glm::vec3 lightColor;
+    lightColor.x = 1.0f;
+    lightColor.y = 0.8f;
+    lightColor.z = 0.6f;
+    glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
+    glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
+    sceneShader->SetVec3("material.ambient", ambientColor);
+    sceneShader->SetVec3("material.diffuse", diffuseColor);
+    sceneShader->SetVec3("material.specular", 1.0f, 1.0f, 1.0f);
+    sceneShader->SetFloat("material.shininess", 32.0f);
+
+    sceneShader->SetVec3("light.ambient", 0.1f, 0.1f, 0.1f);
+    sceneShader->SetVec3("light.diffuse", 0.8f, 0.8f, 0.8f);
+    sceneShader->SetVec3("light.specular", 1.0f, 1.0f, 1.0f);
+
+    //sceneShader->SetFloat("light.constant", 1.0f);
+    //sceneShader->SetFloat("light.linear", 0.09f);
+    //sceneShader->SetFloat("light.quadratic", 0.032f);
 }
 
 void RTRSceneTwo::CreateCubes()

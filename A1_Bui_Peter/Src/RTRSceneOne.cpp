@@ -1,6 +1,6 @@
 #include "RTRSceneOne.h"
 
-RTRSceneOne::RTRSceneOne(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndColours, 
+RTRSceneOne::RTRSceneOne(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndNormals, 
 	std::vector<int> faces, Lighting* lighting)
 {
 	m_WindowWidth = windowWidth;
@@ -24,9 +24,9 @@ RTRSceneOne::RTRSceneOne(float windowWidth, float windowHeight, std::vector<GLfl
 
 	facesCopy = faces;
 	std::vector<std::vector<GLfloat>> placeholder;
-	placeholder.push_back(vertexAndColours);
+	placeholder.push_back(vertexAndNormals);
 	listOfVertexes.push_back(placeholder);
-	listOfMidVertexes.push_back(vertexAndColours);
+	listOfMidVertexes.push_back(vertexAndNormals);
 }
 
 void RTRSceneOne::Init() {

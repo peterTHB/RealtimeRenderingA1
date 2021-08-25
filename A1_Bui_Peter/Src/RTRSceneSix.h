@@ -3,7 +3,7 @@
 
 class RTRSceneSix : public RTRSceneBase {
 public:
-	RTRSceneSix(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndColours, 
+	RTRSceneSix(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndNormals,
 		std::vector<int> faces, Lighting* lighting, RTRShader* shader);
 	virtual void Init();
 	virtual void End();

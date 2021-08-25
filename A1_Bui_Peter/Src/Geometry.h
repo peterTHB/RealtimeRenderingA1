@@ -15,13 +15,13 @@ class Geometry {
 public:
 	Geometry();
 	Geometry(RTRShader* shader);
-	virtual void DrawAllImmediate(std::vector<std::vector<GLfloat>> vertexAndColoursHolder, 
+	virtual void DrawAllImmediate(std::vector<std::vector<GLfloat>> vertexAndNormalsHolder,
 		std::vector<int> faces);
-	virtual void DrawAllModern(std::vector<std::vector<GLfloat>> vertexAndColoursHolder, 
+	virtual void DrawAllModern(std::vector<std::vector<GLfloat>> vertexAndNormalsHolder,
 		std::vector<int> faces, int size);
-	virtual void DrawCubeWithPointsImmediate(std::vector<std::vector<GLfloat>> vertexAndColoursHolder,
+	virtual void DrawCubeWithPointsImmediate(std::vector<std::vector<GLfloat>> vertexAndNormalsHolder,
 		std::vector<int> faces);
-	virtual void DrawCubeWithPointsModern(std::vector<std::vector<GLfloat>> vertexAndColoursHolder,
+	virtual void DrawCubeWithPointsModern(std::vector<std::vector<GLfloat>> vertexAndNormalsHolder,
 		std::vector<int> faces, int size);
 	virtual glm::vec3 CalculateNormals(glm::vec3 point0, glm::vec3 point1, glm::vec3 point2);
 	Lighting* lighting;

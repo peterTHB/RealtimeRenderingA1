@@ -139,18 +139,11 @@ void Lighting::ImmediateSpotLighting(int amountOfLights)
 	}
 }
 
+void Lighting::ModernLighting(int amountOfLights)
+{
+}
+
 void Lighting::InstantiateModern()
 {
 
-}
-
-void Lighting::ModernLighting(int amountOfLights, unsigned int VBO)
-{
-	unsigned int lightVAO;
-
-	glGenVertexArrays(1, &lightVAO);
-	glBindVertexArray(lightVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
 }
