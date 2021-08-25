@@ -138,12 +138,3 @@ void Lighting::ImmediateSpotLighting(int amountOfLights)
 		glDisable(GL_LIGHT7);
 	}
 }
-
-void Lighting::ModernLighting(int amountOfLights)
-{
-}
-
-void Lighting::InstantiateModern()
-{
-
-}

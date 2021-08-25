@@ -1,5 +1,25 @@
 #include "RTRSceneTwo.h"
 
+glm::vec3 pointLightPositions[] = {
+    glm::vec3(2.0f, 0.0f, 0.0f),
+    glm::vec3(-2.0f, 0.0f, 0.0f),
+    glm::vec3(0.0f, 2.0f, 0.0f),
+    glm::vec3(0.0f, -2.0f, 0.0f),
+    glm::vec3(0.0f, 0.0f, 2.0f),
+    glm::vec3(0.0f, 0.0f, -2.0f),
+    glm::vec3(3.0f, 3.0f, 0.0f),
+    glm::vec3(-3.0f, 3.0f, 0.0f)
+};
+
+glm::vec3 pointLightMaterial[] = {
+    // Ambient
+    glm::vec3(0.3f, 0.3f, 0.3f),
+    // Diffuse
+    glm::vec3(0.9f, 0.9f, 0.9f),
+    //Specular
+    glm::vec3(1.0f, 1.0f, 1.0f),
+};
+
 RTRSceneTwo::RTRSceneTwo(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndNormals,
 	std::vector<int> faces, Lighting* lighting, RTRShader* shader)
 {
@@ -40,7 +60,6 @@ RTRSceneTwo::RTRSceneTwo(float windowWidth, float windowHeight, std::vector<GLfl
 void RTRSceneTwo::Init() {
     // Using shader
     sceneShader->Load("RTRShader.vert", "RTRShader.frag");
-    //lightShader->Load("RTRShaderLight.vert", "RTRShaderLight.frag");
 }
 
 void RTRSceneTwo::End() {
@@ -97,7 +116,7 @@ void RTRSceneTwo::DrawModern(Camera* camera) {
         sceneShader->SetBool("LightOn", false);
     }
 
-    MakeLighting(m_NumLights, camera);
+    MakeLighting(m_NumLights - 1, camera);
 
     // Camera View and Proj
     camera->ModernCamera(m_WindowWidth, m_WindowHeight);
@@ -118,36 +137,40 @@ void RTRSceneTwo::DrawModern(Camera* camera) {
 
 void RTRSceneTwo::MakeLighting(int numLights, Camera* camera)
 {
-    //sceneShader->SetInt("material.diffuse", 0);
-    //sceneShader->SetInt("material.specular", 1);
+    // Set total amount of lights
+    sceneShader->SetInt("NumLights", m_NumLights - 1);
 
-    /*sceneShader->SetVec3("light.position", lightPos);*/
-    sceneShader->SetVec3("light.position", *camera->GetCameraPos());
-    sceneShader->SetVec3("light.direction", *camera->GetCameraFront());
-    //sceneShader->SetFloat("light.cutOff", glm::cos(glm::radians(12.5f)));
-    //sceneShader->SetFloat("light.outerCutOff", glm::cos(glm::radians(17.5f)));
-    sceneShader->SetVec3("viewPos", *camera->GetCameraPos());
-    /*sceneShader->SetVec3("viewPos", lightPos);*/
-
-    // Colors
+    // Colour Materials
     glm::vec3 lightColor;
-    lightColor.x = 1.0f;
+    lightColor.x = 0.8f;
     lightColor.y = 0.8f;
-    lightColor.z = 0.6f;
-    glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
+    lightColor.z = 0.8f;
+    glm::vec3 diffuseColor = lightColor * glm::vec3(0.8f);
     glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
     sceneShader->SetVec3("material.ambient", ambientColor);
     sceneShader->SetVec3("material.diffuse", diffuseColor);
     sceneShader->SetVec3("material.specular", 1.0f, 1.0f, 1.0f);
     sceneShader->SetFloat("material.shininess", 32.0f);
 
-    sceneShader->SetVec3("light.ambient", 0.1f, 0.1f, 0.1f);
-    sceneShader->SetVec3("light.diffuse", 0.8f, 0.8f, 0.8f);
-    sceneShader->SetVec3("light.specular", 1.0f, 1.0f, 1.0f);
+    // Directional Lights
+    sceneShader->SetVec3("dirLight.direction", *camera->GetCameraFront());
+    sceneShader->SetVec3("dirLight.ambient", 0.1f, 0.1f, 0.1f);
+    sceneShader->SetVec3("dirLight.diffuse", 0.4f, 0.4f, 0.4f);
+    sceneShader->SetVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
+    sceneShader->SetVec3("viewPos", *camera->GetCameraPos());
 
-    //sceneShader->SetFloat("light.constant", 1.0f);
-    //sceneShader->SetFloat("light.linear", 0.09f);
-    //sceneShader->SetFloat("light.quadratic", 0.032f);
+    // Point lights
+    for (int l = 0; l < numLights; l++) {
+        std::string currNum = std::to_string(l);
+
+        sceneShader->SetVec3(("pointLights[" + currNum + "].position").c_str(), pointLightPositions[l]);
+        sceneShader->SetVec3(("pointLights[" + currNum + "].ambient").c_str(), pointLightMaterial[0] * glm::vec3(0.15f) * glm::vec3((float)l + 1.0f));
+        sceneShader->SetVec3(("pointLights[" + currNum + "].diffuse").c_str(), pointLightMaterial[1] * glm::vec3(0.15f) * glm::vec3((float)l + 1.0f));
+        sceneShader->SetVec3(("pointLights[" + currNum + "].specular").c_str(), pointLightMaterial[2]);
+        sceneShader->SetFloat(("pointLights[" + currNum + "].constant").c_str(), 1.0f);
+        sceneShader->SetFloat(("pointLights[" + currNum + "].linear").c_str(), 0.09f);
+        sceneShader->SetFloat(("pointLights[" + currNum + "].quadratic").c_str(), 0.032f);
+    }
 }
 
 void RTRSceneTwo::CreateCubes()

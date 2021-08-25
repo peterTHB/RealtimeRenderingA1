@@ -118,11 +118,5 @@
     <None Include="RTRShader.vert">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="RTRShaderLight.vert">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="RTRShaderLight.frag">
-      <Filter>Resource Files</Filter>
-    </None>
   </ItemGroup>
 </Project>

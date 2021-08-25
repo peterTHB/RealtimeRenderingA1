@@ -65,30 +65,3 @@ void Geometry::DrawCubeWithPointsModern(std::vector<std::vector<GLfloat>> vertex
 
 	/*glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);*/
 }
-
-glm::vec3 Geometry::CalculateNormals(glm::vec3 point0, glm::vec3 point1, glm::vec3 point2)
-{
-	glm::vec3 pointFirst = glm::vec3(1.0f);
-	glm::vec3 pointSecond = glm::vec3(1.0f);
-	glm::vec3 pointNormal = glm::vec3(1.0f);
-
-	pointFirst.x = point1.x - point0.x;
-	pointFirst.y = point1.y - point0.y;
-	pointFirst.z = point1.z - point0.z;
-
-	pointSecond.x = point2.x - point1.x;
-	pointSecond.y = point2.y - point1.y;
-	pointSecond.z = point2.z - point1.z;
-
-	pointNormal.x = (pointFirst.y * pointSecond.z) - (pointFirst.z * pointSecond.y);
-	pointNormal.y = (pointFirst.z * pointSecond.x) - (pointFirst.x * pointSecond.z);
-	pointNormal.z = (pointFirst.x * pointSecond.y) - (pointFirst.y * pointSecond.x);
-
-	float len = sqrt((pointNormal.x * pointNormal.x) + (pointNormal.y * pointNormal.y) + (pointNormal.z * pointNormal.z));
-
-	pointNormal.x /= len;
-	pointNormal.y /= len;
-	pointNormal.z /= len;
-
-	return pointNormal;
-}

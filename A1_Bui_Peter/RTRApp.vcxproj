@@ -60,8 +60,6 @@
     <None Include="RTRShader.vert">
       <FileType>Document</FileType>
     </None>
-    <None Include="RTRShaderLight.frag" />
-    <None Include="RTRShaderLight.vert" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

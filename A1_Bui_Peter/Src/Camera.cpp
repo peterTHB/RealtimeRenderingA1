@@ -34,7 +34,7 @@ void Camera::ImmediateCamera(int width, int height) {
     this->width = width;
     this->height = height;
 
-    proj = glm::perspective(glm::radians(fov), (float)width / (float)height, 0.1f, 100.0f);
+    proj = glm::perspective(glm::radians(fov), (float)width / (float)height, 0.1f, 10.0f);
     view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 
     glMatrixMode(GL_PROJECTION);
@@ -53,7 +53,7 @@ void Camera::ModernCamera(int width, int height) {
     view = glm::mat4(1.0f);
     view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
     sceneShader->SetMat4("view", view);
-    proj = glm::perspective(glm::radians(fov), (float)width / (float)height, 0.1f, 100.0f);
+    proj = glm::perspective(glm::radians(fov), (float)width / (float)height, 0.1f, 10.0f);
     sceneShader->SetMat4("projection", proj);
 }
 

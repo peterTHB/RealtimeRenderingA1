@@ -23,8 +23,6 @@ public:
 		std::vector<int> faces);
 	virtual void DrawCubeWithPointsModern(std::vector<std::vector<GLfloat>> vertexAndNormalsHolder,
 		std::vector<int> faces, int size);
-	virtual glm::vec3 CalculateNormals(glm::vec3 point0, glm::vec3 point1, glm::vec3 point2);
-	Lighting* lighting;
 
 private:
 	RTRShader* sceneShader;
