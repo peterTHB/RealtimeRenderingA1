@@ -34,7 +34,6 @@
     <ClCompile Include="Src\RTRSceneSix.cpp" />
     <ClCompile Include="Src\RTRSceneThree.cpp" />
     <ClCompile Include="Src\RTRSceneTwo.cpp" />
-    <ClCompile Include="Src\RTRShaderLight.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Src\RTRShader.h" />

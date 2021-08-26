@@ -8,6 +8,7 @@ public:
 	virtual void Init();
 	virtual void End();
 	virtual void DrawAll(Camera* camera);
+	virtual void DrawModern(Camera* camera);
 	virtual void CreateCubes();
 
 	virtual bool* GetDepthBuffer();
@@ -27,9 +28,6 @@ public:
 	virtual void IncrementLights();
 	virtual void DecrementLights();
 
-	virtual void DrawModern(Camera* camera);
-	virtual void MakeLighting(int numLights, Camera* camera);
-
 protected:
 	float m_WindowHeight;
 	float m_WindowWidth;
@@ -44,18 +42,18 @@ protected:
 
 	Geometry* geom;
 	Cube* cube;
-	Lighting* lighting;
+	Lighting* sceneLighting;
 	std::vector<int> amountOfVertices;
 	std::vector<int> amountOfFaces;
 	std::vector<Cube> Cubes;
 	std::vector<int> facesCopy;
 	std::vector<std::vector<GLfloat>> listOfMidVertexes;
 	std::vector<std::vector<std::vector<GLfloat>>> listOfVertexes;
+	std::vector<glm::vec3> pointLightPositions;
+	std::vector<glm::vec3> pointLightMaterial;
 
 	RTRShader* sceneShader;
-	RTRShaderLight* lightShader;
 	unsigned int m_VertexArray;
 	unsigned int m_VertexBuffer;
 	unsigned int m_FaceElementBuffer;
-	unsigned int m_InstancedVertexBuffer;
 };

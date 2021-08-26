@@ -138,3 +138,41 @@ void Lighting::ImmediateSpotLighting(int amountOfLights)
 		glDisable(GL_LIGHT7);
 	}
 }
+
+void Lighting::ModernLighting(RTRShader* shader, int numLights, glm::vec3 cameraFront, glm::vec3 cameraPos,
+	std::vector<glm::vec3> pointLightPositions, std::vector<glm::vec3> pointLightMaterial) {
+	// Set total amount of lights
+	shader->SetInt("NumLights", numLights);
+
+	// Colour Materials
+	glm::vec3 lightColor;
+	lightColor.x = 0.8f;
+	lightColor.y = 0.8f;
+	lightColor.z = 0.8f;
+	glm::vec3 diffuseColor = lightColor * glm::vec3(0.8f);
+	glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
+	shader->SetVec3("material.ambient", ambientColor);
+	shader->SetVec3("material.diffuse", diffuseColor);
+	shader->SetVec3("material.specular", 1.0f, 1.0f, 1.0f);
+	shader->SetFloat("material.shininess", 32.0f);
+
+	// Directional Lights
+	shader->SetVec3("dirLight.direction", cameraFront);
+	shader->SetVec3("dirLight.ambient", 0.1f, 0.1f, 0.1f);
+	shader->SetVec3("dirLight.diffuse", 0.4f, 0.4f, 0.4f);
+	shader->SetVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
+	shader->SetVec3("viewPos", cameraPos);
+
+	// Point lights
+	for (int l = 0; l < numLights; l++) {
+		std::string currNum = std::to_string(l);
+
+		shader->SetVec3(("pointLights[" + currNum + "].position").c_str(), pointLightPositions.at(l));
+		shader->SetVec3(("pointLights[" + currNum + "].ambient").c_str(), pointLightMaterial.at(0) * glm::vec3(0.15f) * glm::vec3((float)l + 1.0f));
+		shader->SetVec3(("pointLights[" + currNum + "].diffuse").c_str(), pointLightMaterial.at(1) * glm::vec3(0.15f) * glm::vec3((float)l + 1.0f));
+		shader->SetVec3(("pointLights[" + currNum + "].specular").c_str(), pointLightMaterial.at(2));
+		shader->SetFloat(("pointLights[" + currNum + "].constant").c_str(), 1.0f);
+		shader->SetFloat(("pointLights[" + currNum + "].linear").c_str(), 0.09f);
+		shader->SetFloat(("pointLights[" + currNum + "].quadratic").c_str(), 0.032f);
+	}
+}

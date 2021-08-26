@@ -510,7 +510,6 @@ int AssignmentApp::Init()
     m_Resolution = std::to_string(width) + "x" + std::to_string(height);
 
     lighting->InstantiateImmediate();
-    lighting->InstantiateModern();
 
     return 0;
 }

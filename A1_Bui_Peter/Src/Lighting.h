@@ -8,13 +8,16 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
+#include "RTRShader.h"
 
 class Lighting {
 public:
 	Lighting();
-	void InstantiateImmediate();
-	void ImmediateLighting(glm::vec3 cameraPos);
-	void ImmediateSpotLighting(int amountOfLights);
+	virtual void InstantiateImmediate();
+	virtual void ImmediateLighting(glm::vec3 cameraPos);
+	virtual void ImmediateSpotLighting(int amountOfLights);
+	virtual void ModernLighting(RTRShader* shader, int numLights, glm::vec3 cameraFront, glm::vec3 cameraPos,
+		std::vector<glm::vec3> pointLightPositions, std::vector<glm::vec3> pointLightMaterial);
 
 protected:
 	std::vector<GLfloat> ambientLighting;

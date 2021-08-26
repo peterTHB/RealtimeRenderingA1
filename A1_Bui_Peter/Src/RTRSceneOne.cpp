@@ -20,7 +20,7 @@ RTRSceneOne::RTRSceneOne(float windowWidth, float windowHeight, std::vector<GLfl
 	geom = new Geometry;
 	cube = new Cube(0.0f, 0.0f, 0.0f, 1.0f);
 	Cubes.push_back(*cube);
-	lighting = lighting;
+	sceneLighting = lighting;
 
 	facesCopy = faces;
 	std::vector<std::vector<GLfloat>> placeholder;
@@ -47,7 +47,7 @@ void RTRSceneOne::End() {
 
 void RTRSceneOne::DrawAll(Camera* camera) {
 	int currSubdivision = m_Subdivisions - 1;
-	geom->DrawAllImmediate(listOfVertexes.at(currSubdivision), facesCopy);
+	geom->DrawCubeWithPointsImmediate(listOfVertexes.at(currSubdivision), facesCopy);
 	camera->ImmediateCamera(m_WindowWidth, m_WindowHeight);
 	m_VertexData = listOfVertexes.at(currSubdivision).size() * 
 		listOfVertexes.at(currSubdivision).at(0).size() * sizeof(GLfloat);

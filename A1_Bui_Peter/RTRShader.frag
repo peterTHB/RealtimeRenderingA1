@@ -26,7 +26,7 @@ struct PointLight {
     vec3 specular;
 };
 
-#define NUM_POINT_LIGHTS 9
+#define NUM_POINT_LIGHTS 8
 
 uniform Material material;
 uniform DirLight dirLight;
@@ -67,6 +67,7 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir) {
     vec3 lightDir = normalize(-light.direction);
     float diff = max(dot(normal, lightDir), 0.0);
     vec3 reflectDir = reflect(-lightDir, normal);
+//    vec3 halfwayDir = normalize(lightDir + viewDir);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
 
     vec3 ambient = light.ambient * material.ambient;
@@ -81,6 +82,7 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir) {
     // diffuse shading
     float diff = max(dot(normal, lightDir), 0.0);
     // specular shading
+//    vec3 halfwayDir = normalize(lightDir + viewDir);
     vec3 reflectDir = reflect(-lightDir, normal);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
     // attenuation

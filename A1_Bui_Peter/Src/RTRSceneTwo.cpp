@@ -1,25 +1,5 @@
 #include "RTRSceneTwo.h"
 
-glm::vec3 pointLightPositions[] = {
-    glm::vec3(2.0f, 0.0f, 0.0f),
-    glm::vec3(-2.0f, 0.0f, 0.0f),
-    glm::vec3(0.0f, 2.0f, 0.0f),
-    glm::vec3(0.0f, -2.0f, 0.0f),
-    glm::vec3(0.0f, 0.0f, 2.0f),
-    glm::vec3(0.0f, 0.0f, -2.0f),
-    glm::vec3(3.0f, 3.0f, 0.0f),
-    glm::vec3(-3.0f, 3.0f, 0.0f)
-};
-
-glm::vec3 pointLightMaterial[] = {
-    // Ambient
-    glm::vec3(0.3f, 0.3f, 0.3f),
-    // Diffuse
-    glm::vec3(0.9f, 0.9f, 0.9f),
-    //Specular
-    glm::vec3(1.0f, 1.0f, 1.0f),
-};
-
 RTRSceneTwo::RTRSceneTwo(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndNormals,
 	std::vector<int> faces, Lighting* lighting, RTRShader* shader)
 {
@@ -38,11 +18,10 @@ RTRSceneTwo::RTRSceneTwo(float windowWidth, float windowHeight, std::vector<GLfl
     amountOfFaces.push_back(m_Faces);
 
     sceneShader = shader;
-    lightShader = new RTRShaderLight();
     geom = new Geometry(sceneShader);
     cube = new Cube(0.0f, 0.0f, 0.0f, 1.0f);
     Cubes.push_back(*cube);
-    lighting = lighting;
+    sceneLighting = lighting;
 
     facesCopy = faces;
     std::vector<std::vector<GLfloat>> placeholder;
@@ -51,6 +30,26 @@ RTRSceneTwo::RTRSceneTwo(float windowWidth, float windowHeight, std::vector<GLfl
     placeholder.push_back(newVertexPositions);
     listOfVertexes.push_back(placeholder);
     listOfMidVertexes.push_back(newVertexPositions);
+
+    pointLightPositions = {
+        glm::vec3(2.0f, 0.0f, 0.0f),
+        glm::vec3(-2.0f, 0.0f, 0.0f),
+        glm::vec3(0.0f, 2.0f, 0.0f),
+        glm::vec3(0.0f, -2.0f, 0.0f),
+        glm::vec3(0.0f, 0.0f, 2.0f),
+        glm::vec3(0.0f, 0.0f, -2.0f),
+        glm::vec3(3.0f, 3.0f, 0.0f),
+        glm::vec3(-3.0f, 3.0f, 0.0f)
+    };
+
+    pointLightMaterial = {
+        // Ambient
+        glm::vec3(0.3f, 0.3f, 0.3f),
+        // Diffuse
+        glm::vec3(0.9f, 0.9f, 0.9f),
+        //Specular
+        glm::vec3(1.0f, 1.0f, 1.0f),
+    };
 
     m_VertexArray = 0;
     m_VertexBuffer = 0;
@@ -73,6 +72,8 @@ void RTRSceneTwo::End() {
 		}
 	}
 	listOfVertexes.clear();
+    pointLightPositions.clear();
+    pointLightMaterial.clear();
 }
 
 void RTRSceneTwo::DrawAll(Camera* camera) {
@@ -81,7 +82,6 @@ void RTRSceneTwo::DrawAll(Camera* camera) {
 
 void RTRSceneTwo::DrawModern(Camera* camera) {
     int currSubdivision = m_Subdivisions - 1;
-    glm::vec3 lightPos(1.0f, 0.0f, 0.0f);
          
     // VBO
     glGenBuffers(1, &m_VertexBuffer);
@@ -116,14 +116,15 @@ void RTRSceneTwo::DrawModern(Camera* camera) {
         sceneShader->SetBool("LightOn", false);
     }
 
-    MakeLighting(m_NumLights - 1, camera);
+    this->sceneLighting->ModernLighting(sceneShader, m_NumLights - 1, *camera->GetCameraFront(), *camera->GetCameraPos(),
+        pointLightPositions, pointLightMaterial);
 
     // Camera View and Proj
     camera->ModernCamera(m_WindowWidth, m_WindowHeight);
 
     glBindVertexArray(m_VertexArray);
     // Model
-    geom->DrawAllModern(listOfVertexes.at(currSubdivision), facesCopy, allVertices.size());
+    geom->DrawCubeWithPoints(allVertices.size());
 
     glBindVertexArray(0);
 
@@ -133,44 +134,6 @@ void RTRSceneTwo::DrawModern(Camera* camera) {
     m_VertexArray = 0;
     m_VertexBuffer = 0;
     m_FaceElementBuffer = 0;
-}
-
-void RTRSceneTwo::MakeLighting(int numLights, Camera* camera)
-{
-    // Set total amount of lights
-    sceneShader->SetInt("NumLights", m_NumLights - 1);
-
-    // Colour Materials
-    glm::vec3 lightColor;
-    lightColor.x = 0.8f;
-    lightColor.y = 0.8f;
-    lightColor.z = 0.8f;
-    glm::vec3 diffuseColor = lightColor * glm::vec3(0.8f);
-    glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
-    sceneShader->SetVec3("material.ambient", ambientColor);
-    sceneShader->SetVec3("material.diffuse", diffuseColor);
-    sceneShader->SetVec3("material.specular", 1.0f, 1.0f, 1.0f);
-    sceneShader->SetFloat("material.shininess", 32.0f);
-
-    // Directional Lights
-    sceneShader->SetVec3("dirLight.direction", *camera->GetCameraFront());
-    sceneShader->SetVec3("dirLight.ambient", 0.1f, 0.1f, 0.1f);
-    sceneShader->SetVec3("dirLight.diffuse", 0.4f, 0.4f, 0.4f);
-    sceneShader->SetVec3("dirLight.specular", 0.5f, 0.5f, 0.5f);
-    sceneShader->SetVec3("viewPos", *camera->GetCameraPos());
-
-    // Point lights
-    for (int l = 0; l < numLights; l++) {
-        std::string currNum = std::to_string(l);
-
-        sceneShader->SetVec3(("pointLights[" + currNum + "].position").c_str(), pointLightPositions[l]);
-        sceneShader->SetVec3(("pointLights[" + currNum + "].ambient").c_str(), pointLightMaterial[0] * glm::vec3(0.15f) * glm::vec3((float)l + 1.0f));
-        sceneShader->SetVec3(("pointLights[" + currNum + "].diffuse").c_str(), pointLightMaterial[1] * glm::vec3(0.15f) * glm::vec3((float)l + 1.0f));
-        sceneShader->SetVec3(("pointLights[" + currNum + "].specular").c_str(), pointLightMaterial[2]);
-        sceneShader->SetFloat(("pointLights[" + currNum + "].constant").c_str(), 1.0f);
-        sceneShader->SetFloat(("pointLights[" + currNum + "].linear").c_str(), 0.09f);
-        sceneShader->SetFloat(("pointLights[" + currNum + "].quadratic").c_str(), 0.032f);
-    }
 }
 
 void RTRSceneTwo::CreateCubes()

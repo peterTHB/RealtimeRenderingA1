@@ -41,7 +41,7 @@ protected:
 
 	Geometry* geom;
 	Cube* cube;
-	Lighting* lighting;
+	Lighting* sceneLighting;
 	std::vector<int> amountOfVertices;
 	std::vector<int> amountOfFaces;
 	std::vector<Cube> Cubes;

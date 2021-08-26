@@ -10,19 +10,16 @@
 #include <vector>
 #include "Lighting.h"
 #include "RTRShader.h"
+#include "Cube.h"
 
 class Geometry {
 public:
 	Geometry();
 	Geometry(RTRShader* shader);
-	virtual void DrawAllImmediate(std::vector<std::vector<GLfloat>> vertexAndNormalsHolder,
-		std::vector<int> faces);
-	virtual void DrawAllModern(std::vector<std::vector<GLfloat>> vertexAndNormalsHolder,
-		std::vector<int> faces, int size);
 	virtual void DrawCubeWithPointsImmediate(std::vector<std::vector<GLfloat>> vertexAndNormalsHolder,
 		std::vector<int> faces);
-	virtual void DrawCubeWithPointsModern(std::vector<std::vector<GLfloat>> vertexAndNormalsHolder,
-		std::vector<int> faces, int size);
+	virtual void DrawCubeWithPoints(int size);
+	virtual void DrawMultipleCubes(int currSubdivision, std::vector<Cube> cubePositions);
 
 private:
 	RTRShader* sceneShader;

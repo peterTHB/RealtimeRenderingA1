@@ -21,7 +21,7 @@ RTRSceneFour::RTRSceneFour(float windowWidth, float windowHeight, std::vector<GL
 	geom = new Geometry(sceneShader);
 	cube = new Cube(0.0f, 0.0f, 0.0f, 1.0f);
 	Cubes.push_back(*cube);
-	lighting = lighting;
+	sceneLighting = lighting;
 
 	facesCopy = faces;
 	std::vector<std::vector<GLfloat>> placeholder;
@@ -31,10 +31,32 @@ RTRSceneFour::RTRSceneFour(float windowWidth, float windowHeight, std::vector<GL
 	listOfVertexes.push_back(placeholder);
 	listOfMidVertexes.push_back(newVertexPositions);
 
+	pointLightPositions = {
+		glm::vec3(2.0f, 0.0f, 2.0f),
+		glm::vec3(-2.0f, 0.0f, -2.0f),
+		glm::vec3(0.0f, 2.0f, 2.0f),
+		glm::vec3(0.0f, -2.0f, -2.0f),
+		glm::vec3(0.0f, -2.0f, 2.0f),
+		glm::vec3(0.0f, 2.0f, -2.0f),
+		glm::vec3(3.0f, 3.0f, 3.0f),
+		glm::vec3(-3.0f, 3.0f, -3.0f)
+	};
+
+	pointLightMaterial = {
+		// Ambient
+		glm::vec3(0.3f, 0.3f, 0.3f),
+		// Diffuse
+		glm::vec3(0.9f, 0.9f, 0.9f),
+		//Specular
+		glm::vec3(1.0f, 1.0f, 1.0f),
+	};
+
 	m_VertexArray = 0;
 	m_VertexBuffer = 0;
 	m_FaceElementBuffer = 0;
-	m_InstancedVertexBuffer = 0;
+	pointLightPositions.clear();
+	pointLightMaterial.clear();
+	cubePositionsInWorld.clear();
 }
 
 void RTRSceneFour::Init() {
@@ -56,11 +78,64 @@ void RTRSceneFour::End() {
 }
 
 void RTRSceneFour::DrawAll(Camera* camera) {
-	
+	DrawModern(camera);
 }
 
 void RTRSceneFour::DrawModern(Camera* camera)
 {
+	int currSubdivision = m_Subdivisions - 1;
+
+	// VBO
+	glGenBuffers(1, &m_VertexBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
+	std::vector<GLfloat> allVertices;
+	for (int i = 0; i < listOfVertexes.at(currSubdivision).size(); i++) {
+		allVertices.insert(allVertices.end(), listOfVertexes.at(currSubdivision).at(i).begin(),
+			listOfVertexes.at(currSubdivision).at(i).end());
+	}
+	glBufferData(GL_ARRAY_BUFFER, allVertices.size() * sizeof(GLfloat), allVertices.data(), GL_STATIC_DRAW);
+
+	// VAO
+	glGenVertexArrays(1, &m_VertexArray);
+	glBindVertexArray(m_VertexArray);
+	glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(1);
+
+	// EBO
+	glGenBuffers(1, &m_FaceElementBuffer);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_FaceElementBuffer);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, facesCopy.size() * sizeof(int), facesCopy.data(), GL_STATIC_DRAW);
+
+	glUseProgram(*sceneShader->GetID());
+
+	if (m_LightingState) {
+		sceneShader->SetBool("LightOn", true);
+	}
+	else {
+		sceneShader->SetBool("LightOn", false);
+	}
+
+	this->sceneLighting->ModernLighting(sceneShader, m_NumLights - 1, *camera->GetCameraFront(), *camera->GetCameraPos(),
+		pointLightPositions, pointLightMaterial);
+
+	// Camera View and Proj
+	camera->ModernCamera(m_WindowWidth, m_WindowHeight);
+
+	glBindVertexArray(m_VertexArray);
+	// Model
+	geom->DrawCubeWithPoints(allVertices.size());
+
+	glBindVertexArray(0);
+
+	glDeleteVertexArrays(1, &m_VertexArray);
+	glDeleteBuffers(1, &m_VertexBuffer);
+	glDeleteBuffers(1, &m_FaceElementBuffer);
+	m_VertexArray = 0;
+	m_VertexBuffer = 0;
+	m_FaceElementBuffer = 0;
 }
 
 void RTRSceneFour::CreateCubes()
@@ -98,6 +173,30 @@ void RTRSceneFour::CreateCubes()
 
 		std::vector<GLfloat> storingNewMidVector = cube->CalculateNewPositionsModern(*cube, currVector);
 		listOfMidVertexes.push_back(storingNewMidVector);
+
+		//-------------------------------------------
+
+		//// Make buffer for cubes
+		//glGenBuffers(1, &m_InstancedVertexBuffer);
+		//glBindBuffer(GL_ARRAY_BUFFER, m_InstancedVertexBuffer);
+		//std::vector<GLfloat> allNewPositions;
+		//for (int i = 0; i < newVertexPositions.size(); i++) {
+		//    allNewPositions.insert(allNewPositions.end(), newVertexPositions.at(i).begin(),
+		//        newVertexPositions.at(i).end());
+		//}
+		//glBufferData(GL_ARRAY_BUFFER, newVertexPositions.size() * sizeof(GLfloat),
+		//    &allNewPositions[0], GL_STREAM_DRAW);
+
+		////enable vertex attribute 3 -> mat4
+		//glEnableVertexAttribArray(2);
+		//glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
+
+		//// tell OpenGL this is an instanced vertex attribute.
+		//glVertexAttribDivisor(2, 1);
+
+		///*glBindBuffer(GL_ARRAY_BUFFER, 0);*/
+
+		//------------------------------------------
 	}
 }
 

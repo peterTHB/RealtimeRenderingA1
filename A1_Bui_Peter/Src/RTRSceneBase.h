@@ -10,7 +10,6 @@
 #include "Lighting.h"
 #include "Camera.h"
 #include "RTRShader.h"
-#include "RTRShaderLight.h"
 
 class RTRSceneBase {
 public:
@@ -55,4 +54,6 @@ protected:
 	std::vector<Cube> Cubes;
 	std::vector<int> facesCopy;
 	std::vector<std::vector<GLfloat>> listOfVertexes;
+	std::vector<glm::vec3> pointLightPositions;
+	std::vector<glm::vec3> pointLightMaterial;
 };

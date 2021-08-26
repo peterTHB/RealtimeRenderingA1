@@ -14,11 +14,14 @@ public:
 	Cube(float x, float y, float z, float dimensions);
 	virtual std::vector<Cube> CalculateCube();
 	virtual std::vector<GLfloat> CalculateNewPositionsImmediate(Cube currCube,
-		std::vector<GLfloat> VerAndColPoints);
+		std::vector<GLfloat> VerAndNormPoints);
 	virtual std::vector<GLfloat> CalculateNewPositionsModern(Cube currCube,
-		std::vector<GLfloat> VerAndColPoints);
+		std::vector<GLfloat> VerAndNormPoints);
 	virtual std::vector<GLfloat> CalculateNewVertexPositions(Cube currCube, 
-		std::vector<GLfloat> VerAndColPoints, std::vector<int> faces);
+		std::vector<GLfloat> VerAndNormPoints, std::vector<int> faces);
+	virtual std::vector<GLfloat> ElementsVertexPositions(std::vector<GLfloat> VerAndNormPoints);
+	virtual std::vector<int> ExtraCubeFaces(std::vector<int> faces);
+	virtual std::vector<int> AddExtraCubeFaces(std::vector<int> faces, int size);
 	virtual void CalculateNewRadius();
 	virtual float* GetPosX();
 	virtual float* GetPosY();
