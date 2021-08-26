@@ -24,7 +24,7 @@
 #include <vector>
 
 std::vector<GLfloat> VertexPointsAndNormals = {
-    // Points         Colours
+    // Points         Normals
     //// Back
     -0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
     -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
@@ -75,7 +75,7 @@ private:
     bool m_QuitApp = false;
 
     bool m_ShowOSD = true;
-    int m_CurrSceneNum = 3;
+    int m_CurrSceneNum = 4;
     std::string m_Resolution = "";
     float m_RefreshRate = 0;
     float m_FPS = 0;

@@ -43,32 +43,11 @@ in vec3 FragPos;
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir);  
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir);  
 
-//vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir) {
-//    // Ambient
-//    vec3 ambient = dirLight.ambient * material.ambient;
-//  	
-//    // Diffuse 
-//    vec3 lightDir = normalize(-dirLight.direction);
-//    float diff = max(dot(normal, lightDir), 0.0);
-//    vec3 diffuse = dirLight.diffuse * (diff * material.diffuse);
-//    
-//    // Specular
-//    vec3 reflectDir = reflect(-lightDir, normal);
-//    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-//    vec3 specular = dirLight.specular * (spec * material.specular);  
-//        
-//    vec3 result = ambient + diffuse + specular;
-//
-//    return result;
-//};
-
-
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir) {
     vec3 lightDir = normalize(-light.direction);
     float diff = max(dot(normal, lightDir), 0.0);
-    vec3 reflectDir = reflect(-lightDir, normal);
-//    vec3 halfwayDir = normalize(lightDir + viewDir);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    vec3 halfwayDir = normalize(lightDir + viewDir);
+    float spec = pow(max(dot(viewDir, halfwayDir), 0.0), material.shininess);
 
     vec3 ambient = light.ambient * material.ambient;
     vec3 diffuse = light.diffuse * (diff * material.diffuse);
@@ -82,9 +61,8 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir) {
     // diffuse shading
     float diff = max(dot(normal, lightDir), 0.0);
     // specular shading
-//    vec3 halfwayDir = normalize(lightDir + viewDir);
-    vec3 reflectDir = reflect(-lightDir, normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    vec3 halfwayDir = normalize(lightDir + viewDir);
+    float spec = pow(max(dot(viewDir, halfwayDir), 0.0), material.shininess);
     // attenuation
     float distance = length(light.position - fragPos);
     float attenuation = 1.0 / (light.constant + light.linear * distance + 
@@ -115,7 +93,7 @@ void main()
         FragColor = vec4(result, 1.0);
 
     } else {
-        float ambientStrength = 0.2f;
+        float ambientStrength = 0.5f;
         vec3 ambient =  material.ambient * ambientStrength;
         vec3 diffuse = material.diffuse;
         vec3 result = ambient + diffuse;

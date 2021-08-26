@@ -19,7 +19,6 @@ public:
 		std::vector<GLfloat> VerAndNormPoints);
 	virtual std::vector<GLfloat> CalculateNewVertexPositions(Cube currCube, 
 		std::vector<GLfloat> VerAndNormPoints, std::vector<int> faces);
-	virtual std::vector<GLfloat> ElementsVertexPositions(std::vector<GLfloat> VerAndNormPoints);
 	virtual std::vector<int> ExtraCubeFaces(std::vector<int> faces);
 	virtual std::vector<int> AddExtraCubeFaces(std::vector<int> faces, int size);
 	virtual void CalculateNewRadius();

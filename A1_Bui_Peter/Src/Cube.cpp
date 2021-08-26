@@ -111,30 +111,6 @@ std::vector<GLfloat> Cube::CalculateNewVertexPositions(Cube currCube, std::vecto
 	return newVertexPositions;
 }
 
-std::vector<GLfloat> Cube::ElementsVertexPositions(std::vector<GLfloat> VerAndNormPoints) {
-	std::vector<GLfloat> newVertexPositions;
-
-	for (int j = 0; j < 2; j++) {
-		for (int i = 0; i < 4; i++) {
-			GLfloat posNormalX = (i + (i * 5) + 3) + (j * 24);
-			GLfloat posNormalY = (i + (i * 5) + 4) + (j * 24);
-			GLfloat posNormalZ = (i + (i * 5) + 5) + (j * 24);
-
-			GLfloat posVertexX = (i + (i * 5)) + (j * 24);
-			GLfloat posVertexY = (i + (i * 5) + 1) + (j * 24);
-			GLfloat posVertexZ = (i + (i * 5) + 2) + (j * 24);
-
-			std::vector<GLfloat> tempPositions = { VerAndNormPoints.at(posVertexX),  VerAndNormPoints.at(posVertexY),
-				 VerAndNormPoints.at(posVertexZ), VerAndNormPoints.at(posNormalX), VerAndNormPoints.at(posNormalY),
-				VerAndNormPoints.at(posNormalZ) };
-
-			newVertexPositions.insert(newVertexPositions.end(), tempPositions.begin(), tempPositions.end());
-		}
-	}
-
-	return newVertexPositions;
-}
-
 std::vector<int> Cube::ExtraCubeFaces(std::vector<int> faces) {
 	int faceOne = faces.at(0);
 	int faceTwo = faces.at(1);
@@ -150,9 +126,6 @@ std::vector<int> Cube::ExtraCubeFaces(std::vector<int> faces) {
 		int extraFaceFour = faceFour + (4 * i);
 		int extraFaceFive = faceFive + (4 * i);
 		int extraFaceSix = faceSix + (4 * i);
-
-		//std::cout << extraFaceOne << "/" << extraFaceTwo << "/" << extraFaceThree << "/" <<
-		//	extraFaceFour << "/" << extraFaceFive << "/" << extraFaceSix << std::endl;
 
 		std::vector<int> tempFaces = { extraFaceOne, extraFaceTwo, extraFaceThree, 
 										extraFaceFour, extraFaceFive, extraFaceSix };

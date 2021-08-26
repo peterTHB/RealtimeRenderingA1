@@ -10,6 +10,7 @@ public:
 	virtual void DrawAll(Camera* camera);
 	virtual void DrawModern(Camera* camera);
 	virtual void CreateCubes();
+	virtual void InstanceVBO();
 	
 	virtual bool* GetDepthBuffer();
 	virtual bool* GetBackface();

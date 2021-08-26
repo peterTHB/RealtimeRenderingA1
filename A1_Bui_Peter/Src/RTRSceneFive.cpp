@@ -64,6 +64,8 @@ void RTRSceneFive::Init() {
 void RTRSceneFive::End() {
 	geom = nullptr;
 	cube = nullptr;
+	sceneShader = nullptr;
+	sceneLighting = nullptr;
 	facesCopy.clear();
 
 	for (auto tier1 : listOfVertexes) {
@@ -117,11 +119,12 @@ void RTRSceneFive::DrawModern(Camera* camera)
 		sceneShader->SetBool("LightOn", false);
 	}
 
-	this->sceneLighting->ModernLighting(sceneShader, m_NumLights - 1, *camera->GetCameraFront(), *camera->GetCameraPos(),
-		pointLightPositions, pointLightMaterial);
+	this->sceneLighting->ModernLighting(sceneShader, m_NumLights - 1, *camera->GetCameraFront(), 
+		*camera->GetCameraPos(), pointLightPositions, pointLightMaterial);
 
 	// Camera View and Proj
 	camera->ModernCamera(m_WindowWidth, m_WindowHeight);
+	sceneShader->SetBool("arrayState", false);
 
 	glBindVertexArray(m_VertexArray);
 	// Model

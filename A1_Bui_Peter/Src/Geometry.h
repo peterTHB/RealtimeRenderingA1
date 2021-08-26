@@ -19,7 +19,9 @@ public:
 	virtual void DrawCubeWithPointsImmediate(std::vector<std::vector<GLfloat>> vertexAndNormalsHolder,
 		std::vector<int> faces);
 	virtual void DrawCubeWithPoints(int size);
-	virtual void DrawMultipleCubes(int currSubdivision, std::vector<Cube> cubePositions);
+	virtual void DrawMultipleCubes(int currSubdivision, std::vector<Cube> cubePositions, 
+		std::vector<glm::vec3> cubePositionsInWorld);
+	virtual void DrawCubeArrayInstanced(int size);
 
 private:
 	RTRShader* sceneShader;

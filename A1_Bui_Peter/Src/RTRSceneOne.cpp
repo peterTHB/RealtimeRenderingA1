@@ -35,6 +35,7 @@ void RTRSceneOne::Init() {
 void RTRSceneOne::End() {
 	geom = nullptr;
 	cube = nullptr;
+	sceneLighting = nullptr;
 	facesCopy.clear();
 
 	for (auto tier1 : listOfVertexes) {
