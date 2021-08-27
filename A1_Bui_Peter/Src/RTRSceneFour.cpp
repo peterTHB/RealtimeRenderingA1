@@ -1,5 +1,7 @@
 #include "RTRSceneFour.h"
 
+#define NUM_INSTANCES 9
+
 RTRSceneFour::RTRSceneFour(float windowWidth, float windowHeight, std::vector<GLfloat> vertexAndNormals,
 	std::vector<int> faces, Lighting* lighting, RTRShader* shader)
 {
@@ -54,6 +56,7 @@ RTRSceneFour::RTRSceneFour(float windowWidth, float windowHeight, std::vector<GL
 	m_VertexArray = 0;
 	m_VertexBuffer = 0;
 	m_FaceElementBuffer = 0;
+	m_InstancedArrayVBO = 0;
 	pointLightPositions.clear();
 	pointLightMaterial.clear();
 	cubePositionsInWorld.clear();
@@ -88,8 +91,6 @@ void RTRSceneFour::DrawModern(Camera* camera)
 	int currSubdivision = m_Subdivisions - 1;
 
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	
-	const int NUM_INSTANCES = 9;
 
 	std::vector<glm::vec3> cubePositionsInWorld = {
 		glm::vec3(0.0f, 0.0f, 0.0f),
@@ -108,18 +109,10 @@ void RTRSceneFour::DrawModern(Camera* camera)
 		glm::mat4(1.0f), glm::mat4(1.0f), glm::mat4(1.0f), glm::mat4(1.0f)
 	};
 
-	//for (int a = 0; a < m_InstanceModelMatrices.size(); a++) {
-	//	m_InstanceModelMatrices.at(a) = glm::translate(m_InstanceModelMatrices.at(a), cubePositionsInWorld.at(a));
-	//}
+	for (int a = 0; a < m_InstanceModelMatrices.size(); a++) {
+		m_InstanceModelMatrices.at(a) = glm::translate(m_InstanceModelMatrices.at(a), cubePositionsInWorld.at(a));
+	}
 
-	//-------------------------
-	// VBO for Instanced Array
-	unsigned int m_InstancedArrayVBO;
-	glGenBuffers(1, &m_InstancedArrayVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, m_InstancedArrayVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4) * NUM_INSTANCES, m_InstanceModelMatrices.data(), GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	// VAO and VBO
 	glGenVertexArrays(1, &m_VertexArray);
 	glGenBuffers(1, &m_VertexBuffer);
 	glBindVertexArray(m_VertexArray);
@@ -134,52 +127,10 @@ void RTRSceneFour::DrawModern(Camera* camera)
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
-	//Instance Data
-	glEnableVertexAttribArray(2);
-	glBindBuffer(GL_ARRAY_BUFFER, m_InstancedArrayVBO);
-	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glVertexAttribDivisor(2, 1);
 
-	//-------------------------
-
-	//// VBO for Instanced Array
-	//unsigned int m_InstancedArrayVBO;
-	//glGenBuffers(1, &m_InstancedArrayVBO);
-	//glBindBuffer(GL_ARRAY_BUFFER, m_InstancedArrayVBO);
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4) * NUM_INSTANCES, m_InstanceModelMatrices.data(), GL_STATIC_DRAW);
-	//glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	//// VBO
-	//glGenBuffers(1, &m_VertexBuffer);
-	//glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
-	//std::vector<GLfloat> allVertices;
-	//for (int i = 0; i < listOfVertexes.at(currSubdivision).size(); i++) {
-	//	allVertices.insert(allVertices.end(), listOfVertexes.at(currSubdivision).at(i).begin(),
-	//		listOfVertexes.at(currSubdivision).at(i).end());
-	//}
-	//glBufferData(GL_ARRAY_BUFFER, allVertices.size() * sizeof(GLfloat), allVertices.data(), GL_STATIC_DRAW);
-
-	//// VAO
-	//glGenVertexArrays(1, &m_VertexArray);
-	//glBindVertexArray(m_VertexArray);
-	//glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
-	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
-	//glEnableVertexAttribArray(0);
-	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
-	//glEnableVertexAttribArray(1);
-
-	//// Instanced VBO attribute pointer
-	//glEnableVertexAttribArray(2);
-	//glBindBuffer(GL_ARRAY_BUFFER, m_InstancedArrayVBO);
-	//glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)0);
-	//glBindBuffer(GL_ARRAY_BUFFER, 0);
-	//glVertexAttribDivisor(2, 1);
-
-	//// EBO
-	//glGenBuffers(1, &m_FaceElementBuffer);
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_FaceElementBuffer);
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, facesCopy.size() * sizeof(int), facesCopy.data(), GL_STATIC_DRAW);
+	// Instanced VBO
+	glGenBuffers(1, &m_InstancedArrayVBO);
+	InstanceVBO(m_InstanceModelMatrices);
 
 	glUseProgram(*sceneShader->GetID());
 
@@ -212,8 +163,18 @@ void RTRSceneFour::DrawModern(Camera* camera)
 	m_InstancedArrayVBO = 0;
 }
 
-void RTRSceneFour::InstanceVBO() {
+void RTRSceneFour::InstanceVBO(std::vector<glm::mat4> instanceModelMatrix) {
+	int matrixLocation = glGetAttribLocation(*sceneShader->GetID(), "aInstanceModelMatrix");
 
+	glBindBuffer(GL_ARRAY_BUFFER, m_InstancedArrayVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4) * NUM_INSTANCES, instanceModelMatrix.data(), GL_STATIC_DRAW);
+
+	for (unsigned int i = 0; i < 4; i++) {
+		int currIndex = matrixLocation + i;
+		glEnableVertexAttribArray(currIndex);
+		glVertexAttribPointer(currIndex, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(GLfloat) * i * 4));
+		glVertexAttribDivisor(currIndex, 1);
+	}
 };
 
 void RTRSceneFour::CreateCubes()

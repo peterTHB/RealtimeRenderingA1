@@ -10,7 +10,7 @@ public:
 	virtual void DrawAll(Camera* camera);
 	virtual void DrawModern(Camera* camera);
 	virtual void CreateCubes();
-	virtual void InstanceVBO();
+	virtual void InstanceVBO(std::vector<glm::mat4> instanceModelMatrix);
 	
 	virtual bool* GetDepthBuffer();
 	virtual bool* GetBackface();
@@ -58,4 +58,5 @@ protected:
 	unsigned int m_VertexArray;
 	unsigned int m_VertexBuffer;
 	unsigned int m_FaceElementBuffer;
+	unsigned int m_InstancedArrayVBO;
 };

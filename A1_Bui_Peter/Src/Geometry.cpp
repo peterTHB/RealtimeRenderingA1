@@ -92,5 +92,5 @@ void Geometry::DrawMultipleCubes(int currSubdivision, std::vector<Cube> cubePosi
 void Geometry::DrawCubeArrayInstanced(int size) {
 	int newSize = 36 * size;
 
-	glDrawArraysInstanced(GL_TRIANGLES, 0, newSize, 1);
+	glDrawArraysInstanced(GL_TRIANGLES, 0, newSize, 9);
 }
