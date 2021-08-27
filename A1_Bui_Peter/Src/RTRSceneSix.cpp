@@ -80,6 +80,9 @@ void RTRSceneSix::End() {
 
 void RTRSceneSix::DrawAll(Camera* camera) {
 	DrawModern(camera);
+	int currSubdivision = m_Subdivisions - 1;
+	m_VertexData = listOfVertexes.at(currSubdivision).size() *
+		listOfVertexes.at(currSubdivision).at(0).size() * sizeof(GLfloat);
 }
 
 void RTRSceneSix::DrawModern(Camera* camera)

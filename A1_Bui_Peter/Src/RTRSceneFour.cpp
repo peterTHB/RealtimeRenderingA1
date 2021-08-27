@@ -84,34 +84,15 @@ void RTRSceneFour::End() {
 
 void RTRSceneFour::DrawAll(Camera* camera) {
 	DrawModern(camera);
+	int currSubdivision = m_Subdivisions - 1;
+	m_VertexData = listOfVertexes.at(currSubdivision).size() *
+		listOfVertexes.at(currSubdivision).at(0).size() * sizeof(GLfloat);
 }
 
 void RTRSceneFour::DrawModern(Camera* camera)
 {
 	int currSubdivision = m_Subdivisions - 1;
-
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-	std::vector<glm::vec3> cubePositionsInWorld = {
-		glm::vec3(0.0f, 0.0f, 0.0f),
-		glm::vec3(2.0f, 0.0f, 0.0f),
-		glm::vec3(-2.0f, 0.0f, 0.0f),
-		glm::vec3(0.0f, 2.0f, 0.0f),
-		glm::vec3(0.0f, -2.0f, 0.0f),
-		glm::vec3(2.0f, 2.0f, 0.0f),
-		glm::vec3(-2.0f, 2.0f, 0.0f),
-		glm::vec3(2.0f, -2.0f, 0.0f),
-		glm::vec3(-2.0f, -2.0f, 0.0f)
-	};
-
-	std::vector<glm::mat4> m_InstanceModelMatrices = {
-		glm::mat4(1.0f), glm::mat4(1.0f), glm::mat4(1.0f), glm::mat4(1.0f), glm::mat4(1.0f),
-		glm::mat4(1.0f), glm::mat4(1.0f), glm::mat4(1.0f), glm::mat4(1.0f)
-	};
-
-	for (int a = 0; a < m_InstanceModelMatrices.size(); a++) {
-		m_InstanceModelMatrices.at(a) = glm::translate(m_InstanceModelMatrices.at(a), cubePositionsInWorld.at(a));
-	}
+	std::vector<glm::mat4> m_InstanceModelMatrices = geom->SetMultiCubeTransforms();
 
 	glGenVertexArrays(1, &m_VertexArray);
 	glGenBuffers(1, &m_VertexBuffer);

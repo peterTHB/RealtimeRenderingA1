@@ -169,11 +169,11 @@ void RTRSceneOne::DecrementSubdivision()
 
 void RTRSceneOne::IncrementLights()
 {
-	m_VertexData += 1;
+	m_NumLights += 1;
 }
 
 void RTRSceneOne::DecrementLights()
 {
-	m_VertexData -= 1;
+	m_NumLights -= 1;
 }
 

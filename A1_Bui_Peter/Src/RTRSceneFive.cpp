@@ -80,6 +80,9 @@ void RTRSceneFive::End() {
 
 void RTRSceneFive::DrawAll(Camera* camera) {
 	DrawModern(camera);
+	int currSubdivision = m_Subdivisions - 1;
+	m_VertexData = listOfVertexes.at(currSubdivision).size() *
+		listOfVertexes.at(currSubdivision).at(0).size() * sizeof(GLfloat);
 }
 
 void RTRSceneFive::DrawModern(Camera* camera)

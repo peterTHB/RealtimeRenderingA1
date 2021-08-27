@@ -97,6 +97,8 @@ void RTRSceneThree::End() {
 
 void RTRSceneThree::DrawAll(Camera* camera) {
 	DrawModern(camera);
+	m_VertexData = listOfVertexes.at(0).size() *
+		listOfVertexes.at(0).at(0).size() * sizeof(GLfloat);
 }
 
 void RTRSceneThree::DrawModern(Camera* camera) {

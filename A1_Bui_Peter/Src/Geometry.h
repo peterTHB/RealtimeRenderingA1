@@ -21,6 +21,7 @@ public:
 	virtual void DrawCubeWithPoints(int size);
 	virtual void DrawMultipleCubes(int currSubdivision, std::vector<Cube> cubePositions, 
 		std::vector<glm::vec3> cubePositionsInWorld);
+	virtual std::vector<glm::mat4> SetMultiCubeTransforms();
 	virtual void DrawCubeArrayInstanced(int size);
 
 private:

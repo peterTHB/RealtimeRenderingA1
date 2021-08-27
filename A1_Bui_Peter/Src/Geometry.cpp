@@ -89,6 +89,51 @@ void Geometry::DrawMultipleCubes(int currSubdivision, std::vector<Cube> cubePosi
 	}
 }
 
+std::vector<glm::mat4> Geometry::SetMultiCubeTransforms()
+{
+	std::vector<glm::mat4> InstanceMatrixTransforms = {
+		glm::mat4(1.0f), glm::mat4(1.0f), glm::mat4(1.0f), glm::mat4(1.0f), glm::mat4(1.0f),
+		glm::mat4(1.0f), glm::mat4(1.0f), glm::mat4(1.0f), glm::mat4(1.0f)
+	};
+
+	std::vector<glm::vec3> cubePositionsInWorld = {
+		glm::vec3(0.0f, 0.0f, 0.0f),
+		glm::vec3(2.0f, 0.0f, 0.0f),
+		glm::vec3(-2.0f, 0.0f, 0.0f),
+		glm::vec3(0.0f, 2.0f, 0.0f),
+		glm::vec3(0.0f, -2.0f, 0.0f),
+		glm::vec3(2.0f, 2.0f, 0.0f),
+		glm::vec3(-2.0f, 2.0f, 0.0f),
+		glm::vec3(2.0f, -2.0f, 0.0f),
+		glm::vec3(-2.0f, -2.0f, 0.0f)
+	};
+
+	std::vector<glm::vec3> cubeRotations = {
+		glm::vec3(1.0f, 0.0f, 0.0f),
+		glm::vec3(0.0f, 1.0f, 0.0f),
+		glm::vec3(0.0f, 0.0f, 1.0f),
+		glm::vec3(1.0f, 0.33f, 0.33f),
+		glm::vec3(0.33f, 1.0f, 0.33f),
+		glm::vec3(0.33f, 0.33f, 1.0f),
+		glm::vec3(1.0f, 0.66f, 0.66f),
+		glm::vec3(0.66f, 1.0f, 0.66f),
+		glm::vec3(0.66f, 0.66f, 1.0f)
+	};
+
+	std::vector<GLfloat> cubeAngles = {
+		30.0f, 60.0f, 90.0f, 120.0f, 150.0f,
+		-20.0f, -40.0f, -60.0f, -80.0f
+	};
+
+	for (int a = 0; a < InstanceMatrixTransforms.size(); a++) {
+		InstanceMatrixTransforms.at(a) = glm::translate(InstanceMatrixTransforms.at(a), cubePositionsInWorld.at(a));
+		InstanceMatrixTransforms.at(a) = glm::rotate(InstanceMatrixTransforms.at(a), glm::radians(cubeAngles.at(a)) * 
+			SDL_GetTicks() / 1000.0f, cubeRotations.at(a));
+	}
+
+	return InstanceMatrixTransforms;
+}
+
 void Geometry::DrawCubeArrayInstanced(int size) {
 	int newSize = 36 * size;
 
