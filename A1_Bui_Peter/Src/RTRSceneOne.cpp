@@ -48,7 +48,7 @@ void RTRSceneOne::End() {
 
 void RTRSceneOne::DrawAll(Camera* camera) {
 	int currSubdivision = m_Subdivisions - 1;
-	geom->DrawCubeWithPointsImmediate(listOfVertexes.at(currSubdivision), facesCopy);
+	geom->DrawCubeWithPointsImmediate(listOfVertexes.at(currSubdivision), facesCopy, m_LightingState);
 	camera->ImmediateCamera(m_WindowWidth, m_WindowHeight);
 	m_VertexData = listOfVertexes.at(currSubdivision).size() * 
 		listOfVertexes.at(currSubdivision).at(0).size() * sizeof(GLfloat);

@@ -75,7 +75,7 @@ private:
     bool m_QuitApp = false;
 
     bool m_ShowOSD = true;
-    int m_CurrSceneNum = 2;
+    int m_CurrSceneNum = 6;
     std::string m_Resolution = "";
     float m_RefreshRate = 0;
     float m_FPS = 0;
@@ -225,15 +225,14 @@ void AssignmentApp::CheckInput()
             case SDLK_PERIOD:
                 if (*ListOfScenes[m_CurrSceneNum - 1]->GetNumLights() < 9) {
                     ListOfScenes[m_CurrSceneNum - 1]->IncrementLights();
-                    std::cout << "Increment: " << *ListOfScenes[m_CurrSceneNum - 1]->GetNumLights() << std::endl;
                     break;
                 }
                 break;
 
             case SDLK_COMMA:
-                if (*ListOfScenes[m_CurrSceneNum - 1]->GetNumLights() > 1) {
+                if (*ListOfScenes[m_CurrSceneNum - 1]->GetNumLights() > 0) {
                     ListOfScenes[m_CurrSceneNum - 1]->DecrementLights();
-                    std::cout << "Decrement: " << *ListOfScenes[m_CurrSceneNum - 1]->GetNumLights() << std::endl;
+                    std::cout << *ListOfScenes[m_CurrSceneNum - 1]->GetNumLights() << std::endl;
                     break;
                 }
                 break;

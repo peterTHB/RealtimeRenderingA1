@@ -17,7 +17,7 @@ public:
 	Geometry();
 	Geometry(RTRShader* shader);
 	virtual void DrawCubeWithPointsImmediate(std::vector<std::vector<GLfloat>> vertexAndNormalsHolder,
-		std::vector<int> faces);
+		std::vector<int> faces, bool lightingState);
 	virtual void DrawCubeWithPoints(int size);
 	virtual void DrawMultipleCubes(int currSubdivision, std::vector<Cube> cubePositions, 
 		std::vector<glm::vec3> cubePositionsInWorld);

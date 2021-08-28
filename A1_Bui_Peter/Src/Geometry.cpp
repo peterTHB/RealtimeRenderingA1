@@ -10,7 +10,7 @@ Geometry::Geometry(RTRShader* shader) {
 }
 
 void Geometry::DrawCubeWithPointsImmediate(std::vector<std::vector<GLfloat>> vertexAndNormalsHolder, 
-	std::vector<int> faces) {
+	std::vector<int> faces, bool lightingState) {
 	glBegin(GL_TRIANGLES);
 	for (auto& VANVertex : vertexAndNormalsHolder) {
 		for (int j = 0; j < VANVertex.size() / 24; j++) {
@@ -21,15 +21,18 @@ void Geometry::DrawCubeWithPointsImmediate(std::vector<std::vector<GLfloat>> ver
 
 				GLfloat colours = (float)i * 0.15f;
 				
-				GLfloat ambientArray[] = { 0.6f, 0.6f, 0.6f, 1.0f };
-				GLfloat diffuseArray[] = { 0.8f, 0.8f, 0.8f, 1.0f };
-				GLfloat specularArray[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-				GLfloat shinyArray[] = { 50.0f };
+				GLfloat ambientArray[] = { 0.2f, 0.25f, 0.3f, 1.0f };
+				GLfloat diffuseArray[] = { 0.4f, 0.4f, 0.4f, 1.0f };
+				GLfloat specularArray[] = { 0.5f, 0.5f, 0.5f, 1.0f };
+				GLfloat shinyArray[] = { 16.0f };
 
 				glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ambientArray);
 				glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuseArray);
-				glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specularArray);
-				glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shinyArray);
+
+				if (lightingState) {
+					glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specularArray);
+					glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shinyArray);
+				}
 
 				glColor3f(colours, colours, colours);
 				glVertex3f(VANVertex.at(posVertexX),
@@ -135,7 +138,7 @@ std::vector<glm::mat4> Geometry::SetMultiCubeTransforms()
 }
 
 void Geometry::DrawCubeArrayInstanced(int size) {
-	int newSize = 36 * size;
+	int maxSize = 36 * size;
 
-	glDrawArraysInstanced(GL_TRIANGLES, 0, newSize, 9);
+	glDrawArraysInstanced(GL_TRIANGLES, 0, maxSize, 9);
 }

@@ -11,63 +11,92 @@ struct Materials
 Lighting::Lighting()
 {
 	ambientLighting = { 0.2f, 0.2f, 0.2f, 1.0f };
-	diffuseLighting = { 0.8f, 0.8f, 0.8f, 1.0f };
-	specularLighting = { 1.0f, 1.0f, 1.0f, 1.0f };
+	diffuseLighting = { 0.6f, 0.6f, 0.6f, 1.0f };
+	specularLighting = { 0.5f, 0.5f, 0.5f, 1.0f };
 }
 
 void Lighting::InstantiateImmediate() {
 	GLfloat* ambientArray = &ambientLighting[0];
 	GLfloat* diffuseArray = &diffuseLighting[0];
 	GLfloat* specularArray = &specularLighting[0];
-	GLfloat positionArrayOne[] = { 5.0f, 5.0f, 5.0f, 1.0f };
-	GLfloat positionArrayTwo[] = { -5.0f, 5.0f, 5.0f, 1.0f };
-	GLfloat positionArrayThree[] = { -5.0f, -5.0f, 5.0f, 1.0f };
-	GLfloat positionArrayFour[] = { 5.0f, -5.0f, 5.0f, 1.0f };
-	GLfloat positionArrayFive[] = { 0.0f, 5.0f, 0.0f, 1.0f };
-	GLfloat positionArraySix[] = { 0.0f, -5.0f, 0.0f, 1.0f };
-	GLfloat positionArraySeven[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+
+	GLfloat positionArrayOne[] = { 3.0f, 3.0f, 3.0f, 1.0f };
+	GLfloat positionArrayTwo[] = { -3.0f, 3.0f, 3.0f, 1.0f };
+	GLfloat positionArrayThree[] = { -3.0f, -3.0f, 3.0f, 1.0f };
+	GLfloat positionArrayFour[] = { 3.0f, -3.0f, 3.0f, 1.0f };
+	GLfloat positionArrayFive[] = { 0.0f, 3.0f, 0.0f, 1.0f };
+	GLfloat positionArraySix[] = { 0.0f, -3.0f, 0.0f, 1.0f };
+	GLfloat positionArraySeven[] = { 3.0f, 0.0f, 3.0f, 1.0f };
+
+	for (int i = 0; i < 3; i++) {
+		ambientArray[i] = ambientArray[i] * 1.1f;
+		diffuseArray[i] = diffuseArray[i] * 1.1f;
+	}
 
 	glLightfv(GL_LIGHT1, GL_AMBIENT, ambientArray);
 	glLightfv(GL_LIGHT1, GL_DIFFUSE, diffuseArray);
 	glLightfv(GL_LIGHT1, GL_SPECULAR, specularArray);
 	glLightfv(GL_LIGHT1, GL_POSITION, positionArrayOne);
-	//glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, positionArrayOne);
+
+	for (int i = 0; i < 3; i++) {
+		ambientArray[i] = ambientArray[i] * 1.1f;
+		diffuseArray[i] = diffuseArray[i] * 1.1f;
+	}
 
 	glLightfv(GL_LIGHT2, GL_AMBIENT, ambientArray);
 	glLightfv(GL_LIGHT2, GL_DIFFUSE, diffuseArray);
 	glLightfv(GL_LIGHT2, GL_SPECULAR, specularArray);
 	glLightfv(GL_LIGHT2, GL_POSITION, positionArrayTwo);
-	//glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, positionArrayTwo);
+
+	for (int i = 0; i < 3; i++) {
+		ambientArray[i] = ambientArray[i] * 1.1f;
+		diffuseArray[i] = diffuseArray[i] * 1.1f;
+	}
 
 	glLightfv(GL_LIGHT3, GL_AMBIENT, ambientArray);
 	glLightfv(GL_LIGHT3, GL_DIFFUSE, diffuseArray);
 	glLightfv(GL_LIGHT3, GL_SPECULAR, specularArray);
 	glLightfv(GL_LIGHT3, GL_POSITION, positionArrayThree);
-	//glLightfv(GL_LIGHT3, GL_SPOT_DIRECTION, positionArrayThree);
+
+	for (int i = 0; i < 3; i++) {
+		ambientArray[i] = ambientArray[i] * 1.1f;
+		diffuseArray[i] = diffuseArray[i] * 1.1f;
+	}
 
 	glLightfv(GL_LIGHT4, GL_AMBIENT, ambientArray);
 	glLightfv(GL_LIGHT4, GL_DIFFUSE, diffuseArray);
 	glLightfv(GL_LIGHT4, GL_SPECULAR, specularArray);
 	glLightfv(GL_LIGHT4, GL_POSITION, positionArrayFour);
-	//glLightfv(GL_LIGHT4, GL_SPOT_DIRECTION, positionArrayFour);
+	
+	for (int i = 0; i < 3; i++) {
+		ambientArray[i] = ambientArray[i] * 1.1f;
+		diffuseArray[i] = diffuseArray[i] * 1.1f;
+	}
 
 	glLightfv(GL_LIGHT5, GL_AMBIENT, ambientArray);
 	glLightfv(GL_LIGHT5, GL_DIFFUSE, diffuseArray);
 	glLightfv(GL_LIGHT5, GL_SPECULAR, specularArray);
 	glLightfv(GL_LIGHT5, GL_POSITION, positionArrayFive);
-	//glLightfv(GL_LIGHT5, GL_SPOT_DIRECTION, positionArrayFive);
+
+	for (int i = 0; i < 3; i++) {
+		ambientArray[i] = ambientArray[i] * 1.1f;
+		diffuseArray[i] = diffuseArray[i] * 1.1f;
+	}
 
 	glLightfv(GL_LIGHT6, GL_AMBIENT, ambientArray);
 	glLightfv(GL_LIGHT6, GL_DIFFUSE, diffuseArray);
 	glLightfv(GL_LIGHT6, GL_SPECULAR, specularArray);
 	glLightfv(GL_LIGHT6, GL_POSITION, positionArraySix);
-	//glLightfv(GL_LIGHT6, GL_SPOT_DIRECTION, positionArraySix);
+
+	for (int i = 0; i < 3; i++) {
+		ambientArray[i] = ambientArray[i] * 1.1f;
+		diffuseArray[i] = diffuseArray[i] * 1.1f;
+	}
 
 	glLightfv(GL_LIGHT7, GL_AMBIENT, ambientArray);
 	glLightfv(GL_LIGHT7, GL_DIFFUSE, diffuseArray);
 	glLightfv(GL_LIGHT7, GL_SPECULAR, specularArray);
 	glLightfv(GL_LIGHT7, GL_POSITION, positionArraySeven);
-	//glLightfv(GL_LIGHT7, GL_SPOT_DIRECTION, positionArraySeven);
 }
 
 void Lighting::ImmediateLighting(glm::vec3 cameraPos)
@@ -75,7 +104,7 @@ void Lighting::ImmediateLighting(glm::vec3 cameraPos)
 	GLfloat* ambientArray = &ambientLighting[0];
 	GLfloat* diffuseArray = &diffuseLighting[0];
 	GLfloat* specularArray = &specularLighting[0];
-	GLfloat positionArrayLight[] = { cameraPos.x, cameraPos.y, cameraPos.z, 1.0f };
+	GLfloat positionArrayLight[] = { cameraPos.x, cameraPos.y, cameraPos.z, 0.0f };
 
 	glLightfv(GL_LIGHT0, GL_AMBIENT, ambientArray);
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseArray);

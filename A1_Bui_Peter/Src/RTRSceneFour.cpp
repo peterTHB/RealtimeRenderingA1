@@ -275,7 +275,9 @@ void RTRSceneFour::DecrementSubdivision()
 
 void RTRSceneFour::IncrementLights()
 {
-	m_NumLights += 1;
+	if (m_NumLights < 1) {
+		m_NumLights += 1;
+	}
 }
 
 void RTRSceneFour::DecrementLights()
