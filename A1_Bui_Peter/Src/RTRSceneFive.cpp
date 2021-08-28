@@ -54,6 +54,10 @@ RTRSceneFive::RTRSceneFive(float windowWidth, float windowHeight, std::vector<GL
 	m_VertexArray = 0;
 	m_VertexBuffer = 0;
 	m_FaceElementBuffer = 0;
+
+	animationTime = 0.0f;
+	oldTimeStart = 0.0f;
+	changeCurve = true;
 }
 
 void RTRSceneFive::Init() {
@@ -97,7 +101,11 @@ void RTRSceneFive::DrawModern(Camera* camera)
 		allVertices.insert(allVertices.end(), listOfVertexes.at(currSubdivision).at(i).begin(),
 			listOfVertexes.at(currSubdivision).at(i).end());
 	}
-	glBufferData(GL_ARRAY_BUFFER, allVertices.size() * sizeof(GLfloat), allVertices.data(), GL_STATIC_DRAW);
+
+	// When get all vertices, transform them by a parametric function
+	std::vector<GLfloat> interpolatedVertices = cube->CalculatePulsation(allVertices, animationTime);
+
+	glBufferData(GL_ARRAY_BUFFER, interpolatedVertices.size() * sizeof(GLfloat), interpolatedVertices.data(), GL_STATIC_DRAW);
 
 	// VAO
 	glGenVertexArrays(1, &m_VertexArray);
@@ -122,7 +130,7 @@ void RTRSceneFive::DrawModern(Camera* camera)
 		sceneShader->SetBool("LightOn", false);
 	}
 
-	this->sceneLighting->ModernLighting(sceneShader, m_NumLights - 1, *camera->GetCameraFront(), 
+	this->sceneLighting->ModernLighting(sceneShader, m_NumLights - 1, *camera->GetCameraFront(),
 		*camera->GetCameraPos(), pointLightPositions, pointLightMaterial);
 
 	// Camera View and Proj
@@ -131,7 +139,7 @@ void RTRSceneFive::DrawModern(Camera* camera)
 
 	glBindVertexArray(m_VertexArray);
 	// Model
-	geom->DrawCubeWithPoints(allVertices.size());
+	geom->DrawCubeWithPoints(interpolatedVertices.size());
 
 	glBindVertexArray(0);
 
@@ -141,6 +149,30 @@ void RTRSceneFive::DrawModern(Camera* camera)
 	m_VertexArray = 0;
 	m_VertexBuffer = 0;
 	m_FaceElementBuffer = 0;
+
+	if (animationTime > 1.0f) {
+		changeCurve = false;
+	}
+	else if (animationTime < 0.0f) {
+		changeCurve = true;
+	}
+
+	if (changeCurve == true) {
+		animationTime += GetDeltaTime();
+	}
+	else {
+		animationTime -= GetDeltaTime();
+	}
+
+	std::cout << animationTime << std::endl;
+}
+
+float RTRSceneFive::GetDeltaTime() {
+	float timeStart = SDL_GetTicks() / 1000.0f;
+	float deltaTime = timeStart - oldTimeStart;
+	oldTimeStart = timeStart;
+
+	return deltaTime;
 }
 
 void RTRSceneFive::CreateCubes()

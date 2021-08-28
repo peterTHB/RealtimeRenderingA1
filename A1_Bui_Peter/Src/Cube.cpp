@@ -4,6 +4,7 @@ Cube::Cube(float x, float y, float z, float dimensions)
 {
 	this->pos = glm::vec3(x, y, z);
 	this->dimensions = dimensions;
+	this->oldTimeStart = 0;
 }
 
 // Returns all new positions for new cubes to be drawn
@@ -152,6 +153,45 @@ std::vector<int> Cube::AddExtraCubeFaces(std::vector<int> faces, int size)
 	}
 
 	return storeAllCalc;
+}
+
+std::vector<GLfloat> Cube::CalculatePulsation(std::vector<GLfloat> allVertices, float time) {
+	//float secs = SDL_GetTicks() / 1000.0f;
+	//float timeStart = SDL_GetTicks() / 1000.0f;
+	//float deltaTime = timeStart - oldTimeStart;
+	//oldTimeStart = timeStart;
+
+	// Based upon coordinates glm::vec3(0.5f), which is a furthermost corner
+	// Radius / Magnitude = Ratio
+	float ratio = 0.5 / sqrt(0.75);
+
+	for (int i = 0; i < allVertices.size(); i = i + 6) {
+		glm::vec3 originPos = glm::vec3(0.0f);
+
+		int yLocation = i + 1;
+		int zLocation = i + 2;
+
+		float posX = allVertices.at(i);
+		float posY = allVertices.at(yLocation);
+		float posZ = allVertices.at(zLocation);
+
+		float magnitude = sqrt(pow(posX, 2) + pow(posY, 2) + pow(posZ, 2));
+
+		originPos.x = ratio * posX;
+		originPos.y = ratio * posY;
+		originPos.z = ratio * posZ;
+
+
+		glm::vec3 currPos = glm::vec3(posX, posY, posZ);
+
+		glm::vec3 newPos = currPos + ((originPos - currPos) * sin(time * time));
+
+		allVertices.at(i) = newPos.x;
+		allVertices.at(yLocation) = newPos.y;
+		allVertices.at(zLocation) =  newPos.z;
+	};
+
+	return allVertices;
 }
 
 float* Cube::GetPosX()
