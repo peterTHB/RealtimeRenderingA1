@@ -1,10 +1,10 @@
 ﻿  Lighting.cpp
-C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\Lighting.cpp(171,127): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\Lighting.cpp(172,127): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float
           ]
-C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\Lighting.cpp(172,127): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
+C:\Users\User\Documents\RMITY3S2\RealtimeRendering\RealtimeRenderingA1\A1_Bui_Peter\Src\Lighting.cpp(173,127): warning C4244: 'argument': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float

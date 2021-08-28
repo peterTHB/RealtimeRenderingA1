@@ -82,12 +82,19 @@ void main()
     if (LightOn) {
         vec3 norm = normalize(Normal);
         vec3 viewDir = normalize(viewPos - FragPos);
+        vec3 result = vec3(0.0f);
 
         // Directional light
-        vec3 result = CalcDirLight(dirLight, norm, viewDir);
+        if (NumLights > 0) {
+            result += CalcDirLight(dirLight, norm, viewDir);
+        }
         // Point lighting
-        for (int i = 0; i < NumLights; i++) {
-            result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);
+        if (NumLights > 1) {
+            int totalPointLights =  NumLights - 1;
+
+            for (int i = 0; i < totalPointLights; i++) {
+                result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);
+            }
         }
 
         FragColor = vec4(result, 1.0);

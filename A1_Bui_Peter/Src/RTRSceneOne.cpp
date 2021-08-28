@@ -11,7 +11,7 @@ RTRSceneOne::RTRSceneOne(float windowWidth, float windowHeight, std::vector<GLfl
 	m_Subdivisions = 1;
 	m_Vertices = 8;
 	m_Faces = 6;
-	m_NumLights = 1;
+	m_NumLights = 0;
 	m_VertexData = 0.0f;
 
 	amountOfVertices.push_back(m_Vertices);

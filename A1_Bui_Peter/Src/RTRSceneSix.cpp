@@ -11,7 +11,7 @@ RTRSceneSix::RTRSceneSix(float windowWidth, float windowHeight, std::vector<GLfl
 	m_Subdivisions = 1;
 	m_Vertices = 8;
 	m_Faces = 6;
-	m_NumLights = 1;
+	m_NumLights = 0;
 	m_VertexData = 0.0f;
 
 	amountOfVertices.push_back(m_Vertices);
@@ -127,7 +127,7 @@ void RTRSceneSix::DrawModern(Camera* camera)
 		sceneShader->SetBool("LightOn", false);
 	}
 
-	this->sceneLighting->ModernLighting(sceneShader, m_NumLights - 1, *camera->GetCameraFront(), 
+	this->sceneLighting->ModernLighting(sceneShader, m_NumLights, *camera->GetCameraFront(), 
 		*camera->GetCameraPos(), pointLightPositions, pointLightMaterial);
 
 	// Camera View and Proj

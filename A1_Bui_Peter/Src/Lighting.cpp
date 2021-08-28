@@ -164,7 +164,8 @@ void Lighting::ModernLighting(RTRShader* shader, int numLights, glm::vec3 camera
 	shader->SetVec3("viewPos", cameraPos);
 
 	// Point lights
-	for (int l = 0; l < numLights; l++) {
+	int totalPointLights = numLights - 1;
+	for (int l = 0; l < totalPointLights; l++) {
 		std::string currNum = std::to_string(l);
 
 		shader->SetVec3(("pointLights[" + currNum + "].position").c_str(), pointLightPositions.at(l));
