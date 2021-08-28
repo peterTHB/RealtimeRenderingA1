@@ -103,7 +103,7 @@ void RTRSceneFive::DrawModern(Camera* camera)
 	}
 
 	// When get all vertices, transform them by a parametric function
-	std::vector<GLfloat> interpolatedVertices = cube->CalculatePulsation(allVertices, animationTime);
+	std::vector<GLfloat> interpolatedVertices = cube->CalculatePulsation(allVertices, animationTime, currSubdivision);
 
 	glBufferData(GL_ARRAY_BUFFER, interpolatedVertices.size() * sizeof(GLfloat), interpolatedVertices.data(), GL_STATIC_DRAW);
 
@@ -164,7 +164,7 @@ void RTRSceneFive::DrawModern(Camera* camera)
 		animationTime -= GetDeltaTime();
 	}
 
-	std::cout << animationTime << std::endl;
+	//std::cout << animationTime << std::endl;
 }
 
 float RTRSceneFive::GetDeltaTime() {

@@ -21,7 +21,7 @@ public:
 		std::vector<GLfloat> VerAndNormPoints, std::vector<int> faces);
 	virtual std::vector<int> ExtraCubeFaces(std::vector<int> faces);
 	virtual std::vector<int> AddExtraCubeFaces(std::vector<int> faces, int size);
-	virtual std::vector<GLfloat> CalculatePulsation(std::vector<GLfloat> allVertices, float time);
+	virtual std::vector<GLfloat> CalculatePulsation(std::vector<GLfloat> allVertices, float time, int currSubdivision);
 	virtual void CalculateNewRadius();
 	virtual float* GetPosX();
 	virtual float* GetPosY();
