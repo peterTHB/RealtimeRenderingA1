@@ -146,14 +146,14 @@ void Lighting::ModernLighting(RTRShader* shader, int numLights, glm::vec3 camera
 
 	// Colour Materials
 	glm::vec3 lightColor;
-	lightColor.x = 0.8f;
+	lightColor.x = 0.6f;
 	lightColor.y = 0.8f;
-	lightColor.z = 0.8f;
+	lightColor.z = 1.0f;
 	glm::vec3 diffuseColor = lightColor * glm::vec3(0.8f);
 	glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
 	shader->SetVec3("material.ambient", ambientColor);
 	shader->SetVec3("material.diffuse", diffuseColor);
-	shader->SetVec3("material.specular", 1.0f, 1.0f, 1.0f);
+	shader->SetVec3("material.specular", 0.8f, 0.8f, 0.8f);
 	shader->SetFloat("material.shininess", 32.0f);
 
 	// Directional Lights
@@ -168,8 +168,8 @@ void Lighting::ModernLighting(RTRShader* shader, int numLights, glm::vec3 camera
 		std::string currNum = std::to_string(l);
 
 		shader->SetVec3(("pointLights[" + currNum + "].position").c_str(), pointLightPositions.at(l));
-		shader->SetVec3(("pointLights[" + currNum + "].ambient").c_str(), pointLightMaterial.at(0) * glm::vec3(0.15f) * glm::vec3((float)l + 1.0f));
-		shader->SetVec3(("pointLights[" + currNum + "].diffuse").c_str(), pointLightMaterial.at(1) * glm::vec3(0.15f) * glm::vec3((float)l + 1.0f));
+		shader->SetVec3(("pointLights[" + currNum + "].ambient").c_str(), pointLightMaterial.at(0) * glm::vec3(0.15f) * glm::vec3(7 - ((float)l * 0.5)));
+		shader->SetVec3(("pointLights[" + currNum + "].diffuse").c_str(), pointLightMaterial.at(1) * glm::vec3(0.15f) * glm::vec3(7 - ((float)l * 0.5)));
 		shader->SetVec3(("pointLights[" + currNum + "].specular").c_str(), pointLightMaterial.at(2));
 		shader->SetFloat(("pointLights[" + currNum + "].constant").c_str(), 1.0f);
 		shader->SetFloat(("pointLights[" + currNum + "].linear").c_str(), 0.09f);

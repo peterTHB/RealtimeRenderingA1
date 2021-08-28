@@ -46,9 +46,9 @@ RTRSceneTwo::RTRSceneTwo(float windowWidth, float windowHeight, std::vector<GLfl
         // Ambient
         glm::vec3(0.3f, 0.3f, 0.3f),
         // Diffuse
-        glm::vec3(0.9f, 0.9f, 0.9f),
+        glm::vec3(0.7f, 0.7f, 0.7f),
         //Specular
-        glm::vec3(1.0f, 1.0f, 1.0f),
+        glm::vec3(0.8f, 0.8f, 0.8f),
     };
 
     m_VertexArray = 0;

@@ -75,7 +75,7 @@ private:
     bool m_QuitApp = false;
 
     bool m_ShowOSD = true;
-    int m_CurrSceneNum = 6;
+    int m_CurrSceneNum = 1;
     std::string m_Resolution = "";
     float m_RefreshRate = 0;
     float m_FPS = 0;
