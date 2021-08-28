@@ -17,9 +17,26 @@ uniform int sceneState;
 
 uniform float timeTotal;
 
-//vec3 InterpolatedPositions() {
-//	
-//};
+vec3 InterpolatedPositions() {
+	vec3 calcPoint = vec3(0.0f);
+
+	float posX = vertex_position.x;
+	float posY = vertex_position.y;
+	float posZ = vertex_position.z;
+
+	float radius = (abs(posX) > abs(posY) ? posX : posY);
+	radius = abs(radius) > abs(posZ) ? radius : posZ;
+	radius = abs(radius);
+
+	vec3 currPos = vec3(posX, posY, posZ);
+	calcPoint = normalize(currPos);
+
+	calcPoint *= radius;
+
+	vec3 newPos = currPos + ((calcPoint - currPos) * sin(timeTotal * timeTotal));
+
+	return newPos;
+};
 
 void main() {
 	if (sceneState == 0) {
@@ -31,8 +48,9 @@ void main() {
 		gl_Position =  projection * view * aInstanceModelMatrix * vec4(vertex_position, 1.0f);
 		FragPos = vec3(aInstanceModelMatrix * vec4(vertex_position, 1.0f));
 		Normal = mat3(transpose(inverse(aInstanceModelMatrix))) * aNormal;
-	} else {
-		gl_Position =  projection * view * model * vec4(vertex_position, 1.0f);
+	} else if (sceneState == 2) {
+		vec3 newVertexPositions = InterpolatedPositions();
+		gl_Position =  projection * view * model * vec4(newVertexPositions, 1.0f);
 		FragPos = vec3(model * vec4(vertex_position, 1.0f));
 		Normal = mat3(transpose(inverse(model))) * aNormal;
 	}

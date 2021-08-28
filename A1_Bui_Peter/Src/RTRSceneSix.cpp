@@ -89,6 +89,11 @@ void RTRSceneSix::DrawModern(Camera* camera)
 {
 	int currSubdivision = m_Subdivisions - 1;
 
+	if (animationTime < -0.3f || animationTime > 1.3f) {
+		animationTime = 0.0f;
+		changeCurve = true;
+	}
+
 	// VBO
 	glGenBuffers(1, &m_VertexBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
@@ -129,9 +134,11 @@ void RTRSceneSix::DrawModern(Camera* camera)
 	camera->ModernCamera(m_WindowWidth, m_WindowHeight);
 
 	// Scene specific
-	sceneShader->SetInt("sceneState", 0);
+	sceneShader->SetInt("sceneState", 2);
+	sceneShader->SetFloat("timeTotal", animationTime);
 
 	glBindVertexArray(m_VertexArray);
+
 	// Model
 	geom->DrawCubeWithPoints(allVertices.size());
 
@@ -143,6 +150,28 @@ void RTRSceneSix::DrawModern(Camera* camera)
 	m_VertexArray = 0;
 	m_VertexBuffer = 0;
 	m_FaceElementBuffer = 0;
+
+	if (animationTime > 1.0f) {
+		changeCurve = false;
+	}
+	else if (animationTime < 0.0f) {
+		changeCurve = true;
+	}
+
+	if (changeCurve == true) {
+		animationTime += GetDeltaTime();
+	}
+	else {
+		animationTime -= GetDeltaTime();
+	}
+}
+
+float RTRSceneSix::GetDeltaTime() {
+	float timeStart = SDL_GetTicks() / 1000.0f;
+	float deltaTime = timeStart - oldTimeStart;
+	oldTimeStart = timeStart;
+
+	return deltaTime;
 }
 
 void RTRSceneSix::CreateCubes()

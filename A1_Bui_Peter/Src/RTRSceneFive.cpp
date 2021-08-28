@@ -93,6 +93,11 @@ void RTRSceneFive::DrawModern(Camera* camera)
 {
 	int currSubdivision = m_Subdivisions - 1;
 
+	if (animationTime < -0.3f || animationTime > 1.3f) {
+		animationTime = 0.0f;
+		changeCurve = true;
+	}
+
 	// VBO
 	glGenBuffers(1, &m_VertexBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
@@ -140,6 +145,7 @@ void RTRSceneFive::DrawModern(Camera* camera)
 	sceneShader->SetInt("sceneState", 0);
 
 	glBindVertexArray(m_VertexArray);
+
 	// Model
 	geom->DrawCubeWithPoints(interpolatedVertices.size());
 
@@ -165,8 +171,6 @@ void RTRSceneFive::DrawModern(Camera* camera)
 	else {
 		animationTime -= GetDeltaTime();
 	}
-
-	//std::cout << animationTime << std::endl;
 }
 
 float RTRSceneFive::GetDeltaTime() {

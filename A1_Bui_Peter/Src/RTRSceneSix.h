@@ -9,6 +9,7 @@ public:
 	virtual void End();
 	virtual void DrawAll(Camera* camera);
 	virtual void DrawModern(Camera* camera);
+	virtual float GetDeltaTime();
 	virtual void CreateCubes();
 	
 	virtual bool* GetDepthBuffer();
@@ -56,4 +57,8 @@ protected:
 	unsigned int m_VertexArray;
 	unsigned int m_VertexBuffer;
 	unsigned int m_FaceElementBuffer;
+
+	float animationTime;
+	float oldTimeStart;
+	bool changeCurve;
 };

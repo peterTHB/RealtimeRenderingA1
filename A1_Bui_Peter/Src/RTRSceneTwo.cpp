@@ -129,6 +129,7 @@ void RTRSceneTwo::DrawModern(Camera* camera) {
     sceneShader->SetInt("sceneState", 0);
 
     glBindVertexArray(m_VertexArray);
+
     // Model
     geom->DrawCubeWithPoints(allVertices.size());
 

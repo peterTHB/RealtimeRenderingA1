@@ -132,6 +132,7 @@ void RTRSceneFour::DrawModern(Camera* camera)
 	sceneShader->SetInt("sceneState", 1);
 
 	glBindVertexArray(m_VertexArray);
+
 	// Model
 	geom->DrawCubeArrayInstanced(allVertices.size());
 

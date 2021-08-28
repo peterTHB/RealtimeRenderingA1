@@ -156,33 +156,31 @@ std::vector<int> Cube::AddExtraCubeFaces(std::vector<int> faces, int size)
 }
 
 std::vector<GLfloat> Cube::CalculatePulsation(std::vector<GLfloat> allVertices, float time, int currSubdivision) {
-	if (currSubdivision != 0) {
-		for (int i = 0; i < allVertices.size(); i = i + 6) {
-			glm::vec3 calcPoint = glm::vec3(0.0f);
+	for (int i = 0; i < allVertices.size(); i = i + 6) {
+		glm::vec3 calcPoint = glm::vec3(0.0f);
 
-			int yLocation = i + 1;
-			int zLocation = i + 2;
+		int yLocation = i + 1;
+		int zLocation = i + 2;
 
-			float posX = allVertices.at(i);
-			float posY = allVertices.at(yLocation);
-			float posZ = allVertices.at(zLocation);
+		float posX = allVertices.at(i);
+		float posY = allVertices.at(yLocation);
+		float posZ = allVertices.at(zLocation);
 
-			float radius = (abs(posX) > abs(posY) ? posX : posY);
-			radius = abs(radius) > abs(posZ) ? radius : posZ;
-			radius = abs(radius);
+		float radius = (abs(posX) > abs(posY) ? posX : posY);
+		radius = abs(radius) > abs(posZ) ? radius : posZ;
+		radius = abs(radius);
 
-			glm::vec3 currPos = glm::vec3(posX, posY, posZ);
-			calcPoint = glm::normalize(currPos);
+		glm::vec3 currPos = glm::vec3(posX, posY, posZ);
+		calcPoint = glm::normalize(currPos);
 
-			calcPoint *= radius;
+		calcPoint *= radius;
 
-			glm::vec3 newPos = currPos + ((calcPoint - currPos) * sin(time * time));
+		glm::vec3 newPos = currPos + ((calcPoint - currPos) * sin(time * time));
 
-			allVertices.at(i) = newPos.x;
-			allVertices.at(yLocation) = newPos.y;
-			allVertices.at(zLocation) = newPos.z;
-		};
-	}
+		allVertices.at(i) = newPos.x;
+		allVertices.at(yLocation) = newPos.y;
+		allVertices.at(zLocation) = newPos.z;
+	};
 
 	return allVertices;
 }
