@@ -13,10 +13,21 @@ uniform mat4 projection;
 uniform mat4 u_ViewMatrix;
 uniform mat4 u_ProjectionMatrix;
 
-uniform bool arrayState;
+uniform int sceneState;
+
+uniform float timeTotal;
+
+//vec3 InterpolatedPositions() {
+//	
+//};
 
 void main() {
-	if (arrayState) {
+	if (sceneState == 0) {
+		gl_Position =  projection * view * model * vec4(vertex_position, 1.0f);
+		FragPos = vec3(model * vec4(vertex_position, 1.0f));
+		Normal = mat3(transpose(inverse(model))) * aNormal;
+	}
+	else if (sceneState == 1) {
 		gl_Position =  projection * view * aInstanceModelMatrix * vec4(vertex_position, 1.0f);
 		FragPos = vec3(aInstanceModelMatrix * vec4(vertex_position, 1.0f));
 		Normal = mat3(transpose(inverse(aInstanceModelMatrix))) * aNormal;

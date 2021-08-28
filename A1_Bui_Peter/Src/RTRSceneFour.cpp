@@ -127,8 +127,9 @@ void RTRSceneFour::DrawModern(Camera* camera)
 
 	// Camera View and Proj
 	camera->ModernCamera(m_WindowWidth, m_WindowHeight);
-	sceneShader->SetBool("arrayState", true);
-	//sceneShader->SetBool("arrayState", false);
+
+	// Scene specific
+	sceneShader->SetInt("sceneState", 1);
 
 	glBindVertexArray(m_VertexArray);
 	// Model
