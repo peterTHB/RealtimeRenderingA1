@@ -446,20 +446,26 @@ void AssignmentApp::RenderFrame()
 
     if (*ListOfScenes[m_CurrSceneNum - 1]->GetLighting()) {
         if (m_CurrSceneNum == 1) {
+            glEnable(GL_NORMALIZE);
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
             glShadeModel(GL_SMOOTH);
             glEnable(GL_LIGHTING);
+            glEnable(GL_COLOR_MATERIAL);
             lighting->ImmediateSpotLighting(*ListOfScenes[m_CurrSceneNum - 1]->GetNumLights());
         }
         else {
+            glDisable(GL_NORMALIZE);
             glDisable(GL_BLEND);
             glDisable(GL_LIGHTING);
+            glDisable(GL_COLOR_MATERIAL);
         }
     }
     else {
-        glDisable(GL_LIGHTING);
+        glDisable(GL_NORMALIZE);
         glDisable(GL_BLEND);
+        glDisable(GL_LIGHTING);
+        glDisable(GL_COLOR_MATERIAL);
     }
 
     m_CurrScene->Init();

@@ -42,7 +42,10 @@ void Camera::ImmediateCamera(int width, int height) {
     glMatrixMode(GL_MODELVIEW);
     glLoadMatrixf(glm::value_ptr(view));
 
-    lighting->ImmediateLighting(cameraPos + cameraFront);
+    glm::vec3 normalDir = glm::normalize(-cameraFront);
+    glm::vec3 viewDir = glm::normalize(cameraPos);
+    glm::vec3 totalDir = glm::normalize(viewDir + normalDir);
+    lighting->ImmediateLighting(viewDir);
 }
 
 void Camera::ModernCamera(int width, int height) {

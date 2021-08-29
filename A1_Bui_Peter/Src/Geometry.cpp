@@ -15,29 +15,37 @@ void Geometry::DrawCubeWithPointsImmediate(std::vector<std::vector<GLfloat>> ver
 	for (auto& VANVertex : vertexAndNormalsHolder) {
 		for (int j = 0; j < VANVertex.size() / 24; j++) {
 			for (int i = 0; i < faces.size(); i++) {
+				int posNormalX = (faces.at(i) + (faces.at(i) * 5) + 3) + (j * 24);
+				int posNormalY = (faces.at(i) + (faces.at(i) * 5) + 4) + (j * 24);
+				int posNormalZ = (faces.at(i) + (faces.at(i) * 5) + 5) + (j * 24);
+
 				int posVertexX = (faces.at(i) + (faces.at(i) * 5)) + (j * 24);
 				int posVertexY = (faces.at(i) + (faces.at(i) * 5) + 1) + (j * 24);
 				int posVertexZ = (faces.at(i) + (faces.at(i) * 5) + 2) + (j * 24);
 
 				GLfloat colours = (float)i * 0.15f;
 				
-				GLfloat ambientArray[] = { 0.2f, 0.25f, 0.3f, 1.0f };
-				GLfloat diffuseArray[] = { 0.4f, 0.4f, 0.4f, 1.0f };
-				GLfloat specularArray[] = { 0.5f, 0.5f, 0.5f, 1.0f };
-				GLfloat shinyArray[] = { 16.0f };
+				GLfloat ambientArray[] = { 0.2f, 0.2f, 0.2f, 1.0f };
+				GLfloat diffuseArray[] = { 0.6f, 0.6f, 0.6f, 1.0f };
+				GLfloat specularArray[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+				GLfloat shinyArray[] = { 32.0f };
 
-				glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ambientArray);
-				glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuseArray);
+				glMaterialfv(GL_FRONT, GL_AMBIENT, ambientArray);
+				glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuseArray);
 
 				if (lightingState) {
-					glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specularArray);
-					glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shinyArray);
+					glMaterialfv(GL_FRONT, GL_SPECULAR, specularArray);
+					glMaterialfv(GL_FRONT, GL_SHININESS, shinyArray);
 				}
 
 				glColor3f(colours, colours, colours);
+				glNormal3f(posNormalX, posNormalY, posNormalZ);
 				glVertex3f(VANVertex.at(posVertexX),
 					VANVertex.at(posVertexY),
 					VANVertex.at(posVertexZ));
+
+				glColorMaterial(GL_FRONT, GL_DIFFUSE);
+				glColorMaterial(GL_FRONT, GL_AMBIENT);
 			}
 		}
 	}
