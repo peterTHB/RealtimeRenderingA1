@@ -109,9 +109,6 @@
     <None Include="RTRShader.frag">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="RTRShader.geom">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="RTRShader.vert">
       <Filter>Resource Files</Filter>
     </None>

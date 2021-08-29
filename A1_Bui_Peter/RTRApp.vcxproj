@@ -52,7 +52,6 @@
     <ClInclude Include="Src\RTRShaderLight.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="RTRShader.geom" />
     <None Include="RTRShader.frag">
       <FileType>Document</FileType>
     </None>
