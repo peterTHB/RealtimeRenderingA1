@@ -296,9 +296,7 @@ void RTRSceneFive::DecrementSubdivision()
 
 void RTRSceneFive::IncrementLights()
 {
-	if (m_NumLights < 8) {
-		m_NumLights += 1;
-	}
+	m_NumLights += 1;
 }
 
 void RTRSceneFive::DecrementLights()

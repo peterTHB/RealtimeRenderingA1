@@ -57,6 +57,5 @@ protected:
 	RTRShader* sceneShader;
 	unsigned int m_VertexArray;
 	unsigned int m_VertexBuffer;
-	unsigned int m_FaceElementBuffer;
 	unsigned int m_InstancedArrayVBO;
 };

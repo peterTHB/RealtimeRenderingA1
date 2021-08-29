@@ -55,11 +55,7 @@ RTRSceneFour::RTRSceneFour(float windowWidth, float windowHeight, std::vector<GL
 
 	m_VertexArray = 0;
 	m_VertexBuffer = 0;
-	m_FaceElementBuffer = 0;
 	m_InstancedArrayVBO = 0;
-	pointLightPositions.clear();
-	pointLightMaterial.clear();
-	cubePositionsInWorld.clear();
 }
 
 void RTRSceneFour::Init() {
@@ -275,9 +271,7 @@ void RTRSceneFour::DecrementSubdivision()
 
 void RTRSceneFour::IncrementLights()
 {
-	if (m_NumLights < 1) {
-		m_NumLights += 1;
-	}
+	m_NumLights += 1;
 }
 
 void RTRSceneFour::DecrementLights()
