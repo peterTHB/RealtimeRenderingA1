@@ -39,10 +39,14 @@ protected:
 	int m_Faces;
 	int m_NumLights;
 	float m_VertexData;
+	unsigned int m_VertexArray;
+	unsigned int m_VertexBuffer;
+	unsigned int m_FaceElementBuffer;
 
 	Geometry* geom;
 	Cube* cube;
 	Lighting* sceneLighting;
+	RTRShader* sceneShader;
 	std::vector<int> amountOfVertices;
 	std::vector<int> amountOfFaces;
 	std::vector<std::vector<Cube>> listOfCubes;
@@ -53,9 +57,4 @@ protected:
 	std::vector<glm::vec3> pointLightMaterial;
 	std::vector<glm::vec3> cubePositionsInWorld;
 	std::vector<std::vector<int>> listOfFaces;
-
-	RTRShader* sceneShader;
-	unsigned int m_VertexArray;
-	unsigned int m_VertexBuffer;
-	unsigned int m_FaceElementBuffer;
 };

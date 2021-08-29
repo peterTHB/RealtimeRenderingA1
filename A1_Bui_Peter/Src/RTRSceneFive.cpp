@@ -107,7 +107,7 @@ void RTRSceneFive::DrawModern(Camera* camera)
 			listOfVertexes.at(currSubdivision).at(i).end());
 	}
 
-	// When get all vertices, transform them by a parametric function
+	// When get all vertices, transform and interpolate them
 	std::vector<GLfloat> interpolatedVertices = cube->CalculatePulsation(allVertices, animationTime, currSubdivision);
 
 	glBufferData(GL_ARRAY_BUFFER, interpolatedVertices.size() * sizeof(GLfloat), interpolatedVertices.data(), GL_STATIC_DRAW);

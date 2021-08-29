@@ -36,6 +36,8 @@ int RTRApp::Init()
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+
     if (m_FullScreen == true) {
         m_SDLWindow = SDL_CreateWindow(
             m_MainWindowTitle.c_str(),
@@ -78,8 +80,6 @@ int RTRApp::Init()
     }
 
     std::cout << "RTR:MESSAGE: OpenGL version " << GLVersion.major << "." << GLVersion.minor << " initialised." << std::endl;
-
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
     return 0;
 }

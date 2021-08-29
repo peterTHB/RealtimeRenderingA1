@@ -49,7 +49,6 @@
     <ClInclude Include="Src\Geometry.h" />
     <ClInclude Include="Src\RTRSceneBase.h" />
     <ClInclude Include="Src\RTRApp.h" />
-    <ClInclude Include="Src\RTRShaderLight.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="RTRShader.frag">

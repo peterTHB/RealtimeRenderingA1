@@ -30,12 +30,12 @@ void Geometry::DrawCubeWithPointsImmediate(std::vector<std::vector<GLfloat>> ver
 				GLfloat specularArray[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 				GLfloat shinyArray[] = { 32.0f };
 
-				glMaterialfv(GL_FRONT, GL_AMBIENT, ambientArray);
-				glMaterialfv(GL_FRONT, GL_DIFFUSE, diffuseArray);
+				glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, ambientArray);
+				glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, diffuseArray);
 
 				if (lightingState) {
-					glMaterialfv(GL_FRONT, GL_SPECULAR, specularArray);
-					glMaterialfv(GL_FRONT, GL_SHININESS, shinyArray);
+					glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, specularArray);
+					glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shinyArray);
 				}
 
 				glColor3f(colours, colours, colours);
@@ -44,8 +44,8 @@ void Geometry::DrawCubeWithPointsImmediate(std::vector<std::vector<GLfloat>> ver
 					VANVertex.at(posVertexY),
 					VANVertex.at(posVertexZ));
 
-				glColorMaterial(GL_FRONT, GL_DIFFUSE);
-				glColorMaterial(GL_FRONT, GL_AMBIENT);
+				glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
+				glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT);
 			}
 		}
 	}

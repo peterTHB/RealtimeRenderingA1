@@ -179,7 +179,7 @@ void RTRSceneThree::CreateCubes()
 		amountOfVertices.push_back(totalVertices);
 
 		// Code underneath shouldn't be required, but removing it causes something to crash
-		// So it is kept to ensure nothing crashes
+		// So it is kept to ensure nothing crashes, but it is used again in other scenes
 		// ----------------------------------------------------------------------------
 		std::vector<std::vector<GLfloat>> newVertexPositions;
 		std::vector<GLfloat> currVector = listOfMidVertexes.at(currCalSubdivision);

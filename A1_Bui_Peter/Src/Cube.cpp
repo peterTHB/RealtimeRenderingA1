@@ -35,6 +35,7 @@ void Cube::CalculateNewRadius() {
 	this->dimensions = radius;
 }
 
+// Only for immediate mode
 std::vector<GLfloat> Cube::CalculateNewPositionsImmediate(Cube currCube, std::vector<GLfloat> VerAndNormPoints) {
 	float currCubePosX = *currCube.GetPosX();
 	float currCubePosY = *currCube.GetPosY();
@@ -61,6 +62,7 @@ std::vector<GLfloat> Cube::CalculateNewPositionsImmediate(Cube currCube, std::ve
 	return VerAndNormPoints;
 }
 
+// For scenes that required 6 vertices per face, instead of 4
 std::vector<GLfloat> Cube::CalculateNewPositionsModern(Cube currCube, std::vector<GLfloat> VerAndNormPoints)
 {
 	float currCubePosX = *currCube.GetPosX();

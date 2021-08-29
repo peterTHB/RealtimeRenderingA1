@@ -381,7 +381,6 @@ void AssignmentApp::RenderOSD()
 
 void AssignmentApp::CalculateFrames()
 {
-    static float frameRate = 0.0f;
     static float lastTime = 0.0f;
 
     float currentTime = SDL_GetTicks() * 0.001;
@@ -397,7 +396,7 @@ void AssignmentApp::CalculateFrames()
     ++totalFramesAmountsChecked;
 
     if (totalFramesAmountsChecked == 100) {
-        m_FPS = totalFrames / totalSecondsPassed;
+        m_FPS = (totalFrames / totalSecondsPassed) - 1.0f;
         totalFramesAmountsChecked = 0;
         totalFrames = 0;
         totalSecondsPassed = 0;
@@ -446,6 +445,7 @@ void AssignmentApp::RenderFrame()
 
     if (*ListOfScenes[m_CurrSceneNum - 1]->GetLighting()) {
         if (m_CurrSceneNum == 1) {
+            glPushAttrib(GL_ENABLE_BIT || GL_CURRENT_BIT);
             glEnable(GL_NORMALIZE);
             glEnable(GL_BLEND);
             glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
